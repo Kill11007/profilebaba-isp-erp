@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.entity;
+package com.knackitsolutions.profilebaba.isperp.entity.converters;
 
 import java.util.Optional;
 import javax.persistence.AttributeConverter;

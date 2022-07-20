@@ -16,5 +16,10 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  expirationDateInMs: 60000
+  expirationDateInMs: 3600000
   refreshExpirationDateInMs: 300000
+
+
+file:
+  upload:
+    location: /users/vendors/

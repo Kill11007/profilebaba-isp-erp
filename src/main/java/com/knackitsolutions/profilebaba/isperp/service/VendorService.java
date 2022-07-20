@@ -8,6 +8,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistException;
+import com.knackitsolutions.profilebaba.isperp.helper.VendorUploadHelper;
 import com.knackitsolutions.profilebaba.isperp.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class VendorService {
+
   private final VendorRepository vendorRepository;
   private final OTPService otpService;
   private final PasswordEncoder passwordEncoder;
+  private final VendorUploadHelper vendorUploadHelper;
 
   public GenericResponse sendOTP(String phoneNumber) throws OTPNotSentException {
     String exists =
@@ -28,7 +31,8 @@ public class VendorService {
     return new GenericResponse(otp, exists);
   }
 
-  public GenericResponse validateOTP(String phoneNumber, String otp) throws InvalidOTPException, VendorNotFoundException {
+  public GenericResponse validateOTP(String phoneNumber, String otp)
+      throws InvalidOTPException, VendorNotFoundException {
     otpService.validateOTP(phoneNumber, otp);
     Vendor vendor = vendorRepository.findByPhoneNumber(phoneNumber)
         .orElseThrow(VendorNotFoundException::new);
@@ -50,6 +54,7 @@ public class VendorService {
     vendor.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
     Vendor save = vendorRepository.save(vendor);
     otpService.sendOTP(save.getPhoneNumber());
+    vendorUploadHelper.createVendorDirectory(vendor);
     return new GenericResponse(save.getId().toString(), "Vendor is saved.");
   }
 
