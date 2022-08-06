@@ -59,11 +59,17 @@ public class CustomerServiceImpl implements CustomerService{
   public void importCustomers(MultipartFile file) throws CustomerAlreadyExistsException {
     List<Customer> customers = excelService.getCustomers(file);
     List<Customer> newCustomers = customers.stream()
+        .peek(customer -> log.info("Customer: " + customer))
         .filter(customer -> !customerRepository.exists(
             (root, query, criteriaBuilder) -> criteriaBuilder.equal(
-                root.get("primary_mobile_no"), customer.getPrimaryMobileNo()))).toList();
-    log.info("Customers already exists: " + customers.removeAll(newCustomers));
+                root.get("primaryMobileNo"), customer.getPrimaryMobileNo())))
+        .peek(customer -> customer.getBillingDetail().setCustomer(customer)).toList();
+    log.info("Customers already exists: " + customers);
     customerRepository.saveAll(newCustomers);
+    if (newCustomers.size() < customers.size()) {
+      customers.removeAll(newCustomers);
+      throw new CustomerAlreadyExistsException();
+    }
   }
 
   @Override
@@ -129,5 +135,11 @@ public class CustomerServiceImpl implements CustomerService{
       return customerSummaries;
     }
     return null;
+  }
+
+  @Override
+  public void deleteCustomer(Long customerID) throws CustomerNotFoundException {
+    Customer customerById = getCustomerById(customerID);
+    customerRepository.delete(customerById);
   }
 }

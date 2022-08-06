@@ -47,13 +47,13 @@ public class BillingDetail {
   private LocalDate startDate;
 
   @Column(nullable = false)
-  private BigDecimal openingOutstandingBalance;
+  private BigDecimal openingOutstandingBalance = new BigDecimal(0);
 
   @Column(nullable = false)
-  private BigDecimal openingAdvanceBalance;
+  private BigDecimal openingAdvanceBalance = new BigDecimal(0);
 
-  private BigDecimal monthlyAdditionalCharge;
-  private BigDecimal monthlyDiscount;
+  private BigDecimal monthlyAdditionalCharge = new BigDecimal(0);
+  private BigDecimal monthlyDiscount = new BigDecimal(0);
 
   @Column(columnDefinition = "ENUM('EOEM', 'DAYS', 'MONTHS')")
   private BillDuration billDuration;

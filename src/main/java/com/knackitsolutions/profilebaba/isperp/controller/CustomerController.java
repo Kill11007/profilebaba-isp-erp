@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/customers")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class CustomerController {
 
   private final CustomerService customerService;
@@ -45,6 +47,13 @@ public class CustomerController {
   public ResponseEntity<CustomerDTO> getCustomer(@PathVariable("customer-id") Long customerId)
       throws CustomerNotFoundException {
     return ResponseEntity.ok(customerService.getCustomer(customerId));
+  }
+
+  @DeleteMapping("/{customer-id}")
+  public ResponseEntity<?> deleteCustomer(@PathVariable("customer-id") Long customerId)
+      throws CustomerNotFoundException {
+    customerService.deleteCustomer(customerId);
+    return ResponseEntity.noContent().build();
   }
 
   @PostMapping
@@ -74,6 +83,7 @@ public class CustomerController {
   public ResponseEntity<?> addHardware(@PathVariable("customer-id") Long customerId,
       @RequestBody HardwareDetailDTO hardwareDetail) throws CustomerNotFoundException {
     customerService.addHardwareDetail(customerId, hardwareDetail);
+    System.out.println();
     return ResponseEntity.noContent().build();
   }
 

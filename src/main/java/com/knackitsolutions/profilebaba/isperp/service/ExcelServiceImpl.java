@@ -45,7 +45,7 @@ public class ExcelServiceImpl implements ExcelService{
       while (rows.hasNext()) {
         Row currentRow = rows.next();
         // skip two header rows
-        if (rowNumber <= 1) {
+        if (rowNumber <= 0) {
           rowNumber++;
           continue;
         }
@@ -56,58 +56,60 @@ public class ExcelServiceImpl implements ExcelService{
         while (cellsInRow.hasNext()) {
           Cell currentCell = cellsInRow.next();
           log.info("Current Cell index: " + cellIdx );
+          log.info("value: " + cellStringFunction.apply(currentCell));
           switch (cellIdx) {
             case 0:
-              customer.setCustomerCode(currentCell.getStringCellValue());
+              customer.setCustomerCode(currentCell.getStringCellValue().trim());
               break;
             case 1:
-              customer.setName(currentCell.getStringCellValue());
+              customer.setName(currentCell.getStringCellValue().trim());
               break;
             case 2:
-              customer.setBillingName(currentCell.getStringCellValue());
+              customer.setBillingName(currentCell.getStringCellValue().trim());
               break;
             case 3:
-              customer.setPrimaryMobileNo(cellStringFunction.apply(currentCell));
+              customer.setPrimaryMobileNo(cellStringFunction.apply(currentCell).trim());
               break;
             case 4:
-              customer.setSecondaryMobileNo(cellStringFunction.apply(currentCell));
+              customer.setSecondaryMobileNo(cellStringFunction.apply(currentCell).trim());
               break;
             case 5:
-              customer.setEmail(currentCell.getStringCellValue());
+              customer.setEmail(currentCell.getStringCellValue().trim());
               break;
             case 6:
               customer.setSecurityDeposit(BigDecimal.valueOf(currentCell.getNumericCellValue()));
               break;
             case 7:
-              customer.setAddress(currentCell.getStringCellValue());
+              customer.setAddress(currentCell.getStringCellValue().trim());
               break;
             case 8:
-              customer.setGstNo(currentCell.getStringCellValue());
+              customer.setGstNo(currentCell.getStringCellValue().trim());
               break;
             case 9:
-              customer.setRemark(currentCell.getStringCellValue());
+              customer.setRemark(currentCell.getStringCellValue().trim());
               break;
             case 10:
-              customer.setActive("active".equalsIgnoreCase(cellStringFunction.apply(currentCell)));
+              log.info("value: " + cellStringFunction.apply(currentCell));
+              customer.setActive("active".equalsIgnoreCase(cellStringFunction.apply(currentCell).trim()));
               break;
             //Billing Details From Here
-            case 12:
-              log.info("value: " + currentCell.getDateCellValue());
+            case 11:
+              log.info("value: " + cellStringFunction.apply(currentCell));
               billingDetail.setStartDate(LocalDate.ofInstant(currentCell.getDateCellValue()
                   .toInstant(), ZoneId.systemDefault()));
               break;
-            case 13:
+            case 12:
               log.info("current cell value: " + currentCell.getStringCellValue());
-              billingDetail.setBillDuration(BillDuration.of(currentCell.getStringCellValue()));
+              billingDetail.setBillDuration(BillDuration.of(currentCell.getStringCellValue().trim()));
               break;
-            case 14:
+            case 13:
               billingDetail.setBillDurationValue((int)currentCell.getNumericCellValue());
               break;
-            case 15:
-              billingDetail.setBillType(BillType.of(currentCell.getStringCellValue()));
+            case 14:
+              billingDetail.setBillType(BillType.of(currentCell.getStringCellValue().trim()));
               break;
-            case 16:
-              billingDetail.setGstType(GstType.of(currentCell.getStringCellValue()));
+            case 15:
+              billingDetail.setGstType(GstType.of(currentCell.getStringCellValue().trim()));
               break;
             default:
               break;

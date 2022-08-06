@@ -39,4 +39,5 @@ public interface CustomerService {
 
   Page<CustomerSummary> getFilteredCustomer(MultiValueMap<String, String> filters);
 
+  void deleteCustomer(Long customerID) throws CustomerNotFoundException;
 }

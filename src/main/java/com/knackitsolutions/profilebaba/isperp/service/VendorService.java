@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SignUpRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.GenericResponse;
+import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.Vendor;
 import com.knackitsolutions.profilebaba.isperp.exception.BusinessNameNotUniqueException;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
@@ -11,6 +12,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExist
 import com.knackitsolutions.profilebaba.isperp.helper.VendorUploadHelper;
 import com.knackitsolutions.profilebaba.isperp.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +60,14 @@ public class VendorService {
     return new GenericResponse(save.getId().toString(), "Vendor is saved.");
   }
 
+  public VendorDTO findById(Long vendorId) throws VendorNotFoundException{
+    return new VendorDTO(
+        vendorRepository.findById(vendorId).orElseThrow(VendorNotFoundException::new));
+  }
+
+  public VendorDTO profile(Authentication authentication) {
+    Vendor vendor = (Vendor) authentication.getPrincipal();
+    return new VendorDTO(vendor);
+  }
 }
 
