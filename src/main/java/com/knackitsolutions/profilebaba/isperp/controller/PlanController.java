@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/plans")
-@CrossOrigin("*")
+@CrossOrigin
 @RequiredArgsConstructor
 public class PlanController {
 
@@ -55,6 +56,12 @@ public class PlanController {
   @DeleteMapping("/{plan-id}")
   public ResponseEntity<?> deletePlan(@PathVariable("plan-id") Long planId) {
     planService.deletePlan(planId);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PatchMapping("/{plan-id}")
+  public ResponseEntity<?> activatePlan(@PathVariable("plan-id") Long planId) {
+    planService.updateStatus(planId);
     return ResponseEntity.noContent().build();
   }
 

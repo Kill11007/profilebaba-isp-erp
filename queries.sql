@@ -10,3 +10,4 @@ show create table employees;
 select * from customers;
 select * from billing_details;
 select * from hardware_details;
+select * from subscriptions;

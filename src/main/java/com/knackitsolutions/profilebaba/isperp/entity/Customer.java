@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -64,6 +65,10 @@ public class Customer {
   @PrimaryKeyJoinColumn
   private BillingDetail billingDetail;
 
+  @OneToMany(mappedBy = "customer")
+  @Exclude
+  private Set<Subscription> subscriptions;
+
   public void update(CustomerDTO dto) {
     setName(dto.getName());
     setBillingName(dto.getBillingName());
@@ -88,7 +93,7 @@ public class Customer {
     setSecondaryMobileNo(dto.getSecondaryMobileNo());
     setEmail(dto.getEmail());
     setSecurityDeposit(dto.getSecurityDeposit());
-    setActive(dto.getActive());
+    setActive(dto.getActive() == null || dto.getActive());
     setAddress(dto.getAddress());
     setGstNo(dto.getGstNo());
     setCustomerCode(dto.getCustomerCode());

@@ -37,7 +37,7 @@ public class CustomerServiceImpl implements CustomerService{
   private static final Function<Long, CustomerNotFoundException> CUSTOMER_NOT_FOUND_EXCEPTION_FUNCTION = aLong -> new CustomerNotFoundException(
       "Customer not found with id: " + aLong);
 
-  private Customer getCustomerById(Long id) throws CustomerNotFoundException {
+  public Customer getCustomerById(Long id) throws CustomerNotFoundException {
     return customerRepository.findById(id)
         .orElseThrow(() -> CUSTOMER_NOT_FOUND_EXCEPTION_FUNCTION.apply(id));
   }
@@ -93,6 +93,10 @@ public class CustomerServiceImpl implements CustomerService{
     customerRepository.save(entity);
   }
 
+  public void updateCustomer(Customer customer) {
+    customerRepository.save(customer);
+  }
+
   @Override
   public void activate(Long id, Boolean active) throws CustomerNotFoundException {
     Customer customerById = getCustomerById(id);
@@ -106,8 +110,7 @@ public class CustomerServiceImpl implements CustomerService{
     Customer customer = getCustomerById(customerId);
     HardwareDetail hardwareDetailEntity = new HardwareDetail(hardwareDetail);
     hardwareDetailEntity.setCustomer(customer);
-    HardwareDetail save = hardwareDetailRepository.save(hardwareDetailEntity);
-    return save;
+    return hardwareDetailRepository.save(hardwareDetailEntity);
   }
 
   @Override
@@ -131,8 +134,7 @@ public class CustomerServiceImpl implements CustomerService{
     //TODO add filter and sort and search
     if (filters.isEmpty()) {
       Page<Customer> all = customerRepository.findAll(Pageable.ofSize(10));
-      Page<CustomerSummary> customerSummaries = all.map(customer -> new CustomerSummary(customer.getId()));
-      return customerSummaries;
+      return all.map(CustomerSummary::new);
     }
     return null;
   }

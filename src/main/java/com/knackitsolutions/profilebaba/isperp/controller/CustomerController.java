@@ -32,7 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/customers")
 @RequiredArgsConstructor
-@CrossOrigin("*")
+@CrossOrigin
 public class CustomerController {
 
   private final CustomerService customerService;

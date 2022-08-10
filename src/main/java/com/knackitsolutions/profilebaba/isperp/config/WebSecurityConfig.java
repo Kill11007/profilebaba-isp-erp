@@ -18,6 +18,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 //@EnableWebSecurity
@@ -48,7 +51,7 @@ public class WebSecurityConfig{
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.authorizeHttpRequests(
+    http.cors().and().authorizeHttpRequests(
             authorize -> authorize.antMatchers("/authenticate", "/**/signup", "/**/validate-otp")
                 .permitAll().anyRequest().authenticated()).csrf().disable().exceptionHandling(
             exceptions -> exceptions.authenticationEntryPoint(jwtAuthenticationEntryPoint))

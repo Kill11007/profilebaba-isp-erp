@@ -6,4 +6,7 @@ public class OTPNotSentException extends Exception {
     super("OTP is not sent.");
   }
 
+  public OTPNotSentException(String message) {
+    super(message);
+  }
 }

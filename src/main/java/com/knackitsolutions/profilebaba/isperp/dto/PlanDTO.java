@@ -15,7 +15,7 @@ import org.springframework.lang.Nullable;
 public class PlanDTO {
 
   public PlanDTO(Plan plan) {
-    this.setActive(plan.getActive());
+    this.setActive(plan.getActive() == null || plan.getActive());
     this.setDiscount(plan.getDiscount());
     this.setAdditionalCharge(plan.getAdditionalCharge());
     this.setGstPercent(plan.getGstPercent());

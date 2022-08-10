@@ -2,11 +2,14 @@ package com.knackitsolutions.profilebaba.isperp.entity;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
 import java.math.BigDecimal;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -80,4 +83,7 @@ public class Plan {
   private BigDecimal additionalCharge;
 
   private Boolean active;
+
+  @OneToMany(mappedBy = "plan")
+  private Set<Subscription> subscriptions;
 }

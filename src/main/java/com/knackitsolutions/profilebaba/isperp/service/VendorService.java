@@ -12,12 +12,14 @@ import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExist
 import com.knackitsolutions.profilebaba.isperp.helper.VendorUploadHelper;
 import com.knackitsolutions.profilebaba.isperp.repository.VendorRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class VendorService {
 
   private final VendorRepository vendorRepository;
@@ -26,10 +28,17 @@ public class VendorService {
   private final VendorUploadHelper vendorUploadHelper;
 
   public GenericResponse sendOTP(String phoneNumber) throws OTPNotSentException {
+    Boolean aBoolean = vendorRepository.existsByPhoneNumber(phoneNumber);
+    log.info("Number Exists: " + aBoolean);
     String exists =
-        vendorRepository.existsByPhoneNumber(phoneNumber) ? "Phone number already exists."
-            : "Phone number is new.";
-    String otp = otpService.sendOTP(phoneNumber);
+        aBoolean ? "Phone number already exists."
+            : "Phone number is new: " + phoneNumber;
+    String otp;
+    if (aBoolean) {
+      otp = otpService.sendOTP(phoneNumber);
+    }else{
+      throw new OTPNotSentException(exists);
+    }
     return new GenericResponse(otp, exists);
   }
 
@@ -68,6 +77,15 @@ public class VendorService {
   public VendorDTO profile(Authentication authentication) {
     Vendor vendor = (Vendor) authentication.getPrincipal();
     return new VendorDTO(vendor);
+  }
+
+  public void updatePassword(String phoneNumber, String otp, String password)
+      throws InvalidOTPException, VendorNotFoundException {
+    Vendor vendor = vendorRepository.findByPhoneNumber(phoneNumber).orElseThrow(
+        () -> new VendorNotFoundException("Vendor not found by phone number: " + phoneNumber));
+    validateOTP(vendor.getPhoneNumber(), otp);
+    vendor.setPassword(passwordEncoder.encode(password));
+    vendorRepository.save(vendor);
   }
 }
 

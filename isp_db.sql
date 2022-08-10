@@ -69,14 +69,19 @@ create table isp_db.billing_details(
     gst_type enum('NA', 'IGST', 'CGST_SGST') not null default 'CGST_SGST',
 	foreign key(customer_id) references customers(id)
 );
-
+drop table subscriptions;
 create table isp_db.subscriptions(
 	id bigint primary key auto_increment,
 	customer_id bigint,
-    plans_id bigint,
+    plan_id bigint,
     fixed_bill_amount decimal(8, 2) unsigned,
     quantity int not null default 1,
+    start_date date,
+    end_date date,
+    period int,
+    future_days boolean default true,
     status enum('ACTIVE', 'IN_ACTIVE') not null default 'ACTIVE',
+    foreign key(plan_id) references plans(id),
     foreign key(customer_id) references customers(id)
 );
 

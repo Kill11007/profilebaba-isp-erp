@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin
 @RequiredArgsConstructor
-@RequestMapping
+@RequestMapping("/")
 public class AuthenticationController {
 
   private final AuthenticationManager authenticationManager;
@@ -59,11 +59,7 @@ public class AuthenticationController {
   }
 
   public Map<String, Object> getMapFromIoJsonwebtokenClaims(DefaultClaims claims) {
-    Map<String, Object> expectedMap = new HashMap<>();
-    for (Entry<String, Object> entry : claims.entrySet()) {
-      expectedMap.put(entry.getKey(), entry.getValue());
-    }
-    return expectedMap;
+    return new HashMap<>(claims);
   }
 
   private void authenticate(String username, String password) throws InvalidLoginCredentialException {
@@ -72,8 +68,6 @@ public class AuthenticationController {
           new UsernamePasswordAuthenticationToken(username, password));
     } catch (DisabledException e) {
       throw new InvalidLoginCredentialException("USER_DISABLED", e);
-    } catch (BadCredentialsException e) {
-      throw new InvalidLoginCredentialException(e);
     } catch (Exception e) {
       throw new InvalidLoginCredentialException(e);
     }
