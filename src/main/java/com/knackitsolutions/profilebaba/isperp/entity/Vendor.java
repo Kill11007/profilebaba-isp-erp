@@ -23,9 +23,9 @@ public class Vendor implements UserDetails {
   private String businessName;
   private String password;
   @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-  private Boolean rememberMe;
+  private Boolean rememberMe = false;
   @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-  private Boolean isPhoneNumberVerified;
+  private Boolean isPhoneNumberVerified = false;
 
     @Override
     public boolean equals(Object o) {

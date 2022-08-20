@@ -1,9 +1,10 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.Plan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.PlanRepository;
+import com.knackitsolutions.profilebaba.isperp.service.PlanService;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;

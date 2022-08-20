@@ -15,6 +15,7 @@ public class VendorUploadHelper {
 
   public void createVendorDirectory(Vendor vendor) {
     String directoryName = fileUploadLocation.concat(String.valueOf(vendor.getId()));
+    log.info("DirectoryName " + directoryName);
     File directory = new File(directoryName);
     if (!directory.exists()) {
       boolean mkdirs = directory.mkdirs();

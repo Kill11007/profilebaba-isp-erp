@@ -9,6 +9,8 @@ import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundExcepti
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidLoginCredentialException;
 import com.knackitsolutions.profilebaba.isperp.exception.NonRefreshableTokenException;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaAlreadyExistsException;
+import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistException;
@@ -70,7 +72,13 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(value = {CustomerNotFoundException.class, CustomerAlreadyExistsException.class,
       HardwareNotFoundException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
-  public ErrorResponse handlePlanNotFound(CustomerNotFoundException exception) {
+  public ErrorResponse handleCustomerException(Exception exception) {
+    return handleException(exception);
+  }
+
+  @ExceptionHandler(value = {ServiceAreaNotFoundException.class, ServiceAreaAlreadyExistsException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleServiceAreaException(Exception exception) {
     return handleException(exception);
   }
 

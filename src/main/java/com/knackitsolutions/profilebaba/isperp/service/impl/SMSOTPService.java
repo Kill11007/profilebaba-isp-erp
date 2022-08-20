@@ -1,7 +1,9 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
+import com.knackitsolutions.profilebaba.isperp.service.OTPGenerator;
+import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import com.knackitsolutions.profilebaba.isperp.utility.RedisUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;

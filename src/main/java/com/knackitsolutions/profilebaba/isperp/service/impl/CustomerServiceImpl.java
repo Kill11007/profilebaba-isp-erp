@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerSummary;
@@ -12,6 +12,8 @@ import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundExcepti
 import com.knackitsolutions.profilebaba.isperp.repository.BillingDetailsRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.CustomerRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.HardwareDetailRepository;
+import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
+import com.knackitsolutions.profilebaba.isperp.service.ExcelService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -27,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class CustomerServiceImpl implements CustomerService{
+public class CustomerServiceImpl implements CustomerService {
 
   private final CustomerRepository customerRepository;
   private final HardwareDetailRepository hardwareDetailRepository;

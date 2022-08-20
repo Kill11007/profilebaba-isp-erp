@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.SubscriptionDTO;
@@ -10,6 +10,9 @@ import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundExcepti
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.SubscriptionRepository;
+import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
+import com.knackitsolutions.profilebaba.isperp.service.PlanService;
+import com.knackitsolutions.profilebaba.isperp.service.SubscriptionService;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class SubscriptionServiceImpl implements SubscriptionService{
+public class SubscriptionServiceImpl implements SubscriptionService {
 
   private final SubscriptionRepository repository;
   private final CustomerService customerService;

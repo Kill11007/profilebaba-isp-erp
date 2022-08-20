@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.entity.Vendor;
 import com.knackitsolutions.profilebaba.isperp.repository.VendorRepository;

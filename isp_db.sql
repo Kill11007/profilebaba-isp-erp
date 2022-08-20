@@ -69,7 +69,7 @@ create table isp_db.billing_details(
     gst_type enum('NA', 'IGST', 'CGST_SGST') not null default 'CGST_SGST',
 	foreign key(customer_id) references customers(id)
 );
-drop table subscriptions;
+-- drop table subscriptions; 
 create table isp_db.subscriptions(
 	id bigint primary key auto_increment,
 	customer_id bigint,
@@ -154,4 +154,27 @@ create table isp_db.balance_sheet(
     transaction_id bigint,
 	txn_amount decimal(8, 2),
     final decimal(8, 2)
+);
+
+create table isp_db.service_areas(
+	id bigint primary key auto_increment,
+    name varchar(255) not null
+);
+
+create table isp_db.permissions(
+	id bigint primary key auto_increment,
+    name varchar(255) not null
+);
+create table isp_db.employee_permissions(
+	permission_id bigint,
+    employee_id bigint,
+    foreign key (permission_id) references permissions(id),
+    foreign key (employee_id) references employees(id)
+);
+
+create table isp_db.employee_service_areas(
+	service_area_id bigint,
+    employee_id bigint,
+    foreign key (service_area_id) references service_areas(id),
+    foreign key (employee_id) references employees(id)
 );

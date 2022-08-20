@@ -3,7 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 import com.knackitsolutions.profilebaba.isperp.dto.SubscriptionDTO;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.service.AuthenticationFacade;
+import com.knackitsolutions.profilebaba.isperp.service.impl.AuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.SubscriptionService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

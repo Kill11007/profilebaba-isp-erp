@@ -1,10 +1,11 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.entity.BillingDetail;
 import com.knackitsolutions.profilebaba.isperp.entity.Customer;
 import com.knackitsolutions.profilebaba.isperp.enums.BillDuration;
 import com.knackitsolutions.profilebaba.isperp.enums.BillType;
 import com.knackitsolutions.profilebaba.isperp.enums.GstType;
+import com.knackitsolutions.profilebaba.isperp.service.ExcelService;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Log4j2
-public class ExcelServiceImpl implements ExcelService{
+public class ExcelServiceImpl implements ExcelService {
 
   private static final String SHEET = "customers";
   @Override

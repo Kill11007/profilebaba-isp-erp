@@ -1,5 +1,6 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
+import com.knackitsolutions.profilebaba.isperp.service.OTPGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;

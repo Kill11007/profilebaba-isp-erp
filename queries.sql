@@ -11,3 +11,7 @@ select * from customers;
 select * from billing_details;
 select * from hardware_details;
 select * from subscriptions;
+select * from bills;
+select * from bill_items;
+select * from payments;
+

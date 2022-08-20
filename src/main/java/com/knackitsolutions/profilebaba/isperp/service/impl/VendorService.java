@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SignUpRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.GenericResponse;
@@ -11,6 +11,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistException;
 import com.knackitsolutions.profilebaba.isperp.helper.VendorUploadHelper;
 import com.knackitsolutions.profilebaba.isperp.repository.VendorRepository;
+import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.Authentication;
@@ -65,7 +66,7 @@ public class VendorService {
     vendor.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
     Vendor save = vendorRepository.save(vendor);
     otpService.sendOTP(save.getPhoneNumber());
-    vendorUploadHelper.createVendorDirectory(vendor);
+//    vendorUploadHelper.createVendorDirectory(vendor); TODO
     return new GenericResponse(save.getId().toString(), "Vendor is saved.");
   }
 
