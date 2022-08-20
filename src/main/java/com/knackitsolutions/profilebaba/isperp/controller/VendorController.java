@@ -57,10 +57,18 @@ public class VendorController {
     return ResponseEntity.ok(vendorService.profile(authenticationFacade.getAuthentication()));
   }
 
-  @PutMapping("/change-password")
-  public ResponseEntity<Void> updatePassword(@RequestBody VendorChangePasswordRequest request)
+  @PutMapping("/reset-password")
+  public ResponseEntity<Void> resetPassword(@RequestBody VendorChangePasswordRequest request)
       throws InvalidOTPException, VendorNotFoundException {
-    vendorService.updatePassword(request.getPhoneNumber(), request.getOtp(),
+    vendorService.resetPassword(request.getPhoneNumber(), request.getOtp(),
+        request.getPassword());
+    return ResponseEntity.noContent().build();
+  }
+
+  @PatchMapping("/change-password")
+  public ResponseEntity<Void> changePassword(@RequestBody VendorChangePasswordRequest request)
+      throws InvalidOTPException, VendorNotFoundException {
+    vendorService.resetPassword(request.getPhoneNumber(), request.getOtp(),
         request.getPassword());
     return ResponseEntity.noContent().build();
   }

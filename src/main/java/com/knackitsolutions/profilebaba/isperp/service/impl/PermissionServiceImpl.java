@@ -60,5 +60,6 @@ public class PermissionServiceImpl implements PermissionService {
   public void update(Long id, PermissionDTO dto) throws PermissionNotFoundException {
     Permission permission = get(id);
     permission.update(dto);
+    repository.save(permission);
   }
 }

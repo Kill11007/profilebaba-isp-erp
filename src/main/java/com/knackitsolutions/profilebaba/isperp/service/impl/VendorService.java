@@ -80,11 +80,22 @@ public class VendorService {
     return new VendorDTO(vendor);
   }
 
-  public void updatePassword(String phoneNumber, String otp, String password)
+  public void resetPassword(String phoneNumber, String otp, String password)
       throws InvalidOTPException, VendorNotFoundException {
     Vendor vendor = vendorRepository.findByPhoneNumber(phoneNumber).orElseThrow(
         () -> new VendorNotFoundException("Vendor not found by phone number: " + phoneNumber));
     validateOTP(vendor.getPhoneNumber(), otp);
+    updatePassword(vendor, phoneNumber, password);
+  }
+
+  public void changePassword(String phoneNumber, String password)
+      throws InvalidOTPException, VendorNotFoundException {
+    Vendor vendor = vendorRepository.findByPhoneNumber(phoneNumber).orElseThrow(
+        () -> new VendorNotFoundException("Vendor not found by phone number: " + phoneNumber));
+    updatePassword(vendor, phoneNumber, password);
+  }
+
+  private void updatePassword(Vendor vendor, String phoneNumber, String password) {
     vendor.setPassword(passwordEncoder.encode(password));
     vendorRepository.save(vendor);
   }

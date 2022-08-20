@@ -52,7 +52,7 @@ create table isp_db.hardware_details(
     foreign key(customer_id) references customers(id)
 );
 
-alter table hardware_details modify column id bigint auto_increment;
+-- alter table hardware_details modify column id bigint auto_increment;
 -- alter table hardware_details modify column customer_id bigint not null;
 -- alter table hardware_details add foreign key(customer_id) references customers(id);
 
@@ -86,7 +86,7 @@ create table isp_db.subscriptions(
 );
 
 create table isp_db.employees(
-	id bigint primary key,
+	id bigint primary key auto_increment,
     name varchar(50) not null,
     address varchar(255) null,
     email varchar(100),
@@ -94,7 +94,6 @@ create table isp_db.employees(
      password varchar(200)
     -- password. ROLES needs to be set
 );
-
 create table isp_db.payments(
 	id bigint primary key auto_increment,
     receipt_no varchar(8) not null,
@@ -112,7 +111,7 @@ create table isp_db.payments(
     foreign key(collection_agent_id) references employees(id),
     foreign key(customer_id) references customers(id)
 );
-
+-- drop table payments;
 create table isp_db.bills(
 	id bigint primary key auto_increment,
     bill_no varchar(8) not null,
@@ -171,10 +170,11 @@ create table isp_db.employee_permissions(
     foreign key (permission_id) references permissions(id),
     foreign key (employee_id) references employees(id)
 );
-
+-- drop table employee_permissions;
 create table isp_db.employee_service_areas(
 	service_area_id bigint,
     employee_id bigint,
     foreign key (service_area_id) references service_areas(id),
     foreign key (employee_id) references employees(id)
 );
+-- drop table employee_service_areas;

@@ -18,6 +18,8 @@ public class SubscriptionDTO {
 
   private Long planId;
 
+  private String planName;
+
   private BigDecimal fixedBillAmountPerMonth;
 
   private int quantity;
@@ -35,6 +37,7 @@ public class SubscriptionDTO {
   public SubscriptionDTO(Subscription entity) {
     setId(entity.getId());
     setPlanId(entity.getPlan().getId());
+    setPlanName(entity.getPlan().getName());
     setFixedBillAmountPerMonth(entity.getFixedBillAmountPerMonth());
     setQuantity(entity.getQuantity());
     setFutureDays(entity.getFutureDays());

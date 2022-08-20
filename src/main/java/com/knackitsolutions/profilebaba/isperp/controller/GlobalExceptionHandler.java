@@ -5,9 +5,13 @@ import com.knackitsolutions.profilebaba.isperp.dto.ErrorResponse;
 import com.knackitsolutions.profilebaba.isperp.exception.BusinessNameNotUniqueException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.EmployeeAlreadyExistsException;
+import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidLoginCredentialException;
 import com.knackitsolutions.profilebaba.isperp.exception.NonRefreshableTokenException;
+import com.knackitsolutions.profilebaba.isperp.exception.PermissionAlreadyExistsException;
+import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
@@ -79,6 +83,18 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(value = {ServiceAreaNotFoundException.class, ServiceAreaAlreadyExistsException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handleServiceAreaException(Exception exception) {
+    return handleException(exception);
+  }
+
+  @ExceptionHandler(value = {PermissionNotFoundException.class, PermissionAlreadyExistsException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handlePermissionException(Exception exception) {
+    return handleException(exception);
+  }
+
+  @ExceptionHandler(value = {EmployeeNotFoundException.class, EmployeeAlreadyExistsException.class})
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleEmployeeException(Exception exception) {
     return handleException(exception);
   }
 
