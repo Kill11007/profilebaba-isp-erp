@@ -1,7 +1,7 @@
-package com.knackitsolutions.profilebaba.isperp.repository;
+package com.knackitsolutions.profilebaba.isperp.repository.tenant;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Subscription;
-import com.knackitsolutions.profilebaba.isperp.entity.Subscription.SubscriptionStatus;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

@@ -1,9 +1,9 @@
-package com.knackitsolutions.profilebaba.isperp.entity;
+package com.knackitsolutions.profilebaba.isperp.entity.main;
 
-import com.knackitsolutions.profilebaba.isperp.dto.ServiceAreaDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.PermissionDTO;
 import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,31 +15,32 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.ToString.Exclude;
 
 @Entity
-@Table(name = "service_areas")
+@Table(name = "permissions")
 @Getter
 @Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ServiceArea {
+public class Permission {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false)
   private String name;
 
-  @ManyToMany(mappedBy = "serviceAreas")
-  private Set<Employee> employees;
+  @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
+  @Exclude
+  private Set<User> employees;
 
-  public ServiceArea(ServiceAreaDTO dto) {
+  public Permission(PermissionDTO dto) {
     this.name = dto.getName();
   }
 
-  public void update(ServiceAreaDTO dto) {
-    this.name = dto.getName();
+  public void update(PermissionDTO dto) {
+    this.setName(dto.getName());
   }
 }

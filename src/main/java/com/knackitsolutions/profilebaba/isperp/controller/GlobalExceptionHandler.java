@@ -17,7 +17,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaAlreadyExist
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
-import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistException;
+import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,11 +54,11 @@ public class GlobalExceptionHandler {
     return handleException(otpNotSentException);
   }
 
-  @ExceptionHandler(value = PhoneNumberAlreadyExistException.class)
+  @ExceptionHandler(value = PhoneNumberAlreadyExistsException.class)
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handlePhoneNumberExists(
-      PhoneNumberAlreadyExistException phoneNumberAlreadyExistException) {
-    return handleException(phoneNumberAlreadyExistException);
+      PhoneNumberAlreadyExistsException phoneNumberAlreadyExistsException) {
+    return handleException(phoneNumberAlreadyExistsException);
   }
 
   @ExceptionHandler(value = NonRefreshableTokenException.class)

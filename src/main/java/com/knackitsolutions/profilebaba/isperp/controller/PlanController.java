@@ -1,7 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.controller;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
 import com.knackitsolutions.profilebaba.isperp.service.PlanService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

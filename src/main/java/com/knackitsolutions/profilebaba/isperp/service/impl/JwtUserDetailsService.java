@@ -1,7 +1,10 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Vendor;
-import com.knackitsolutions.profilebaba.isperp.repository.VendorRepository;
+import com.knackitsolutions.profilebaba.isperp.entity.main.User;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.repository.main.UserRepository;
+import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -15,13 +18,18 @@ import org.springframework.stereotype.Service;
 @Log4j2
 public class JwtUserDetailsService implements UserDetailsService {
 
-  private final VendorRepository vendorRepository;
+  private final UserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     //TODO improve performance using cache
-    Optional<Vendor> optionalVendor = vendorRepository.findByPhoneNumber(username);
-    return optionalVendor.orElseThrow(
-        () -> new UsernameNotFoundException("User not found with phone number: " + username));
+    User user;
+    try {
+      user = userRepository.findByPhoneNumber(username)
+          .orElseThrow(() -> UserNotFoundException.withPhoneNumber(username));
+    } catch (UserNotFoundException e) {
+      throw new UsernameNotFoundException("No user found with phone: " + username, e);
+    }
+    return user;
   }
 }

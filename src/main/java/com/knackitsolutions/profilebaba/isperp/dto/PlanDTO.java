@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

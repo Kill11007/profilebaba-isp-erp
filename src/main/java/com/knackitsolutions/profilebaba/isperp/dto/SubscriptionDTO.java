@@ -1,9 +1,10 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Subscription;
-import com.knackitsolutions.profilebaba.isperp.entity.Subscription.SubscriptionStatus;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class SubscriptionDTO {
   private Long id;
 
+  @NotNull
   private Long planId;
 
   private String planName;

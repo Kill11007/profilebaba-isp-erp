@@ -3,7 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerSummary;
 import com.knackitsolutions.profilebaba.isperp.dto.HardwareDetailDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.Customer;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundException;

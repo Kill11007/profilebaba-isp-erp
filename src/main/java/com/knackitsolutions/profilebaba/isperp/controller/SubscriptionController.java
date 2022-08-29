@@ -6,6 +6,8 @@ import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundExc
 import com.knackitsolutions.profilebaba.isperp.service.impl.AuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.SubscriptionService;
 import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -62,7 +64,7 @@ public class SubscriptionController {
 
   @PutMapping("/customers/{customer-id}/subscriptions")
   public ResponseEntity<Void> addUserSubscription(@PathVariable("customer-id") Long customerId,
-      @RequestBody SubscriptionDTO subscriptionDTO) throws CustomerNotFoundException {
+      @Valid @RequestBody @NotNull SubscriptionDTO subscriptionDTO) throws CustomerNotFoundException {
     subscriptionService.addSubscription(customerId, subscriptionDTO);
     return ResponseEntity.noContent().build();
   }

@@ -44,6 +44,15 @@ public class AuthenticationController {
     return ResponseEntity.ok(new JwtResponse(token));
   }
 
+  @PostMapping("/authenticate/employee")
+  public ResponseEntity<?> employeeLogin(@RequestBody LoginRequest request)
+      throws InvalidLoginCredentialException {
+    authenticate(request.getPhoneNumber(), request.getPassword());
+    final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(request.getPhoneNumber());
+    final String token = jwtTokenUtil.generateToken(userDetails);
+    return ResponseEntity.ok(new JwtResponse(token));
+  }
+
   @GetMapping("/refresh-token")
   public ResponseEntity<?> refreshtoken(HttpServletRequest request) {
     // From the HttpRequest get the claims

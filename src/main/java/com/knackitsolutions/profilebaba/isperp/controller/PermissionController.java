@@ -1,7 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.controller;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PermissionDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.Permission;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.PermissionService;
@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping("/permissions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class PermissionController {
 
   private final PermissionService permissionService;

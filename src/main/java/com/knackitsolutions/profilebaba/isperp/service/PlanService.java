@@ -1,7 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import java.util.List;
 

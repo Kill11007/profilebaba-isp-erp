@@ -1,5 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,6 @@ public class NewEmployeeRequest {
   private String email;
   private String phone;
   private String password;
+  private List<Long> areas;
+  private List<Long> permissions;
 }

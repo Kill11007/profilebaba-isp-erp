@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.entity;
+package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.NewEmployeeRequest;
@@ -35,13 +35,6 @@ public class Employee {
   private String name;
   private String address;
   private String email;
-  private String phone;
-  private String password;
-
-  @ManyToMany
-  @JoinTable(name = "employee_permissions", joinColumns = @JoinColumn(name = "employee_id"),
-      inverseJoinColumns = @JoinColumn(name = "permission_id"))
-  private Set<Permission> permissions;
 
   @ManyToMany
   @JoinTable(name = "employee_service_areas", joinColumns = @JoinColumn(name = "employee_id"),
@@ -53,14 +46,11 @@ public class Employee {
     setName(request.getName());
     setAddress(request.getAddress());
     setEmail(request.getEmail());
-    setPhone(request.getPhone());
-    setPassword(request.getPassword());
   }
 
   public void update(EmployeeDTO dto) {
     setName(dto.getName());
     setAddress(dto.getAddress());
     setEmail(dto.getEmail());
-    setPhone(dto.getPhone());
   }
 }

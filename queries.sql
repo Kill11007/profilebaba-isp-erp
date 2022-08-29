@@ -1,10 +1,12 @@
 use isp_db;
+show databases;
 show tables;
 select * from isps;
 select * from plans;
 select * from employees;
 describe hardware_details;
 describe billing_details;
+describe employee_permissions;
 show create table employees;
 
 select * from customers;
@@ -14,4 +16,4 @@ select * from subscriptions;
 select * from bills;
 select * from bill_items;
 select * from payments;
-
+select * from service_areas;

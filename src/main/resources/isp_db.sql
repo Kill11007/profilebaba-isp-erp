@@ -1,18 +1,4 @@
-create database isp_db;
-use isp_db;
-CREATE USER 'isp_local'@'localhost' IDENTIFIED BY 'isp_pwd';
-GRANT INSERT, UPDATE, DELETE, SELECT ON isp_db.* TO 'isp_local'@'localhost';
-
-create table isp_db.isps (
-	id bigint primary KEY AUTO_INCREMENT,
-    business_name varchar(50) unique,
-    phone_number varchar(10),
-    password varchar(255),
-    remember_me boolean not null default false,
-    is_phone_number_verified boolean not null default false
-);
-
-create table isp_db.plans(
+create table if not exists plans(
 	id bigint primary KEY AUTO_INCREMENT,
     name varchar(100) not null,
     product_code varchar(50) null,
@@ -23,8 +9,7 @@ create table isp_db.plans(
     additional_charge decimal(8, 2) unsigned,
     active boolean not null default false
 );
-
-create table isp_db.customers(
+create table if not exists customers(
 	id bigint primary key auto_increment,
     name varchar(100) not null,
     billing_name varchar(100),
@@ -40,9 +25,7 @@ create table isp_db.customers(
     active boolean not null default true
 );
 
-alter table customers rename column secondry_mobile_no to secondary_mobile_no;
-
-create table isp_db.hardware_details(
+create table if not exists hardware_details(
 	id bigint primary key auto_increment,
     customer_id bigint not null,
 	router varchar(255),
@@ -56,7 +39,7 @@ create table isp_db.hardware_details(
 -- alter table hardware_details modify column customer_id bigint not null;
 -- alter table hardware_details add foreign key(customer_id) references customers(id);
 
-create table isp_db.billing_details(
+create table if not exists billing_details(
 	customer_id bigint primary key,
 	start_date date not null,
     opening_outstanding_balance decimal(8, 2) unsigned not null default 0,
@@ -70,7 +53,7 @@ create table isp_db.billing_details(
 	foreign key(customer_id) references customers(id)
 );
 -- drop table subscriptions; 
-create table isp_db.subscriptions(
+create table if not exists subscriptions(
 	id bigint primary key auto_increment,
 	customer_id bigint,
     plan_id bigint,
@@ -85,16 +68,13 @@ create table isp_db.subscriptions(
     foreign key(customer_id) references customers(id)
 );
 
-create table isp_db.employees(
+create table if not exists employees(
 	id bigint primary key auto_increment,
     name varchar(50) not null,
     address varchar(255) null,
-    email varchar(100),
-    phone varchar(15),
-     password varchar(200)
-    -- password. ROLES needs to be set
+    email varchar(100)
 );
-create table isp_db.payments(
+create table if not exists payments(
 	id bigint primary key auto_increment,
     receipt_no varchar(8) not null,
     customer_id bigint not null,
@@ -112,7 +92,7 @@ create table isp_db.payments(
     foreign key(customer_id) references customers(id)
 );
 -- drop table payments;
-create table isp_db.bills(
+create table if not exists bills(
 	id bigint primary key auto_increment,
     bill_no varchar(8) not null,
     invoice_date date not null,
@@ -121,7 +101,7 @@ create table isp_db.bills(
     foreign key(customer_id) references customers(id)
 );
 
-create table isp_db.bill_items(
+create table if not exists bill_items(
 	id bigint primary key auto_increment,
     bill_id bigint not null,
     name varchar(255) not null,
@@ -135,7 +115,7 @@ create table isp_db.bill_items(
     foreign key(bill_id) references bills(id)
 );
 
-create table isp_db.adjusted_balance(
+create table adjusted_balance(
 	id bigint primary key auto_increment,
 	dated date not null,
     customer_id bigint not null,
@@ -146,7 +126,7 @@ create table isp_db.adjusted_balance(
     foreign key(customer_id) references customers(id)
 );
 
-create table isp_db.balance_sheet(
+create table if not exists balance_sheet(
 	id bigint primary key auto_increment,
     dated date not null,
     transaction_type enum ('BILL', 'PAYMENT', 'ADJUSTED_BALANCE') not null,
@@ -155,23 +135,12 @@ create table isp_db.balance_sheet(
     final decimal(8, 2)
 );
 
-create table isp_db.service_areas(
+create table service_areas(
 	id bigint primary key auto_increment,
     name varchar(255) not null
 );
 
-create table isp_db.permissions(
-	id bigint primary key auto_increment,
-    name varchar(255) not null
-);
-create table isp_db.employee_permissions(
-	permission_id bigint,
-    employee_id bigint,
-    foreign key (permission_id) references permissions(id),
-    foreign key (employee_id) references employees(id)
-);
--- drop table employee_permissions;
-create table isp_db.employee_service_areas(
+create table if not exists employee_service_areas(
 	service_area_id bigint,
     employee_id bigint,
     foreign key (service_area_id) references service_areas(id),

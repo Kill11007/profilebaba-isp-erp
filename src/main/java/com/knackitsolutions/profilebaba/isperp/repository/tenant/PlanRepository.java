@@ -1,6 +1,6 @@
-package com.knackitsolutions.profilebaba.isperp.repository;
+package com.knackitsolutions.profilebaba.isperp.repository.tenant;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

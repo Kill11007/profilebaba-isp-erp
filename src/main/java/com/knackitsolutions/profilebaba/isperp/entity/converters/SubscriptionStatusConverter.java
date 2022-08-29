@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.entity.converters;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Subscription.SubscriptionStatus;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
 import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundException;
 import java.util.Optional;
 import javax.persistence.AttributeConverter;

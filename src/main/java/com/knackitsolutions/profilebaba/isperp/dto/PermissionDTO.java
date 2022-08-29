@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Permission;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -4,11 +4,13 @@ import com.knackitsolutions.profilebaba.isperp.dto.GenericResponse;
 import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.exception.BusinessNameNotUniqueException;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
-import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistException;
+import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.service.impl.AuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.impl.VendorService;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,31 +37,31 @@ public class VendorController {
 
   @PostMapping("/validate-otp")
   public ResponseEntity<GenericResponse> validateOTP(@RequestBody ValidateOTPRequest request)
-      throws InvalidOTPException, VendorNotFoundException {
+      throws InvalidOTPException, UserNotFoundException {
     return ResponseEntity.ok()
         .body(vendorService.validateOTP(request.getPhoneNumber(), request.getOtp()));
   }
 
   @PostMapping("/signup")
   public ResponseEntity<GenericResponse> signUp(@RequestBody SignUpRequest signUpRequest)
-      throws BusinessNameNotUniqueException, OTPNotSentException, PhoneNumberAlreadyExistException {
-    return ResponseEntity.ok(vendorService.signUp(signUpRequest));
+      throws BusinessNameNotUniqueException, OTPNotSentException, PhoneNumberAlreadyExistsException {
+      return ResponseEntity.ok(vendorService.signUp(signUpRequest));
   }
 
   @GetMapping("/{vendor-id}")
   public ResponseEntity<VendorDTO> get(@PathVariable("vendor-id") Long vendorId)
-      throws VendorNotFoundException {
+      throws VendorNotFoundException, UserNotFoundException {
     return ResponseEntity.ok(vendorService.findById(vendorId));
   }
 
   @GetMapping("/profile")
-  public ResponseEntity<VendorDTO> profile() {
+  public ResponseEntity<VendorDTO> profile() throws UserNotFoundException {
     return ResponseEntity.ok(vendorService.profile(authenticationFacade.getAuthentication()));
   }
 
   @PutMapping("/reset-password")
   public ResponseEntity<Void> resetPassword(@RequestBody VendorChangePasswordRequest request)
-      throws InvalidOTPException, VendorNotFoundException {
+      throws InvalidOTPException, UserNotFoundException {
     vendorService.resetPassword(request.getPhoneNumber(), request.getOtp(),
         request.getPassword());
     return ResponseEntity.noContent().build();
@@ -67,7 +69,7 @@ public class VendorController {
 
   @PatchMapping("/change-password")
   public ResponseEntity<Void> changePassword(@RequestBody VendorChangePasswordRequest request)
-      throws InvalidOTPException, VendorNotFoundException {
+      throws InvalidOTPException, UserNotFoundException {
     vendorService.resetPassword(request.getPhoneNumber(), request.getOtp(),
         request.getPassword());
     return ResponseEntity.noContent().build();
@@ -91,7 +93,9 @@ public class VendorController {
 
   @Data
   public static class LoginRequest {
+    @NotNull
     private String phoneNumber;
+    @NotNull
     private String password;
     private String rememberMe;
   }

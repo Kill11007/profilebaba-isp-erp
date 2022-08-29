@@ -22,4 +22,9 @@ public class GenericResponse {
     this.data = data;
     this.message = message;
   }
+  public GenericResponse(Long id, String message) {
+    this();
+    this.data = id.toString();
+    this.message = message;
+  }
 }

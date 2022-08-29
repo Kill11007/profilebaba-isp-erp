@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.entity;
+package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.HardwareDetailDTO;
 import javax.persistence.Entity;

@@ -1,7 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.knackitsolutions.profilebaba.isperp.entity.BillingDetail;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillingDetail;
 import com.knackitsolutions.profilebaba.isperp.enums.BillDuration;
 import com.knackitsolutions.profilebaba.isperp.enums.BillType;
 import com.knackitsolutions.profilebaba.isperp.enums.GstType;

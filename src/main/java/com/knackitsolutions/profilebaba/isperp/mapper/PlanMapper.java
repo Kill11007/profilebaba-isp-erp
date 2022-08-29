@@ -1,7 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.mapper;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
 import org.springframework.stereotype.Component;
 
 @Component

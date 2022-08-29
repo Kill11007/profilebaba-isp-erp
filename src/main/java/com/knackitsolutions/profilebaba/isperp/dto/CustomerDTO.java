@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Customer;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;

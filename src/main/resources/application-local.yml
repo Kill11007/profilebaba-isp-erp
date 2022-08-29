@@ -1,11 +1,11 @@
+
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/isp_db
-    username: isp_local
-    password: isp_pwd
   jpa:
     hibernate:
       ddl-auto=create-drop: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
   cache:
     type: redis
     redis:
@@ -14,11 +14,39 @@ spring:
     host: localhost
     port: 6379
 
+multitenancy:
+  master:
+    repository:
+      packages: com.knackitsolutions.profilebaba.isperp.repository.main
+    entityManager:
+      packages: com.knackitsolutions.profilebaba.isperp.entity.main, com.knackitsolutions.profilebaba.isperp.entity.converters
+    datasource:
+      url: jdbc:mysql://localhost:3306/isp_admin_db
+      username: isp_admin_local
+      password: isp_admin_pwd
+    datasource-cache:
+      maximumSize: 100
+      expireAfterAccess: 10
+  tenant:
+    repository:
+      packages: com.knackitsolutions.profilebaba.isperp.repository.tenant
+    entityManager:
+      packages: com.knackitsolutions.profilebaba.isperp.entity.tenant, com.knackitsolutions.profilebaba.isperp.entity.converters
+    datasource:
+      url-prefix: jdbc:mysql://localhost:3306/
+      hikari:
+        maximumPoolSize: 2
+        minimumIdle: 0
+        idleTimeout: 30000
+
 jwt:
   secret: ${JWT_SECRET}
   expirationDateInMs: 3600000
   refreshExpirationDateInMs: 300000
 
+encryption:
+  secret: some_secret
+  salt: some_salt
 
 file:
   upload:

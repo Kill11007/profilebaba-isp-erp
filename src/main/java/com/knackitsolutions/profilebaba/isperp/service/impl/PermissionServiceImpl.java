@@ -1,10 +1,10 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PermissionDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.Permission;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.repository.PermissionRepository;
+import com.knackitsolutions.profilebaba.isperp.repository.main.PermissionRepository;
 import com.knackitsolutions.profilebaba.isperp.service.PermissionService;
 import java.util.List;
 import java.util.stream.Collectors;

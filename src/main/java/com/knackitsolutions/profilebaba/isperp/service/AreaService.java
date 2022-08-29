@@ -1,7 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.dto.ServiceAreaDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.ServiceArea;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.ServiceArea;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
 import java.util.List;

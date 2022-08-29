@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.knackitsolutions.profilebaba.isperp.entity.HardwareDetail;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.HardwareDetail;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

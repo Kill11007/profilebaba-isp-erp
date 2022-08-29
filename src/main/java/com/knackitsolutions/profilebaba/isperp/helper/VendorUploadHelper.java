@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.helper;
 
-import com.knackitsolutions.profilebaba.isperp.entity.Vendor;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import java.io.File;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
