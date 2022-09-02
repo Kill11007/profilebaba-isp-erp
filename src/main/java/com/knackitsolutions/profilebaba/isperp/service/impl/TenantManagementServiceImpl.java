@@ -83,9 +83,7 @@ public class TenantManagementServiceImpl implements TenantManagementService {
         .url(url)
         .password(encryptedPassword)
         .build();
-    Tenant save = tenantRepository.save(tenant);
-//    TenantContext.setTenantId(save.getTenantId());
-    return save;
+    return tenantRepository.save(tenant);
   }
 
   private void createDatabase(String db, String password) {

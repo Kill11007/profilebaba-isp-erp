@@ -84,7 +84,6 @@ public class DynamicDataSourceBasedMultiTenantConnectionProvider extends
           }
         });
   }
-
   private DataSource createAndConfigureDataSource(Tenant tenant) {
     String decryptedPassword = encryptionService.decrypt(tenant.getPassword(), secret, salt);
     HikariDataSource ds = dataSourceProperties.initializeDataSourceBuilder()

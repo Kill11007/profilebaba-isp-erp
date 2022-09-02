@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -52,6 +53,13 @@ public class SubscriptionController {
   public ResponseEntity<Void> update(@PathVariable("subscription-id") Long subscriptionId,
       @RequestBody SubscriptionDTO subscriptionDTO) throws SubscriptionNotFoundException {
     subscriptionService.updateSubscription(subscriptionId, subscriptionDTO);
+    return ResponseEntity.noContent().build();
+  }
+
+  @DeleteMapping("/subscriptions/{subscription-id}")
+  public ResponseEntity<Void> delete(@PathVariable("subscription-id") Long subscriptionId)
+      throws SubscriptionNotFoundException {
+    subscriptionService.deleteSubscription(subscriptionId);
     return ResponseEntity.noContent().build();
   }
 

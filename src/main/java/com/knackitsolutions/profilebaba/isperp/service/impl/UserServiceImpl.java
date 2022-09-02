@@ -4,7 +4,6 @@ import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SignU
 import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
-import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.UserRepository;
@@ -79,10 +78,9 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User save(SignUpRequest signUpRequest, Vendor vendor, Tenant tenant) {
+  public User save(SignUpRequest signUpRequest, Tenant tenant) {
     User user = new User();
     user.setPhoneNumber(signUpRequest.getPhoneNumber());
-    user.setSecondaryId(vendor.getId());
     user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
     user.setTenantId(tenant.getTenantId());
     user.setUserType(UserType.ISP);
@@ -90,10 +88,11 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findBySecondaryId(Long id) throws UserNotFoundException {
-    return userRepository.findBySecondaryId(id)
-        .orElseThrow( () -> UserNotFoundException.withId(id));
+  public User findById(Long userId) throws UserNotFoundException {
+    return get(userId);
   }
 
-
+  public User get(Long id) throws UserNotFoundException {
+    return userRepository.findById(id).orElseThrow(() -> UserNotFoundException.withId(id));
+  }
 }

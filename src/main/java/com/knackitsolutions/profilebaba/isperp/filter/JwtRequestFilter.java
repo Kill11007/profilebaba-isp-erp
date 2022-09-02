@@ -1,5 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.filter;
 
+import com.knackitsolutions.profilebaba.isperp.config.TenantContext;
+import com.knackitsolutions.profilebaba.isperp.config.TenantInterceptor;
 import com.knackitsolutions.profilebaba.isperp.service.impl.JwtUserDetailsService;
 import com.knackitsolutions.profilebaba.isperp.utility.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -7,6 +9,7 @@ import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -36,7 +39,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     String username = null;
     // JWT Token is in the form "Bearer token". Remove Bearer word and get
     // only the Token
-
+    HttpServletRequestWrapper requestWrapper = new HttpServletRequestWrapper(request);
     try {
       // Once we get the token validate it.
       if (StringUtils.hasText(jwtToken) && jwtTokenUtil.validateToken(jwtToken)) {
@@ -54,6 +57,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
           // After setting the Authentication in the context, we specify
           // that the current user is authenticated. So it passes the
           // Spring Security Configurations successfully.
+          final String xTenantId = jwtTokenUtil.getXTenantIdFromToken(jwtToken);
+          requestWrapper = new HttpServletRequestWrapper(request){
+            @Override
+            public String getHeader(String name) {
+              if (TenantInterceptor.X_TENANT_ID.equalsIgnoreCase(name)) {
+                return xTenantId;
+              }
+              return super.getHeader(name);
+            }
+          };
           SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
         }
       } else {
@@ -73,7 +86,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
       }
       log.info("JWT Token has expired");
     }
-    filterChain.doFilter(request, response);
+    filterChain.doFilter(requestWrapper, response);
   }
 
   private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request) {

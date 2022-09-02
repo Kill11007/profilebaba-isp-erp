@@ -1,5 +1,9 @@
 package com.knackitsolutions.profilebaba.isperp.utility;
 
+import static com.knackitsolutions.profilebaba.isperp.config.TenantInterceptor.X_TENANT_ID;
+
+import com.knackitsolutions.profilebaba.isperp.config.TenantInterceptor;
+import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -23,6 +27,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 public class JwtTokenUtil implements Serializable {
   private static final long serialVersionUID = -2550185165626007488L;
+
   @Value("${jwt.secret}")
   private String secret;
   @Value("${jwt.expirationDateInMs}")
@@ -32,6 +37,11 @@ public class JwtTokenUtil implements Serializable {
 
   public String getUsernameFromToken(String token) {
     return getClaimFromToken(token, Claims::getSubject);
+  }
+
+
+  public String getXTenantIdFromToken(String token){
+    return getClaimFromToken(token, claims -> claims.get(X_TENANT_ID, String.class));
   }
 
   //retrieve expiration date from jwt token
@@ -56,8 +66,9 @@ public class JwtTokenUtil implements Serializable {
   }
 
   //generate token for user
-  public String generateToken(UserDetails userDetails) {
+  public String generateToken(User userDetails) {
     Map<String, Object> claims = new HashMap<>();
+    claims.put(X_TENANT_ID, userDetails.getTenantId());
     return doGenerateToken(claims, userDetails.getUsername());
   }
 

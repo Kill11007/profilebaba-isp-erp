@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.LoginRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.JwtResponse;
+import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidLoginCredentialException;
 import com.knackitsolutions.profilebaba.isperp.exception.NonRefreshableTokenException;
 import com.knackitsolutions.profilebaba.isperp.service.impl.JwtUserDetailsService;
@@ -39,16 +40,7 @@ public class AuthenticationController {
   public ResponseEntity<?> login(@RequestBody LoginRequest request)
       throws InvalidLoginCredentialException {
     authenticate(request.getPhoneNumber(), request.getPassword());
-    final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(request.getPhoneNumber());
-    final String token = jwtTokenUtil.generateToken(userDetails);
-    return ResponseEntity.ok(new JwtResponse(token));
-  }
-
-  @PostMapping("/authenticate/employee")
-  public ResponseEntity<?> employeeLogin(@RequestBody LoginRequest request)
-      throws InvalidLoginCredentialException {
-    authenticate(request.getPhoneNumber(), request.getPassword());
-    final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(request.getPhoneNumber());
+    final User userDetails = jwtUserDetailsService.loadUserByUsername(request.getPhoneNumber());
     final String token = jwtTokenUtil.generateToken(userDetails);
     return ResponseEntity.ok(new JwtResponse(token));
   }

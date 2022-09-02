@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
@@ -66,6 +67,15 @@ public class Customer {
   @OneToMany(mappedBy = "customer")
   @Exclude
   private Set<Subscription> subscriptions;
+
+  @OneToMany(mappedBy = "customer")
+  private Set<Bill> bills;
+
+  @OneToMany(mappedBy = "customer")
+  private Set<AdjustedBalance> adjustedBalances;
+
+  @OneToMany(mappedBy = "customer")
+  private List<Payment> payments;
 
   public void update(CustomerDTO dto) {
     setName(dto.getName());

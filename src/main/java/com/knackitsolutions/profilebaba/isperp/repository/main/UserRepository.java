@@ -11,11 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
   Boolean existsByPhoneNumber(String phoneNumber);
-
   Optional<User> findByPhoneNumber(String phoneNumber);
-
-  Optional<User> findBySecondaryId(Long secondaryId);
-
   @Modifying
   @Query("update User i set i.isPhoneNumberVerified = :status where i.id = :id")
   @Transactional

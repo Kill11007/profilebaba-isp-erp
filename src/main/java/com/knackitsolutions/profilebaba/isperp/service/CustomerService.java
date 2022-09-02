@@ -8,12 +8,15 @@ import com.knackitsolutions.profilebaba.isperp.entity.tenant.HardwareDetail;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundException;
+import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CustomerService {
+
+  List<Customer> all();
 
   Customer addCustomer(CustomerDTO customer) throws CustomerAlreadyExistsException;
 

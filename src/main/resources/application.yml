@@ -12,3 +12,8 @@ server:
 file:
   upload:
     location: /users/vendors
+
+
+bill-generator:
+  cron:
+    expression: 0 1 * * *

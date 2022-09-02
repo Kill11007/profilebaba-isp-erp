@@ -9,13 +9,14 @@ create table if not exists plans(
     additional_charge decimal(8, 2) unsigned,
     active boolean not null default false
 );
+
 create table if not exists customers(
 	id bigint primary key auto_increment,
     name varchar(100) not null,
     billing_name varchar(100),
     billing_area varchar(255) ,
     primary_mobile_no varchar(15),
-    secondary_mobile_no varchar(15),
+    secondry_mobile_no varchar(15),
     email varchar(200),
     security_deposit decimal(8,2) unsigned,
     address text,
@@ -24,6 +25,7 @@ create table if not exists customers(
     remark varchar(255),
     active boolean not null default true
 );
+
 create table if not exists hardware_details(
 	id bigint primary key auto_increment,
     customer_id bigint not null,
@@ -34,6 +36,8 @@ create table if not exists hardware_details(
     foreign key(customer_id) references customers(id)
 );
 
+-- alter table hardware_details modify column id bigint auto_increment;
+-- alter table hardware_details modify column customer_id bigint not null;
 -- alter table hardware_details add foreign key(customer_id) references customers(id);
 
 create table if not exists billing_details(
@@ -69,8 +73,7 @@ create table if not exists employees(
 	id bigint primary key auto_increment,
     name varchar(50) not null,
     address varchar(255) null,
-    email varchar(100),
-    user_id bigint not null unique
+    email varchar(100)
 );
 create table if not exists payments(
 	id bigint primary key auto_increment,
@@ -78,7 +81,7 @@ create table if not exists payments(
     customer_id bigint not null,
     collection_agent_id bigint null,
     collected_by varchar(15) not null,
-    payment_mode enum('ONLINE', 'CASH') not null default 'CASH',
+    payment_mode enum('PAYTM', 'CASH') not null default 'CASH',
     previous_balance decimal(8, 2),
     paid_amount decimal(8, 2),
     discount decimal(8, 2) default 0,
@@ -89,24 +92,20 @@ create table if not exists payments(
     foreign key(collection_agent_id) references employees(id),
     foreign key(customer_id) references customers(id)
 );
+-- drop table payments;
 create table if not exists bills(
 	id bigint primary key auto_increment,
     bill_no varchar(8) not null,
     invoice_date date not null,
-    from_date date not null,
-    to_date date not null,
     customer_id bigint not null,
     total decimal(8, 2) not null,
-    updated_date date not null,
     foreign key(customer_id) references customers(id)
 );
--- alter table isp_2.bills add column udpated_date date not null;
--- alter table isp_2.bill_items add column  created_date datetime not null;
+
 create table if not exists bill_items(
 	id bigint primary key auto_increment,
     bill_id bigint not null,
     name varchar(255) not null,
-    item_id bigint,
     quantity integer not null,
     hsn_code varchar(25),
     discount decimal(8, 2) default 0,
@@ -114,7 +113,6 @@ create table if not exists bill_items(
     gst_percent int default 0,
     gst_amount decimal(8, 2) default 0,
     amount decimal(8, 2) not null,
-    created_date datetime not null,
     foreign key(bill_id) references bills(id)
 );
 
@@ -149,3 +147,4 @@ create table if not exists employee_service_areas(
     foreign key (service_area_id) references service_areas(id),
     foreign key (employee_id) references employees(id)
 );
+-- drop table employee_service_areas;

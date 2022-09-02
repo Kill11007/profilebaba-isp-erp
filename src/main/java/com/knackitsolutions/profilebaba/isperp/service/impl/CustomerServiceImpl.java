@@ -14,7 +14,9 @@ import com.knackitsolutions.profilebaba.isperp.repository.tenant.CustomerReposit
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.HardwareDetailRepository;
 import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
 import com.knackitsolutions.profilebaba.isperp.service.ExcelService;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -145,4 +147,12 @@ public class CustomerServiceImpl implements CustomerService {
     Customer customerById = getCustomerById(customerID);
     customerRepository.delete(customerById);
   }
+
+  @Override
+  public List<Customer> all() {
+    List<Customer> customers = new ArrayList<>();
+    customerRepository.findAll().forEach(customers::add);
+    return customers;
+  }
+
 }

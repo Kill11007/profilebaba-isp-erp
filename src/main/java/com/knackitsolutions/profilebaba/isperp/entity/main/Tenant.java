@@ -25,7 +25,6 @@ public class Tenant {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-
   private String tenantId;
   private String db;
   private String password;

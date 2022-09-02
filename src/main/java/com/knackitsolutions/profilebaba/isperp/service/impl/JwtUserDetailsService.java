@@ -21,7 +21,7 @@ public class JwtUserDetailsService implements UserDetailsService {
   private final UserRepository userRepository;
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public User loadUserByUsername(String username) throws UsernameNotFoundException {
     //TODO improve performance using cache
     User user;
     try {

@@ -1,10 +1,12 @@
 package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SignUpRequest;
+import com.knackitsolutions.profilebaba.isperp.dto.NewEmployeeRequest;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
 import com.knackitsolutions.profilebaba.isperp.exception.UserAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import java.util.List;
@@ -33,8 +35,8 @@ public interface UserService {
 
   Boolean existsByPhoneNumber(String phoneNumber);
 
-  User save(SignUpRequest signUpRequest, Vendor vendor, Tenant tenant);
+  User save(SignUpRequest signUpRequest, Tenant tenant);
 
-  User findBySecondaryId(Long id) throws UserNotFoundException;
+  User findById(Long userId) throws UserNotFoundException;
 
 }

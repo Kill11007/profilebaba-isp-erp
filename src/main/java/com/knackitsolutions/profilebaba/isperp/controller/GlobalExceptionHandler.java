@@ -15,6 +15,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundExcep
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
@@ -73,6 +74,11 @@ public class GlobalExceptionHandler {
     return handleException(exception);
   }
 
+  @ExceptionHandler(value = SubscriptionNotFoundException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorResponse handleSubscriptionNotFound(SubscriptionNotFoundException exception) {
+    return handleException(exception);
+  }
   @ExceptionHandler(value = {CustomerNotFoundException.class, CustomerAlreadyExistsException.class,
       HardwareNotFoundException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)

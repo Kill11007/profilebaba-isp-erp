@@ -2,7 +2,7 @@ use isp_db;
 show databases;
 show tables;
 select * from isps;
-select * from plans;
+select * from isp_2.plans;
 select * from employees;
 describe hardware_details;
 describe billing_details;

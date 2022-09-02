@@ -17,5 +17,5 @@ public class Vendor {
   private Long id;
 
   private String businessName;
-
+  private Long userId;
 }

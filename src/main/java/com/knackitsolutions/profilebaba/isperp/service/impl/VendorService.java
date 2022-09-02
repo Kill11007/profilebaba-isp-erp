@@ -66,35 +66,37 @@ public class VendorService {
     if (userService.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
       throw new PhoneNumberAlreadyExistsException();
     }
-    Vendor vendor = saveVendor(signUpRequest);
-    Tenant tenant = tenantManagementService.createTenant(vendor.getId().toString(),
-        vendor.getBusinessName(),
+    if (vendorRepository.existsByBusinessName(signUpRequest.getBusinessName())) {
+      throw new BusinessNameNotUniqueException();
+    }
+    Tenant tenant = tenantManagementService.createTenant(signUpRequest.getBusinessName(),
+        signUpRequest.getBusinessName(),
         signUpRequest.getPassword());
-    User user = userService.save(signUpRequest, vendor, tenant);
-//    vendor.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
-//    vendor.setPhoneNumber(signUpRequest.getPhoneNumber());
+    User user = userService.save(signUpRequest, tenant);
+    Vendor vendor = saveVendor(signUpRequest, user.getId());
     otpService.sendOTP(user.getPhoneNumber());
 //    vendorUploadHelper.createVendorDirectory(vendor); TODO
     return new GenericResponse(vendor.getId(), "Vendor is saved.");
   }
 
-  public Vendor saveVendor(SignUpRequest signUpRequest) throws BusinessNameNotUniqueException {
+  public Vendor saveVendor(SignUpRequest signUpRequest, Long userId) {
     Vendor vendor = new Vendor();
-    if (vendorRepository.existsByBusinessName(signUpRequest.getBusinessName())) {
-      throw new BusinessNameNotUniqueException();
-    }
     vendor.setBusinessName(signUpRequest.getBusinessName());
+    vendor.setUserId(userId);
     return vendorRepository.save(vendor);
   }
 
   public VendorDTO findById(Long vendorId) throws VendorNotFoundException, UserNotFoundException {
+    Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(VendorNotFoundException::new);
     return new VendorDTO(
-        vendorRepository.findById(vendorId).orElseThrow(VendorNotFoundException::new), userService.findBySecondaryId(vendorId));
+        vendor, userService.findById(vendor.getUserId()));
   }
 
   public VendorDTO profile(Authentication authentication) throws UserNotFoundException {
     Vendor vendor = (Vendor) authentication.getPrincipal();
-    return new VendorDTO(vendor, userService.findBySecondaryId(vendor.getId()));
+    User user = userService.findById(vendor.getUserId());
+    return new VendorDTO(vendor, user);
+
   }
 
   public void resetPassword(String phoneNumber, String otp, String password)

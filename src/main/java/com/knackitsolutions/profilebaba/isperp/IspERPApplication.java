@@ -6,12 +6,14 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @EnableTransactionManagement
 @EnableAsync
 @EnableCaching
+@EnableScheduling
 public class IspERPApplication {
 
 	public static void main(String[] args) {

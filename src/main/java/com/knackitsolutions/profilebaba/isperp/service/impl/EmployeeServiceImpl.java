@@ -10,6 +10,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.ServiceArea;
+import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundException;
@@ -38,7 +39,6 @@ public class EmployeeServiceImpl implements EmployeeService {
   private final PermissionService permissionService;
   private final AreaService areaService;
   private final PasswordEncoder passwordEncoder;
-
   private final UserService userService;
 
   @Override
@@ -48,20 +48,22 @@ public class EmployeeServiceImpl implements EmployeeService {
       throw new EmployeeAlreadyExistsException(
           "Phone number already exists. Please provide new phone number.");
     }
+    User user = createUser(request);
     Employee employee = new Employee(request);
     employee.setServiceAreas(getServiceAreas(request.getAreas()));
+    employee.setUserId(user.getId());
     Employee save = save(employee);
-    createUser(request, employee);
     return save;
   }
 
-  private User createUser(NewEmployeeRequest request, Employee employee)
+  private User createUser(NewEmployeeRequest request)
       throws PermissionNotFoundException {
     User user = new User();
+    user.setPhoneNumber(request.getPhone());
     user.setTenantId(TenantContext.getTenantId());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
     user.setPermissions(getPermissions(request.getPermissions()));
-    user.setSecondaryId(employee.getId());
+    user.setUserType(UserType.EMPLOYEE);
     return userService.save(user);
   }
 
@@ -103,7 +105,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public EmployeeDTO one(Long id) throws EmployeeNotFoundException, UserNotFoundException {
-    User user = userService.findBySecondaryId(id);
+    Employee employee = findById(id);
+    User user = userService.findById(employee.getUserId());
     return new EmployeeDTO(findById(id), user);
   }
 
@@ -111,7 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   public List<EmployeeDTO> all() throws UserNotFoundException {
     List<EmployeeDTO> employeeDTOS = new ArrayList<>();
     for (Employee employee : repository.findAll()) {
-      User user = userService.findBySecondaryId(employee.getId());
+      User user = userService.findById(employee.getUserId());
       employeeDTOS.add(new EmployeeDTO(employee, user));
     }
     return employeeDTOS;
@@ -153,17 +156,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public void addPermissions(Long employeeId, List<PermissionDTO> permissionDTOS)
-      throws PermissionNotFoundException, UserNotFoundException {
+      throws PermissionNotFoundException, UserNotFoundException, EmployeeNotFoundException {
     Set<Permission> permissions = permissionsByDTOS(permissionDTOS);
-    User user = userService.findBySecondaryId(employeeId);
+    Employee employee = findById(employeeId);
+    User user = userService.findById(employee.getUserId());
     user.getPermissions().addAll(permissions);
     userService.save(user);
   }
 
   @Override
   public void removePermission(Long employeeId, Long permissionId)
-      throws PermissionNotFoundException, UserNotFoundException {
-    User user = userService.findBySecondaryId(employeeId);
+      throws PermissionNotFoundException, UserNotFoundException, EmployeeNotFoundException {
+    Employee employee = findById(employeeId);
+    User user = userService.findById(employee.getUserId());
     Permission permission = permissionService.get(permissionId);
     user.getPermissions().remove(permission);
     userService.save(user);

@@ -3,6 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +32,7 @@ public class CustomerDTO {
   private Boolean active;
   private List<HardwareDetailDTO> hardwareDetail;
   private BillingDetailDTO billingDetail;
-
+  private Set<SubscriptionDTO> subscriptions;
   public CustomerDTO(Customer entity) {
     if (entity == null) {
       return;
@@ -53,6 +54,8 @@ public class CustomerDTO {
         CollectionUtils.emptyIfNull(entity.getHardwareDetail()).stream().map(HardwareDetailDTO::new)
             .collect(Collectors.toList()));
     setBillingDetail(new BillingDetailDTO(entity.getBillingDetail()));
+    setSubscriptions(
+        entity.getSubscriptions().stream().map(SubscriptionDTO::new).collect(Collectors.toSet()));
   }
 
 }
