@@ -9,6 +9,7 @@ import com.knackitsolutions.profilebaba.isperp.service.TenantManagementService;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -102,5 +103,8 @@ public class TenantManagementServiceImpl implements TenantManagementService {
     populate.execute(dataSource);
   }
 
-
+  @Override
+  public List<Tenant> allTenants() {
+    return tenantRepository.findAll();
+  }
 }

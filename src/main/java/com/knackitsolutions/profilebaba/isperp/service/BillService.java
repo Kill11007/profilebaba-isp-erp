@@ -5,6 +5,8 @@ import com.knackitsolutions.profilebaba.isperp.dto.BillItemDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Bill;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillItem;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.service.AdjustBalanceService.AdjustedBalanceNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.service.PaymentService.PaymentNotFoundException;
 import java.util.List;
 import java.util.function.Supplier;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,9 @@ public interface BillService {
 
   Page<Bill> getCustomerBills(Long customerId, Pageable pageable) throws CustomerNotFoundException;
 
-  Page<Bill> getBills() throws CustomerNotFoundException;
+  List<Bill> getCustomerLastBill(Long customerId);
+
+  Page<Bill> getBills();
 
   Bill get(Long id) throws BillNotFoundException;
 
@@ -29,6 +33,11 @@ public interface BillService {
   BillItem getBillItem(Long id);
 
   BillItem getBillItemDTO(Long id);
+
+  List<Bill> generateBillManually(BillDTO dto)
+      throws CustomerNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException;
+
+  void delete(Long id) throws BillNotFoundException;
 
   class BillNotFoundException extends Exception {
 

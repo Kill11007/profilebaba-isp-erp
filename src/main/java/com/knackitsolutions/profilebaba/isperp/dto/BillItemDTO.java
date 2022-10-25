@@ -1,5 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillItem;
 import java.math.BigDecimal;
 import lombok.Data;
 
@@ -14,4 +15,16 @@ public class BillItemDTO {
   private Integer gstPercent;
   private BigDecimal gstAmount;
   private BigDecimal amount;
+
+  public BillItemDTO(BillItem entity) {
+    setId(entity.getId());
+    setName(entity.getName());
+    setQuantity(entity.getQuantity());
+    setHsnCode(entity.getHsnCode());
+    setDiscount(entity.getDiscount());
+    setAdditionalCharges(entity.getAdditionalCharges());
+    setGstPercent(entity.getGstPercent());
+    setGstAmount(entity.getGstAmount());
+    setAmount(entity.getAmount());
+  }
 }

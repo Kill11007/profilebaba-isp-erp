@@ -1,7 +1,9 @@
 package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.BalanceSheet.TransactionType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +30,7 @@ import lombok.ToString.Exclude;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Bill {
+public class Bill implements Transaction {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,4 +49,36 @@ public class Bill {
   @Exclude
   private List<BillItem> billItems;
   private LocalDate updatedDate;
+
+  @Override
+  public BigDecimal getTotalAmount() {
+    return total;
+  }
+
+  @Override
+  public BigDecimal getFinalAmount(BigDecimal lastAmount) {
+    return lastAmount.add(total);
+  }
+
+  @Override
+  public TransactionType getTransactionType() {
+    return TransactionType.BILL;
+  }
+
+  @Override
+  public Long getTransactionId() {
+    return id;
+  }
+
+  @Override
+  public LocalDateTime getTransactionDate() {
+    return getInvoiceDate().atStartOfDay();
+  }
+
+  @Override
+  public Long getCustomerId() {
+    return getCustomer().getId();
+  }
+
+
 }

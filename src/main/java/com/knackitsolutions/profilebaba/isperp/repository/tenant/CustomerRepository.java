@@ -8,4 +8,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CustomerRepository extends PagingAndSortingRepository<Customer, Long>,
     JpaSpecificationExecutor<Customer> {
+
+  boolean existsByPrimaryMobileNo(String mobileNo);
+
+  boolean existsByCustomerCode(String customerCode);
+
 }

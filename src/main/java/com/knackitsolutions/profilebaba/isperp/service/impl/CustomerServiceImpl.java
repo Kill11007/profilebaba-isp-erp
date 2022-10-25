@@ -47,6 +47,12 @@ public class CustomerServiceImpl implements CustomerService {
 
   @Override
   public Customer addCustomer(CustomerDTO dto) throws CustomerAlreadyExistsException {
+    if (customerRepository.existsByCustomerCode(dto.getCustomerCode())) {
+      throw new CustomerAlreadyExistsException("Already exists with customer code");
+    }
+    if (customerRepository.existsByPrimaryMobileNo(dto.getPrimaryMobileNo())) {
+      throw new CustomerAlreadyExistsException("Already exists with mobile number");
+    }
     Customer customer = new Customer(dto);
     BillingDetail billingDetail = customer.getBillingDetail(); //new BillingDetail(dto.getBillingDetail());
     billingDetail.setCustomer(customer);

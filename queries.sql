@@ -1,8 +1,10 @@
 use isp_db;
 show databases;
 show tables;
+use isp_2;
 select * from isps;
 select * from isp_2.plans;
+select * from plans;
 select * from employees;
 describe hardware_details;
 describe billing_details;

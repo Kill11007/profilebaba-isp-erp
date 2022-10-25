@@ -91,7 +91,7 @@ create table if not exists payments(
 );
 create table if not exists bills(
 	id bigint primary key auto_increment,
-    bill_no varchar(8) not null,
+    bill_no varchar(20) not null,
     invoice_date date not null,
     from_date date not null,
     to_date date not null,
@@ -135,9 +135,13 @@ create table if not exists balance_sheet(
     transaction_type enum ('BILL', 'PAYMENT', 'ADJUSTED_BALANCE') not null,
     transaction_id bigint,
 	txn_amount decimal(8, 2),
-    final decimal(8, 2)
+    final decimal(8, 2),
+    customer_id bigint not null,
+    foreign key (customer_id) references customer(id)
 );
 
+-- alter table isp_2.balance_sheet add column customer_id bigint not null;
+-- alter table isp_2.balance_sheet add foreign key (customer_id) references isp_2.customers(id);
 create table service_areas(
 	id bigint primary key auto_increment,
     name varchar(255) not null

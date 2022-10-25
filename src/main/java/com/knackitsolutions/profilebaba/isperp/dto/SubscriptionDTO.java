@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonFormat.Shape;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
+import com.knackitsolutions.profilebaba.isperp.enums.DateTimeFormat;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
@@ -35,9 +36,9 @@ public class SubscriptionDTO {
   // No of months
   private int period;
 
-  @JsonFormat(pattern = "dd-MM-yyyy", shape = Shape.STRING)
+  @JsonFormat(pattern = DateTimeFormat.DATE, shape = Shape.STRING)
   private LocalDate startDate;
-  @JsonFormat(pattern = "dd-MM-yyyy", shape = Shape.STRING)
+  @JsonFormat(pattern = DateTimeFormat.DATE, shape = Shape.STRING)
   private LocalDate endDate;
 
   public SubscriptionDTO(Subscription entity) {

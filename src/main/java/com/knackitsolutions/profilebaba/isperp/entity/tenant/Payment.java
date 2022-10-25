@@ -1,5 +1,8 @@
 package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.knackitsolutions.profilebaba.isperp.dto.PaymentDTO;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.BalanceSheet.TransactionType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -26,7 +29,7 @@ import lombok.ToString;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Payment {
+public class Payment implements Transaction{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +61,7 @@ public class Payment {
     CASH("CASH");
 
     @Getter
+    @JsonValue
     private final String paymentMode;
 
     PaymentMode(String paymentMode) {
@@ -71,8 +75,45 @@ public class Payment {
     }
   }
 
+  public Payment(PaymentDTO dto) {
+    setComment(dto.getComment());
+    setDiscount(dto.getDiscount());
+    setPaidAmount(dto.getPaidAmount());
+    setPaymentMode(dto.getPaymentMode());
+    setPaymentDateTime(dto.getPaymentDateTime());
+  }
+
   public static class PaymentModeNotFoundException extends RuntimeException{
 
   }
 
+  @Override
+  public BigDecimal getTotalAmount() {
+    return netAmount;
+  }
+
+  @Override
+  public BigDecimal getFinalAmount(BigDecimal lastAmount) {
+    return lastAmount.subtract(netAmount);
+  }
+
+  @Override
+  public TransactionType getTransactionType() {
+    return TransactionType.PAYMENT;
+  }
+
+  @Override
+  public Long getTransactionId() {
+    return id;
+  }
+
+  @Override
+  public LocalDateTime getTransactionDate() {
+    return getPaymentDateTime();
+  }
+
+  @Override
+  public Long getCustomerId() {
+    return getCustomer().getId();
+  }
 }

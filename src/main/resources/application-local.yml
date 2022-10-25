@@ -51,3 +51,9 @@ encryption:
 file:
   upload:
     location: /users/vendors/
+
+bill-generator:
+  scheduler:
+    enable: false
+  cron:
+    expression: "* * */10 * * ?"

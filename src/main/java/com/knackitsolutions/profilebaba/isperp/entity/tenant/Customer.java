@@ -77,6 +77,9 @@ public class Customer {
   @OneToMany(mappedBy = "customer")
   private List<Payment> payments;
 
+  @OneToMany(mappedBy = "customer")
+  private List<BalanceSheet> balanceSheets;
+
   public void update(CustomerDTO dto) {
     setName(dto.getName());
     setBillingName(dto.getBillingName());
