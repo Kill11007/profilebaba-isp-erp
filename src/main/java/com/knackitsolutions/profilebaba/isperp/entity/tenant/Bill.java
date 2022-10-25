@@ -80,5 +80,10 @@ public class Bill implements Transaction {
     return getCustomer().getId();
   }
 
+  public void addBillItem(BillItem item) {
+    this.setTotal(this.getTotal().add(item.getAmount()));
+    this.getBillItems().add(item);
+    this.setUpdatedDate(LocalDate.now());
+  }
 
 }

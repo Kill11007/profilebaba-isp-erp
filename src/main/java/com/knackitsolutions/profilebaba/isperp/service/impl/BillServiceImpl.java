@@ -2,11 +2,14 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.BillDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.BillItemDTO;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.BalanceSheet;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.BalanceSheet.TransactionType;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Bill;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillItem;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Transaction;
 import com.knackitsolutions.profilebaba.isperp.enums.BillType;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.BillItemRepository;
@@ -156,8 +159,31 @@ public class BillServiceImpl implements BillService {
 
   @Override
   public List<Bill> getCustomerLastBill(Long customerId) {
-    return billRepository.findTop1ByCustomerId(customerId,
+    return billRepository.findTop1ByCustomer_Id(customerId,
         PageRequest.of(0, 1, Sort.by(Direction.DESC, "invoiceDate")));
+  }
+
+  @Override
+  public void addItemOnBill(Long customerId, BillItemDTO dto)
+      throws AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException {
+    List<Bill> bills = billRepository.findTop1ByCustomer_Id(customerId,
+        PageRequest.of(0, 1, Sort.by(Direction.DESC, "id")));
+    Bill lastBill = bills.get(0);
+    BillItem newBillItem = new BillItem();
+    newBillItem.setName(dto.getName());
+    newBillItem.setAmount(dto.getAmount());
+    newBillItem.setQuantity(1);
+    newBillItem.setBill(lastBill);
+    newBillItem.setCreatedDate(LocalDateTime.now());
+    lastBill.addBillItem(newBillItem);
+    BalanceSheet lastBalanceSheet = balanceSheetService.getLastBalanceSheet(customerId);
+    if (lastBalanceSheet.getTransactionType() != TransactionType.BILL) {
+      throw new BillNotFoundException(
+          "Last transaction type is not a bill. Can not update any other transaction type.");
+    }
+    billItemRepository.save(newBillItem);
+    Bill save = billRepository.save(lastBill);
+    balanceSheetService.updateBalanceSheet(save);
   }
 
   @Override

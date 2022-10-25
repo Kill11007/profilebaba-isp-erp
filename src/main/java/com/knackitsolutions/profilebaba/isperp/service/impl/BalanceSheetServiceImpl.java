@@ -14,7 +14,6 @@ import com.knackitsolutions.profilebaba.isperp.service.PaymentService.PaymentNot
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,7 @@ public class BalanceSheetServiceImpl implements BalanceSheetService {
   }
 
   public BalanceSheet getLastBalanceSheet(Long customerId) {
-    List<BalanceSheet> balanceSheets = repository.findTop1ByCustomerId(customerId,
+    List<BalanceSheet> balanceSheets = repository.findTop2ByCustomerId(customerId,
         PageRequest.of(0, 1, Sort.by(Direction.DESC, "dated")));
     if (balanceSheets.size() > 0) {
       return balanceSheets.get(0);
@@ -176,5 +175,24 @@ public class BalanceSheetServiceImpl implements BalanceSheetService {
     BalanceSheet balanceSheet = repository.findByTransactionIdAndTransactionType(
         id, transactionType);
     repository.delete(balanceSheet);
+  }
+
+  public BalanceSheet findByTransactionIdAndTransactionType(Long transactionId,
+      TransactionType transactionType) {
+    return repository.findByTransactionIdAndTransactionType(transactionId, transactionType);
+  }
+
+  public void updateBalanceSheet(Transaction transaction) {
+    List<BalanceSheet> byCustomerId = repository.findTop2ByCustomerId(transaction.getCustomerId(),
+        PageRequest.of(0, 2, Sort.by(Direction.DESC, "id")));
+    BalanceSheet balanceSheet = byCustomerId.get(0);
+    log.info("Current balance sheet: {}", balanceSheet);
+    BalanceSheet lastBalanceSheet = null;
+    if (byCustomerId.size() > 1) {
+      lastBalanceSheet = byCustomerId.get(1);
+      log.info("Last balance sheet: {}", lastBalanceSheet);
+    }
+    balanceSheet.update(transaction, lastBalanceSheet);
+    repository.save(balanceSheet);
   }
 }

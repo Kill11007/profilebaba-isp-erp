@@ -29,4 +29,6 @@ public interface BalanceSheetService {
   void deleteLastTransaction(Long customerId) throws BillNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException;
 
   BalanceSheet getLastBalanceSheet(Long customerId);
+
+  void updateBalanceSheet(Transaction transaction);
 }

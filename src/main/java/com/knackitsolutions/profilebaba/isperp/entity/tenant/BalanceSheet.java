@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -77,6 +78,15 @@ public class BalanceSheet {
     setFinalAmount(transaction.getFinalAmount(lastAmount));
     setDated(transaction.getTransactionDate().toLocalDate());
     setCustomer(transaction.getCustomer());
+  }
+
+  public void update(Transaction transaction, BalanceSheet lastBalanceSheet) {
+    if (Objects.isNull(lastBalanceSheet)) {
+      this.setFinalAmount(transaction.getTotalAmount());
+    }else{
+      this.setFinalAmount(transaction.getFinalAmount(lastBalanceSheet.getFinalAmount()));
+    }
+    this.setTxnAmount(transaction.getTotalAmount());
   }
 
 }

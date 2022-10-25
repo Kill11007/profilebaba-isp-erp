@@ -39,6 +39,9 @@ public interface BillService {
 
   void delete(Long id) throws BillNotFoundException;
 
+  void addItemOnBill(Long customerId, BillItemDTO dto)
+      throws AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException;
+
   class BillNotFoundException extends Exception {
 
     private static final String defaultMessage = "Bill not found with the provide id";

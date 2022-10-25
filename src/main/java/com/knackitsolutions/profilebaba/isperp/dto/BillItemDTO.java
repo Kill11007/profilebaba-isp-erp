@@ -3,8 +3,10 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillItem;
 import java.math.BigDecimal;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class BillItemDTO {
   private Long id;
   private String name;

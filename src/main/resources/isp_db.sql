@@ -153,3 +153,10 @@ create table if not exists employee_service_areas(
     foreign key (service_area_id) references service_areas(id),
     foreign key (employee_id) references employees(id)
 );
+
+create table if not exists customer_follow_up(
+	follow_up_date date,
+    customer_id bigint not null,
+    foreign key (customer_id) references customers(id),
+    updated_date datetime
+);

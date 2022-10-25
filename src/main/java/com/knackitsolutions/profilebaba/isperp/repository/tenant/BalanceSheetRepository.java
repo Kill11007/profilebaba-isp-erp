@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BalanceSheetRepository extends PagingAndSortingRepository<BalanceSheet, Long> {
 
-  List<BalanceSheet> findTop1ByCustomerId(Long customerId, Pageable pageable);
+  List<BalanceSheet> findTop2ByCustomerId(Long customerId, Pageable pageable);
 
   BalanceSheet findByTransactionIdAndTransactionType(Long transactionId,
       TransactionType transactionType);
