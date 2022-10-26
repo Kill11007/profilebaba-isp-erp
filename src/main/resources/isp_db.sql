@@ -155,8 +155,20 @@ create table if not exists employee_service_areas(
 );
 
 create table if not exists customer_follow_up(
+	id bigint primary key auto_increment,
+    reason text,
 	follow_up_date date,
     customer_id bigint not null,
     foreign key (customer_id) references customers(id),
+    updated_date datetime
+);
+
+create table if not exists complaints(
+	id bigint primary key auto_increment,
+    customer_id bigint,
+    employee_id bigint,
+    message text,
+    status varchar(20),
+    start_date datetime,
     updated_date datetime
 );

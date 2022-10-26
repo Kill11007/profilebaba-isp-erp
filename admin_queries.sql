@@ -33,6 +33,7 @@ select * from employees;
 describe balance_sheet;
 describe payments;
 describe bill_items;
+describe customer_follow_up;
 
 -- alter table isp_2.payments modify column payment_mode enum('ONLINE', 'CASH') not null default 'CASH';
 -- alter table isp_2.bills modify column bill_no varchar(20);
