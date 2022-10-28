@@ -30,6 +30,7 @@ select * from balance_sheet;
 select * from adjusted_balance;
 select * from payments;
 select * from employees;
+select * from complaints;
 describe balance_sheet;
 describe payments;
 describe bill_items;

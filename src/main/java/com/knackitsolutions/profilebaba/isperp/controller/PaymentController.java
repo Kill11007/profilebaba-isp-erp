@@ -4,6 +4,7 @@ import com.knackitsolutions.profilebaba.isperp.dto.PaymentDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Payment;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.AdjustBalanceService.AdjustedBalanceNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.BillService.BillNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.PaymentService;
@@ -30,7 +31,7 @@ public class PaymentController {
   @PostMapping("/customers/{customer-id}/payments")
   public ResponseEntity<Void> pay(@RequestBody PaymentDTO paymentDTO,
       @PathVariable("customer-id") Long customerId, UriComponentsBuilder uriBuilder)
-      throws EmployeeNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, CustomerNotFoundException, BillNotFoundException {
+      throws EmployeeNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, CustomerNotFoundException, BillNotFoundException, UserNotFoundException {
     Payment receive = paymentService.receive(paymentDTO, customerId);
     return ResponseEntity.created(
         uriBuilder.path("/payments/{id}").buildAndExpand(receive.getId()).toUri()).build();

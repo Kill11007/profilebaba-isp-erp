@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.NewEmployeeRequest;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +39,7 @@ public class Employee {
   private String address;
   private String email;
   private Long userId;
+  private String phone;
 
   @ManyToMany
   @JoinTable(name = "employee_service_areas", joinColumns = @JoinColumn(name = "employee_id"),
@@ -49,11 +51,15 @@ public class Employee {
   @Exclude
   private Set<Payment> payments;
 
+  @OneToMany(mappedBy = "employee")
+  @Exclude
+  private List<Complaint> complaints;
 
   public Employee(NewEmployeeRequest request) {
     setName(request.getName());
     setAddress(request.getAddress());
     setEmail(request.getEmail());
+    setPhone(request.getPhone());
   }
 
   public void update(EmployeeDTO dto) {

@@ -34,4 +34,14 @@ public class EmployeeDTO {
     setPermissions(
         user.getPermissions().stream().map(PermissionDTO::new).collect(Collectors.toSet()));
   }
+
+  public EmployeeDTO(Employee employee) {
+    this.setId(employee.getId());
+    this.setName(employee.getName());
+    this.setAddress(employee.getAddress());
+    this.setEmail(employee.getEmail());
+    this.setAreas(employee.getServiceAreas().stream().map(ServiceAreaDTO::new).collect(
+        Collectors.toSet()));
+    this.setPhone(employee.getPhone());
+  }
 }

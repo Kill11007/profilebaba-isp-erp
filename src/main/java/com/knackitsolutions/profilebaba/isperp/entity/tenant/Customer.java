@@ -80,6 +80,9 @@ public class Customer {
   @OneToMany(mappedBy = "customer")
   private List<BalanceSheet> balanceSheets;
 
+  @OneToMany(mappedBy = "customer")
+  private List<Complaint> complaints;
+
   public void update(CustomerDTO dto) {
     setName(dto.getName());
     setBillingName(dto.getBillingName());

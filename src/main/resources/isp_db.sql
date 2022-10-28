@@ -70,6 +70,7 @@ create table if not exists employees(
     name varchar(50) not null,
     address varchar(255) null,
     email varchar(100),
+    phone varchar(20),
     user_id bigint not null unique
 );
 create table if not exists payments(
@@ -170,5 +171,10 @@ create table if not exists complaints(
     message text,
     status varchar(20),
     start_date datetime,
-    updated_date datetime
+    updated_date datetime,
+    foreign key(customer_id) references customers(id),
+    foreign key(employee_id) references employees(id)
 );
+
+-- drop table complaints;
+-- alter table employees add column phone varchar(20);

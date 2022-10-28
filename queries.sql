@@ -19,3 +19,4 @@ select * from bills;
 select * from bill_items;
 select * from payments;
 select * from service_areas;
+select * from balance_sheet;

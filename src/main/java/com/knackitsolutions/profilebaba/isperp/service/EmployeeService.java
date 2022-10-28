@@ -18,24 +18,24 @@ public interface EmployeeService {
   Employee add(NewEmployeeRequest request)
       throws EmployeeAlreadyExistsException, PermissionNotFoundException, ServiceAreaNotFoundException;
 
-  void update(Long id, EmployeeDTO dto) throws EmployeeNotFoundException;
+  void update(Long id, EmployeeDTO dto) throws EmployeeNotFoundException, UserNotFoundException;
 
   EmployeeDTO one(Long id) throws EmployeeNotFoundException, UserNotFoundException;
 
   List<EmployeeDTO> all() throws UserNotFoundException;
 
-  void delete(Long id) throws EmployeeNotFoundException;
+  void delete(Long id) throws EmployeeNotFoundException, UserNotFoundException;
 
 
   Employee save(Employee employee);
 
-  Employee findById(Long id) throws EmployeeNotFoundException;
+  Employee findById(Long id) throws EmployeeNotFoundException, UserNotFoundException;
 
   void removeServiceArea(Long employeeId, Long areaId)
-      throws EmployeeNotFoundException, ServiceAreaNotFoundException;
+      throws EmployeeNotFoundException, ServiceAreaNotFoundException, UserNotFoundException;
 
   void addServiceAreas(Long employeeId, List<ServiceAreaDTO> serviceAreaDTOS)
-      throws EmployeeNotFoundException, ServiceAreaNotFoundException;
+      throws EmployeeNotFoundException, ServiceAreaNotFoundException, UserNotFoundException;
 
   void addPermissions(Long employeeId, List<PermissionDTO> permissionDTOS)
       throws EmployeeNotFoundException, PermissionNotFoundException, UserNotFoundException;

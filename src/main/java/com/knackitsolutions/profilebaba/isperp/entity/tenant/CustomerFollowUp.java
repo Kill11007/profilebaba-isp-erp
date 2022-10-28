@@ -25,7 +25,6 @@ import org.hibernate.Hibernate;
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
 @NoArgsConstructor
 public class CustomerFollowUp {
   @Id

@@ -97,7 +97,8 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public void update(Long id, EmployeeDTO dto) throws EmployeeNotFoundException {
+  public void update(Long id, EmployeeDTO dto)
+      throws EmployeeNotFoundException, UserNotFoundException {
     Employee employee = findById(id);
     employee.update(dto);
     save(employee);
@@ -121,7 +122,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public void delete(Long id) throws EmployeeNotFoundException {
+  public void delete(Long id) throws EmployeeNotFoundException, UserNotFoundException {
     Employee byId = findById(id);
     repository.delete(byId);
   }
@@ -132,13 +133,13 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public Employee findById(Long id) throws EmployeeNotFoundException {
+  public Employee findById(Long id) throws EmployeeNotFoundException, UserNotFoundException {
     return repository.findById(id).orElseThrow(EmployeeNotFoundException::new);
   }
 
   @Override
   public void removeServiceArea(Long employeeId, Long areaId)
-      throws EmployeeNotFoundException, ServiceAreaNotFoundException {
+      throws EmployeeNotFoundException, ServiceAreaNotFoundException, UserNotFoundException {
     Employee employee = findById(employeeId);
     ServiceArea serviceArea = areaService.get(areaId);
     employee.getServiceAreas().remove(serviceArea);
@@ -147,7 +148,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public void addServiceAreas(Long employeeId, List<ServiceAreaDTO> serviceAreaDTOS)
-      throws EmployeeNotFoundException, ServiceAreaNotFoundException {
+      throws EmployeeNotFoundException, ServiceAreaNotFoundException, UserNotFoundException {
     Employee employee = findById(employeeId);
     Set<ServiceArea> serviceAreas = serviceAreasByDTOS(serviceAreaDTOS);
     employee.getServiceAreas().addAll(serviceAreas);

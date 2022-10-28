@@ -8,6 +8,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.tenant.Payment;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Payment.PaymentModeNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.PaymentRepository;
 import com.knackitsolutions.profilebaba.isperp.service.AdjustBalanceService.AdjustedBalanceNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.BalanceSheetService;
@@ -65,7 +66,7 @@ public class PaymentServiceImpl implements PaymentService {
 
   @Override
   public Payment receive(PaymentDTO dto, Long customerId)
-      throws EmployeeNotFoundException, CustomerNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException {
+      throws EmployeeNotFoundException, CustomerNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException, UserNotFoundException {
     Employee employee = employeeService.findById(dto.getEmployeeId());
     Customer customer = customerService.getCustomerById(customerId);
     Payment payment = new Payment(dto);

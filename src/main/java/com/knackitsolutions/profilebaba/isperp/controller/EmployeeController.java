@@ -53,14 +53,15 @@ public class EmployeeController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id) throws EmployeeNotFoundException {
+  public ResponseEntity<Void> delete(@PathVariable Long id)
+      throws EmployeeNotFoundException, UserNotFoundException {
     employeeService.delete(id);
     return noContent.get();
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Void> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO dto)
-      throws EmployeeNotFoundException {
+      throws EmployeeNotFoundException, UserNotFoundException {
     employeeService.update(id, dto);
     return noContent.get();
   }
@@ -76,7 +77,7 @@ public class EmployeeController {
   @DeleteMapping("/{employee-id}/service-area/{area-id}")
   public ResponseEntity<Void> removeServiceArea(@PathVariable("employee-id") Long employeeId,
       @PathVariable("area-id") Long areaId)
-      throws ServiceAreaNotFoundException, EmployeeNotFoundException {
+      throws ServiceAreaNotFoundException, EmployeeNotFoundException, UserNotFoundException {
     employeeService.removeServiceArea(employeeId, areaId);
     return noContent.get();
   }
@@ -92,7 +93,7 @@ public class EmployeeController {
   @PostMapping("/{employee-id}/service-areas")
   public ResponseEntity<Void> addServiceAreas(@PathVariable("employee-id") Long employeeId,
       @RequestBody List<ServiceAreaDTO> serviceAreaDTOS, UriComponentsBuilder uriComponentsBuilder)
-      throws ServiceAreaNotFoundException, EmployeeNotFoundException {
+      throws ServiceAreaNotFoundException, EmployeeNotFoundException, UserNotFoundException {
     employeeService.addServiceAreas(employeeId, serviceAreaDTOS);
     return created.apply(uriComponentsBuilder, employeeId);
   }
