@@ -1,5 +1,8 @@
-use isp_db;
+use mayank;
 show databases;
+DROP USER 'mayank'@'localhost';
+drop database mayank;
+SELECT User FROM mysql.user;
 show tables;
 use isp_2;
 select * from isps;
@@ -12,6 +15,7 @@ describe employee_permissions;
 show create table employees;
 
 select * from customers;
+
 select * from billing_details;
 select * from hardware_details;
 select * from subscriptions;
@@ -20,3 +24,10 @@ select * from bill_items;
 select * from payments;
 select * from service_areas;
 select * from balance_sheet;
+select * from complaints;
+-- alter table mayank.complaints add column (complaint_number varchar(10));
+-- alter table mayank.complaints modify column employee_remark text;
+select * from isp_admin_db.isps;
+select * from isp_admin_db.tenants;
+select * from isp_admin_db.users;
+select * from isp_admin_db.plans;

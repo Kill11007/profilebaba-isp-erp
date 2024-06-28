@@ -1,8 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.filter;
 
-import com.knackitsolutions.profilebaba.isperp.config.TenantContext;
 import com.knackitsolutions.profilebaba.isperp.config.TenantInterceptor;
-import com.knackitsolutions.profilebaba.isperp.service.impl.JwtUserDetailsService;
 import com.knackitsolutions.profilebaba.isperp.utility.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;

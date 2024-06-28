@@ -178,4 +178,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   public EmployeeDTO login(LoginRequest loginRequest) {
     return null;
   }
+
+  @Override
+  public Employee findByUserId(Long userId) throws EmployeeNotFoundException {
+    return repository.findByUserId(userId).orElseThrow(() -> new EmployeeNotFoundException());
+  }
 }

@@ -76,6 +76,7 @@ public class TenantManagementServiceImpl implements TenantManagementService {
       DataSource tenantDataSource = new SingleConnectionDataSource(connection, false);
       createTables(tenantDataSource);
     } catch (SQLException e) {
+      //TODO Remove DB and users created
       throw new TenantCreationException("Error when populating db: ", e);
     }
     Tenant tenant = Tenant.builder()

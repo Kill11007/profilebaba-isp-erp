@@ -18,7 +18,7 @@ public interface ComplaintService {
   Complaint one(Long id) throws ComplaintNotFoundException;
 
   ComplaintDTO oneDTO(Long id)
-      throws ComplaintNotFoundException, UserNotFoundException, EmployeeNotFoundException;
+      throws ComplaintNotFoundException, UserNotFoundException, EmployeeNotFoundException, CustomerNotFoundException;
 
   Complaint newComplaint(Complaint complaint);
 
@@ -28,6 +28,7 @@ public interface ComplaintService {
   void update(Long id, ComplaintDTO dto) throws EmployeeNotFoundException, UserNotFoundException;
 
   void updateStatus(Long id, String status);
+  void updateEmployeeRemark(Long id, String status);
 
   void assignAgent(Long id, Long employeeId) throws EmployeeNotFoundException, UserNotFoundException;
 

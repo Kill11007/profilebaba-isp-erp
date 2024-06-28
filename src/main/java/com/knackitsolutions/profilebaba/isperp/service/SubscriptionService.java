@@ -23,4 +23,6 @@ public interface SubscriptionService {
   void addSubscription(Long customerId, SubscriptionDTO subscriptionDTO)
       throws CustomerNotFoundException;
 
+  void renewSubscription(Long customerId, SubscriptionDTO subscriptionDTO)
+      throws CustomerNotFoundException;
 }

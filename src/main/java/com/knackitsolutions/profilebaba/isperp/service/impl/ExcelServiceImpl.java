@@ -1,5 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
+import com.knackitsolutions.profilebaba.isperp.dto.BillingDetailDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillingDetail;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.enums.BillDuration;
@@ -31,7 +33,7 @@ public class ExcelServiceImpl implements ExcelService {
 
   private static final String SHEET = "customers";
   @Override
-  public List<Customer> getCustomers(MultipartFile file) {
+  public List<CustomerDTO> getCustomers(MultipartFile file) {
 
     Function<Cell, String> cellStringFunction = cell ->
         cell.getCellType() == CellType.NUMERIC ? String.valueOf(
@@ -41,7 +43,7 @@ public class ExcelServiceImpl implements ExcelService {
       Workbook workbook = new XSSFWorkbook(file.getInputStream());
       Sheet sheet = workbook.getSheet(SHEET);
       Iterator<Row> rows = sheet.iterator();
-      List<Customer> customers = new ArrayList<>();
+      List<CustomerDTO> customers = new ArrayList<>();
       int rowNumber = 0;
       while (rows.hasNext()) {
         Row currentRow = rows.next();
@@ -51,8 +53,8 @@ public class ExcelServiceImpl implements ExcelService {
           continue;
         }
         Iterator<Cell> cellsInRow = currentRow.iterator();
-        Customer customer = new Customer();
-        BillingDetail billingDetail = new BillingDetail();
+        CustomerDTO customer = new CustomerDTO();
+        BillingDetailDTO billingDetail = new BillingDetailDTO();
         int cellIdx = 0;
         while (cellsInRow.hasNext()) {
           Cell currentCell = cellsInRow.next();

@@ -33,6 +33,7 @@ public class CustomerDTO {
   private List<HardwareDetailDTO> hardwareDetail;
   private BillingDetailDTO billingDetail;
   private Set<SubscriptionDTO> subscriptions;
+  private Long userId;
   public CustomerDTO(Customer entity) {
     if (entity == null) {
       return;
@@ -56,6 +57,7 @@ public class CustomerDTO {
     setBillingDetail(new BillingDetailDTO(entity.getBillingDetail()));
     setSubscriptions(
         entity.getSubscriptions().stream().map(SubscriptionDTO::new).collect(Collectors.toSet()));
+    setUserId(entity.getUserId());
   }
 
 }

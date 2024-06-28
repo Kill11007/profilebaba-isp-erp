@@ -9,7 +9,8 @@ import lombok.Getter;
 public enum UserType {
   ADMIN("ADMIN"),
   EMPLOYEE("EMPLOYEE"),
-  ISP("ISP");
+  ISP("ISP"),
+  CUSTOMER("CUSTOMER");
 
   @Getter
   @JsonValue

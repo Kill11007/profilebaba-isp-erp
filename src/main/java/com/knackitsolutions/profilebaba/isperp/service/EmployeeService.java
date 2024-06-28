@@ -44,4 +44,6 @@ public interface EmployeeService {
       throws EmployeeNotFoundException, PermissionNotFoundException, UserNotFoundException;
 
   EmployeeDTO login(LoginRequest loginRequest) throws EmployeeNotFoundException;
+
+  Employee findByUserId(Long userId) throws EmployeeNotFoundException;
 }

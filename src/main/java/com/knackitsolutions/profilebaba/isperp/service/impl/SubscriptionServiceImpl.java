@@ -94,4 +94,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     customerById.setSubscriptions(subscriptions);
     customerService.updateCustomer(customerById);
   }
+
+  @Override
+  public void renewSubscription(Long customerId, SubscriptionDTO subscriptionDTO)
+      throws CustomerNotFoundException {
+    Customer customer = customerService.getCustomerById(customerId);
+    customer.getSubscriptions().stream().filter(subscription -> subscription.getId().equals(subscriptionDTO.getId()))
+        .forEach(s -> this.updateSubscription(s.getId(), subscriptionDTO));
+  }
 }

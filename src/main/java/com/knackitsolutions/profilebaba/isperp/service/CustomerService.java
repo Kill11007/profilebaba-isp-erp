@@ -3,11 +3,13 @@ package com.knackitsolutions.profilebaba.isperp.service;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerSummary;
 import com.knackitsolutions.profilebaba.isperp.dto.HardwareDetailDTO;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.HardwareDetail;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import java.util.List;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -46,4 +48,9 @@ public interface CustomerService {
   Customer getCustomerById(Long id) throws CustomerNotFoundException;
 
   void updateCustomer(Customer customer);
+
+  List<Vendor> getVendors(String phoneNumber) throws UserNotFoundException;
+
+  Customer findByUserId(Long userId) throws CustomerNotFoundException;
+
 }

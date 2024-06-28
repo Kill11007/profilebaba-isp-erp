@@ -22,16 +22,23 @@ public class ComplaintDTO {
   private EmployeeDTO employee;
   private Long customerId;
   private Long employeeId;
+  private String employeeRemark;
+  private Long createdByUserId;
+  private String createdByUserName;
+  private String complaintNumber;
 
   public ComplaintDTO(Complaint entity) {
     this.setMessage(entity.getMessage());
     this.setStartDate(entity.getStartDate());
     this.setUpdatedDate(entity.getUpdatedDate());
     this.setCustomerId(entity.getCustomer().getId());
-    this.setEmployeeId(entity.getEmployee().getId());
+    this.setEmployeeId(entity.getEmployee() == null ? null : entity.getEmployee().getId());
     this.setCustomer(new CustomerDTO(entity.getCustomer()));
-    this.setEmployee(new EmployeeDTO(entity.getEmployee()));
+    this.setEmployee(entity.getEmployee() == null ? null : new EmployeeDTO(entity.getEmployee()));
     this.setId(entity.getId());
     this.setStatus(entity.getStatus());
+    this.setEmployeeRemark(entity.getEmployeeRemark());
+    this.setCreatedByUserId(entity.getCreatedByUserId());
+    this.setComplaintNumber(entity.getComplaintNumber());
   }
 }

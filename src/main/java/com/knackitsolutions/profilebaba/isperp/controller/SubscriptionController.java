@@ -77,4 +77,13 @@ public class SubscriptionController {
     return ResponseEntity.noContent().build();
   }
 
+  @PutMapping("/customers/{customer-id}/subscriptions/renew")
+  public ResponseEntity<Void> renewSubscription(@PathVariable("customer-id") Long customerId,
+      @Valid @RequestBody @NotNull SubscriptionDTO subscriptionDTO)
+      throws CustomerNotFoundException {
+    subscriptionService.renewSubscription(customerId, subscriptionDTO);
+    return ResponseEntity.noContent().build();
+
+  }
+
 }

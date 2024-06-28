@@ -49,7 +49,7 @@ public class ComplaintController {
 
   @GetMapping("/{id}")
   public ResponseEntity<ComplaintDTO> one(@PathVariable Long id)
-      throws UserNotFoundException, EmployeeNotFoundException {
+      throws UserNotFoundException, EmployeeNotFoundException, CustomerNotFoundException {
     return ResponseEntity.ok(complaintService.oneDTO(id));
   }
 
@@ -74,6 +74,8 @@ public class ComplaintController {
       complaintService.updateStatus(id, value);
     } else if ("employee".equalsIgnoreCase(action)) {
       complaintService.assignAgent(id, Long.parseLong(value));
+    } else if("remark".equalsIgnoreCase(action)){
+      complaintService.updateEmployeeRemark(id, value);
     }
     return ResponseEntity.noContent().build();
   }

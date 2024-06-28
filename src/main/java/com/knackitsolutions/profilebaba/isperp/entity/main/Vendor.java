@@ -15,7 +15,11 @@ public class Vendor {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
   private Long id;
-
   private String businessName;
   private Long userId;
+  private String phone;
+
+  @ManyToOne
+  @JoinColumn(name = "plan_id")
+  private IspPlan ispPlan;
 }

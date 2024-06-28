@@ -47,7 +47,7 @@ public class WebSecurityConfig{
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.cors().and().authorizeHttpRequests(
-            authorize -> authorize.antMatchers("/authenticate", "/**/signup", "/**/validate-otp")
+            authorize -> authorize.antMatchers("/authenticate", "/**/signup", "/**/validate-otp", "/**/send-otp", "/authenticate/reset-password")
                 .permitAll().anyRequest().authenticated()).csrf().disable().exceptionHandling(
             exceptions -> exceptions.authenticationEntryPoint(jwtAuthenticationEntryPoint))
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

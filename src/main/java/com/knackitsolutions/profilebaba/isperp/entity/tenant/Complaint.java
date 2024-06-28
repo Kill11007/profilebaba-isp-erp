@@ -2,7 +2,6 @@ package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.ComplaintDTO;
 import com.knackitsolutions.profilebaba.isperp.enums.ComplaintStatus;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,6 +26,8 @@ public class Complaint {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  private String complaintNumber;
+
   private String message;
 
   private ComplaintStatus status;
@@ -41,11 +42,16 @@ public class Complaint {
   @ManyToOne
   private Employee employee;
 
+  private Long createdByUserId;
+
+  private String employeeRemark;
+
   public Complaint(ComplaintDTO dto) {
     this.setMessage(dto.getMessage());
-    this.setStartDate(dto.getStartDate());
+    this.setStartDate(LocalDateTime.now());
     this.setStatus(ComplaintStatus.OPEN);
     this.setUpdatedDate(LocalDateTime.now());
+    this.setEmployeeRemark(dto.getEmployeeRemark());
   }
 
 }

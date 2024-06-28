@@ -1,5 +1,6 @@
 use isp_admin_db;
 select * from isp_admin_db.users;
+select * from isp_admin_db.permissions;
 select * from isp_admin_db.tenants;
 select * from isp_admin_db.isps;
 SELECT * FROM mysql.user;
@@ -35,7 +36,10 @@ describe balance_sheet;
 describe payments;
 describe bill_items;
 describe customer_follow_up;
-
+select * from isp_admin_db.users;	
+select * from users;
+select * from isp_admin_db.tenants;
+select * from isp_admin_db.isps;
 -- alter table isp_2.payments modify column payment_mode enum('ONLINE', 'CASH') not null default 'CASH';
 -- alter table isp_2.bills modify column bill_no varchar(20);
 -- alter table BOOTSTRAP.bills rename column udpated_date to updated_date;

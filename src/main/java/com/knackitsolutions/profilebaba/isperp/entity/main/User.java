@@ -43,7 +43,7 @@ public class User implements UserDetails {
   @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
   private Boolean isPhoneNumberVerified = false;
 
-  @Column(columnDefinition = "ENUM('ADMIN', 'EMPLOYEE', 'ISP')")
+  @Column(columnDefinition = "ENUM('ADMIN', 'EMPLOYEE', 'ISP', 'CUSTOMER')")
   private UserType userType;
 
   /*@ManyToMany

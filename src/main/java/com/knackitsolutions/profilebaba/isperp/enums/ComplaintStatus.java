@@ -28,9 +28,6 @@ public enum ComplaintStatus {
 
   public static class ComplainStatusNotFoundException extends RuntimeException {
 
-    @Getter
-    private String status;
-
     public ComplainStatusNotFoundException(String status) {
       super("Given status: " + status + " not found.");
     }

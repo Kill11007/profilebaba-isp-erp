@@ -83,6 +83,8 @@ public class Customer {
   @OneToMany(mappedBy = "customer")
   private List<Complaint> complaints;
 
+  private Long userId;
+
   public void update(CustomerDTO dto) {
     setName(dto.getName());
     setBillingName(dto.getBillingName());
@@ -115,6 +117,7 @@ public class Customer {
     setHardwareDetail(
         CollectionUtils.emptyIfNull(dto.getHardwareDetail())
         .stream().map(HardwareDetail::new).collect(Collectors.toSet()));
+    setUserId(dto.getUserId());
   }
 
 }

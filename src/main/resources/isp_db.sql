@@ -9,6 +9,7 @@ create table if not exists plans(
     additional_charge decimal(8, 2) unsigned,
     active boolean not null default false
 );
+
 create table if not exists customers(
 	id bigint primary key auto_increment,
     name varchar(100) not null,
@@ -22,8 +23,10 @@ create table if not exists customers(
     gst_no varchar(25),
     customer_code varchar(50),
     remark varchar(255),
-    active boolean not null default true
+    active boolean not null default true,
+    user_id bigint
 );
+
 create table if not exists hardware_details(
 	id bigint primary key auto_increment,
     customer_id bigint not null,
@@ -138,7 +141,7 @@ create table if not exists balance_sheet(
 	txn_amount decimal(8, 2),
     final decimal(8, 2),
     customer_id bigint not null,
-    foreign key (customer_id) references customer(id)
+    foreign key (customer_id) references customers(id)
 );
 
 -- alter table isp_2.balance_sheet add column customer_id bigint not null;
@@ -172,9 +175,17 @@ create table if not exists complaints(
     status varchar(20),
     start_date datetime,
     updated_date datetime,
+    created_by_user_id bigint,
+    employee_remark text,
+    complaint_number varchar(10)
     foreign key(customer_id) references customers(id),
     foreign key(employee_id) references employees(id)
 );
 
+create table if not exists customer_care_contacts(
+  id bigint primary key auto_increment,
+  name varchar(50) not null unique,
+  contact_number varchar(20) not null unique
+);
 -- drop table complaints;
 -- alter table employees add column phone varchar(20);

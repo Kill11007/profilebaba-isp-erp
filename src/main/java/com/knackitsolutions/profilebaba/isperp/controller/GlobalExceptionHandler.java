@@ -20,6 +20,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
 import java.util.List;
+import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -102,6 +103,11 @@ public class GlobalExceptionHandler {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handleEmployeeException(Exception exception) {
     return handleException(exception);
+  }
+
+  @ExceptionHandler(value = ConstraintViolationException.class)
+  public ErrorResponse handleConstraintViolation(ConstraintViolationException e) {
+    return handleException(e);
   }
 
   private ErrorResponse handleException(Throwable exception) {

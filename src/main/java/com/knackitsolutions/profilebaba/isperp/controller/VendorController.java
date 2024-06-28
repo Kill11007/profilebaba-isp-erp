@@ -44,8 +44,9 @@ public class VendorController {
 
   @PostMapping("/signup")
   public ResponseEntity<GenericResponse> signUp(@RequestBody SignUpRequest signUpRequest)
-      throws BusinessNameNotUniqueException, OTPNotSentException, PhoneNumberAlreadyExistsException {
-      return ResponseEntity.ok(vendorService.signUp(signUpRequest));
+      throws BusinessNameNotUniqueException, OTPNotSentException,
+      PhoneNumberAlreadyExistsException, UserNotFoundException, VendorNotFoundException {
+    return ResponseEntity.ok(vendorService.signUp(signUpRequest));
   }
 
   @GetMapping("/{vendor-id}")
@@ -57,22 +58,6 @@ public class VendorController {
   @GetMapping("/profile")
   public ResponseEntity<VendorDTO> profile() throws UserNotFoundException {
     return ResponseEntity.ok(vendorService.profile(authenticationFacade.getAuthentication()));
-  }
-
-  @PutMapping("/reset-password")
-  public ResponseEntity<Void> resetPassword(@RequestBody VendorChangePasswordRequest request)
-      throws InvalidOTPException, UserNotFoundException {
-    vendorService.resetPassword(request.getPhoneNumber(), request.getOtp(),
-        request.getPassword());
-    return ResponseEntity.noContent().build();
-  }
-
-  @PatchMapping("/change-password")
-  public ResponseEntity<Void> changePassword(@RequestBody VendorChangePasswordRequest request)
-      throws InvalidOTPException, UserNotFoundException {
-    vendorService.resetPassword(request.getPhoneNumber(), request.getOtp(),
-        request.getPassword());
-    return ResponseEntity.noContent().build();
   }
   @Data
   public static class ValidateOTPRequest {
@@ -98,12 +83,13 @@ public class VendorController {
     @NotNull
     private String password;
     private String rememberMe;
+    private Long vendorId;
   }
 
   @Data
   @AllArgsConstructor
   @NoArgsConstructor
-  public static class VendorChangePasswordRequest {
+  public static class SetPasswordRequest {
     private String phoneNumber;
     private String otp;
     private String password;

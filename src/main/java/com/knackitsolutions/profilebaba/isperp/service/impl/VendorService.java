@@ -8,19 +8,21 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.exception.BusinessNameNotUniqueException;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
-import com.knackitsolutions.profilebaba.isperp.exception.UserAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.helper.VendorUploadHelper;
 import com.knackitsolutions.profilebaba.isperp.repository.main.VendorRepository;
+import com.knackitsolutions.profilebaba.isperp.service.IspPlanService;
 import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import com.knackitsolutions.profilebaba.isperp.service.TenantManagementService;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,10 +34,9 @@ public class VendorService {
 
   private final VendorRepository vendorRepository;
   private final OTPService otpService;
-  private final PasswordEncoder passwordEncoder;
-  private final VendorUploadHelper vendorUploadHelper;
   private final UserService userService;
   private final TenantManagementService tenantManagementService;
+  private final IspPlanService ispPlanService;
 
   public GenericResponse sendOTP(String phoneNumber) throws OTPNotSentException {
     Boolean aBoolean = userService.existsByPhoneNumber(phoneNumber);
@@ -55,14 +56,14 @@ public class VendorService {
   public GenericResponse validateOTP(String phoneNumber, String otp)
       throws InvalidOTPException, UserNotFoundException {
     otpService.validateOTP(phoneNumber, otp);
-    User user = userService.findByPhoneNumber(phoneNumber);
+    User user = userService.findOneByPhoneNumber(phoneNumber);
     userService.validateUser(true, user.getId());
     return new GenericResponse("OTP Validated");
   }
 
   @Transactional
   public GenericResponse signUp(SignUpRequest signUpRequest)
-      throws BusinessNameNotUniqueException, OTPNotSentException, PhoneNumberAlreadyExistsException {
+      throws BusinessNameNotUniqueException, OTPNotSentException, PhoneNumberAlreadyExistsException, UserNotFoundException, VendorNotFoundException {
     if (userService.existsByPhoneNumber(signUpRequest.getPhoneNumber())) {
       throw new PhoneNumberAlreadyExistsException();
     }
@@ -74,6 +75,7 @@ public class VendorService {
         signUpRequest.getPassword());
     User user = userService.save(signUpRequest, tenant);
     Vendor vendor = saveVendor(signUpRequest, user.getId());
+    ispPlanService.activateIspFreePlan(vendor.getId());
     otpService.sendOTP(user.getPhoneNumber());
 //    vendorUploadHelper.createVendorDirectory(vendor); TODO
     return new GenericResponse(vendor.getId(), "Vendor is saved.");
@@ -83,6 +85,7 @@ public class VendorService {
     Vendor vendor = new Vendor();
     vendor.setBusinessName(signUpRequest.getBusinessName());
     vendor.setUserId(userId);
+    vendor.setPhone(signUpRequest.getPhoneNumber());
     return vendorRepository.save(vendor);
   }
 
@@ -93,32 +96,20 @@ public class VendorService {
   }
 
   public VendorDTO profile(Authentication authentication) throws UserNotFoundException {
-    Vendor vendor = (Vendor) authentication.getPrincipal();
-    User user = userService.findById(vendor.getUserId());
-    return new VendorDTO(vendor, user);
-
+    User user = (User) authentication.getPrincipal();
+    return new VendorDTO(findByUserId(user.getId()));
   }
 
-  public void resetPassword(String phoneNumber, String otp, String password)
-      throws InvalidOTPException, UserNotFoundException {
-    User user = userService.findByPhoneNumber(phoneNumber);
-//        .orElseThrow(
-//        () -> new VendorNotFoundException("Vendor not found by phone number: " + phoneNumber));
-    validateOTP(user.getPhoneNumber(), otp);
-    updatePassword(user, password);
+  public Page<Vendor> all(Pageable pageable) {
+    return vendorRepository.findAll(pageable);
   }
 
-  public void changePassword(String phoneNumber, String password)
-      throws UserNotFoundException {
-    User user = userService.findByPhoneNumber(phoneNumber);
-//        .orElseThrow(
-//        () -> new VendorNotFoundException("Vendor not found by phone number: " + phoneNumber));
-    updatePassword(user, password);
+  public Page<VendorDTO> allDTOs(Pageable pageable) {
+    return all(pageable).map(VendorDTO::new);
   }
 
-  private void updatePassword(User user, String password) {
-    user.setPassword(passwordEncoder.encode(password));
-    userService.save(user);
+  public Vendor findByUserId(Long userId) throws UserNotFoundException {
+    return vendorRepository.findByUserId(userId).orElseThrow(UserNotFoundException::new);
   }
 }
 

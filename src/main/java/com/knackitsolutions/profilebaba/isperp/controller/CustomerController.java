@@ -3,12 +3,25 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerSummary;
 import com.knackitsolutions.profilebaba.isperp.dto.HardwareDetailDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.SubscriptionDTO;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
+import com.knackitsolutions.profilebaba.isperp.service.IAuthenticationFacade;
+import com.knackitsolutions.profilebaba.isperp.service.SubscriptionService;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.checkerframework.checker.units.qual.C;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -36,6 +49,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CustomerController {
 
   private final CustomerService customerService;
+  private final IAuthenticationFacade authenticationFacade;
+  private SubscriptionService subscriptionService;
+
+  @Autowired
+  public void setSubscriptionService(SubscriptionService subscriptionService) {
+    this.subscriptionService = subscriptionService;
+  }
 
   @GetMapping
   public ResponseEntity<Page<CustomerSummary>> getCustomers(
@@ -59,6 +79,7 @@ public class CustomerController {
   @PostMapping
   public ResponseEntity<?> addCustomer(@RequestBody CustomerDTO customerDTO,
       UriComponentsBuilder uriComponentsBuilder) throws CustomerAlreadyExistsException {
+
     Customer customer = customerService.addCustomer(customerDTO);
     return ResponseEntity.created(
             uriComponentsBuilder.path("/customers/{id}").buildAndExpand(customer.getId()).toUri())
@@ -69,6 +90,14 @@ public class CustomerController {
   public ResponseEntity<?> updateCustomer(@PathVariable("customer-id") Long customerId,
       @RequestBody CustomerDTO customerDTO) throws CustomerNotFoundException {
     customerService.updateCustomer(customerId, customerDTO);
+    return ResponseEntity.noContent().build();
+  }
+
+  @PutMapping("/update")
+  public ResponseEntity<?> updateCustomer(@RequestBody CustomerDTO customerDTO) {
+    Customer customer = (Customer) authenticationFacade.getAuthentication().getPrincipal();
+    customer.update(customerDTO);
+    customerService.updateCustomer(customer);
     return ResponseEntity.noContent().build();
   }
 
@@ -115,5 +144,43 @@ public class CustomerController {
         .header(HttpHeaders.CONTENT_DISPOSITION,
             "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
   }
+
+  @GetMapping("/vendors/{phoneNumber}")
+  public ResponseEntity<List<Vendor>> getAllVendors(@PathVariable String phoneNumber)
+      throws UserNotFoundException {
+    return ResponseEntity.ok(customerService.getVendors(phoneNumber));
+  }
+
+  @GetMapping("/profile")
+  public ResponseEntity<CustomerDTO> profile() throws CustomerNotFoundException {
+    Customer customer = (Customer) authenticationFacade.getAuthentication().getPrincipal();
+    return ResponseEntity.ok(customerService.getCustomer(customer.getId()));
+  }
+
+  @GetMapping("/subscriptions")
+  public ResponseEntity<List<SubscriptionDTO>> getSubscriptions() throws CustomerNotFoundException {
+    Customer customer = (Customer) authenticationFacade.getAuthentication().getPrincipal();
+    return ResponseEntity.ok(subscriptionService.getCustomerSubscription(customer.getId()));
+  }
+  @PutMapping("/update-subscription/{subscription-id}/plan/{plan-id}")
+  public ResponseEntity<CustomerDTO> updateSubscription(@PathVariable("subscription-id") Long subscriptionId, @PathVariable("plan-id") Long planId) throws CustomerNotFoundException {
+    Customer customer = (Customer) authenticationFacade.getAuthentication().getPrincipal();
+    Set<Subscription> subscriptions = customer.getSubscriptions();
+    Optional<Subscription> subscription = subscriptions.stream()
+        .filter(s -> s.getId().equals(subscriptionId))
+        .findFirst();
+    Optional<SubscriptionDTO> subscriptionDTO = subscription.map(SubscriptionDTO::new);
+    subscriptionDTO.stream().peek(s -> s.setPlanId(planId)).forEach(s -> subscriptionService.updateSubscription(s.getId(), s));
+    return ResponseEntity.ok().build();
+  }
+
+  @PutMapping("/subscriptions/renew")
+  public ResponseEntity<Void> renewSubscription(@Valid @RequestBody @NotNull SubscriptionDTO subscriptionDTO){
+    Customer customer = (Customer) authenticationFacade.getAuthentication().getPrincipal();
+    customer.getSubscriptions().stream().filter(subscription -> subscription.getId().equals(subscriptionDTO.getId()))
+        .forEach(s -> subscriptionService.updateSubscription(s.getId(), subscriptionDTO));
+    return ResponseEntity.ok().build();
+  }
+
 
 }
