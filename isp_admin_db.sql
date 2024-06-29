@@ -11,9 +11,6 @@ create table if not exists isp_admin_db.isps (
     foreign key (plan_id) references isp_admin_db.plans(id)
 );
 
-alter table isp_admin_db.isps add column (plan_id bigint);
-alter table isp_admin_db.isps add constraint foreign key (plan_id) references isp_admin_db.plans(id);
-
 create table if not exists isp_admin_db.tenants(
 	id int primary key auto_increment,
     db varchar(100) not null,
@@ -36,8 +33,11 @@ create table if not exists isp_admin_db.users(
 -- drop table isp_admin_db.users;
 
 create table if not exists isp_admin_db.permissions(
-	id bigint primary key auto_increment,
-    name varchar(255) not null
+	  id bigint primary key auto_increment,
+    name varchar(255) not null,
+    feature_name varchar(255) null,
+    parent_id bigint null,
+    foreign key(parent_id) references isp_admin_db.permissions(id)
 );
 
 create table if not exists isp_admin_db.roles(
@@ -66,4 +66,12 @@ create table if not exists isp_admin_db.plans(
     plan_description text,
     created_date_time datetime not null,
     updated_time date not null
+);
+
+create table if not exists isp_admin_db.plan_permissions(
+  id bigint primary key auto_increment,
+    plan_id bigint not null,
+    permission_id bigint not null,
+    foreign key (permission_id) references permissions(id),
+    foreign key (plan_id) references plans(id)
 );

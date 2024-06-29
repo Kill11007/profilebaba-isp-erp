@@ -4,7 +4,9 @@ import com.knackitsolutions.profilebaba.isperp.dto.IspPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.enums.PlanType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,6 +36,8 @@ public class IspPlan {
   private LocalDateTime updateDateTime;
   @OneToMany(mappedBy = "ispPlan")
   private List<Vendor> vendor;
+  @OneToMany(mappedBy = "ispPlan")
+  private Set<IspPlanPermission> ispPlanPermissions = new HashSet<>();
 
   public IspPlan(IspPlanDTO dto) {
     setName(dto.getName());

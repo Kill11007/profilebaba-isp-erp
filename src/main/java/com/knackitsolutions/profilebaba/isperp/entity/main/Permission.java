@@ -1,13 +1,18 @@
 package com.knackitsolutions.profilebaba.isperp.entity.main;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.knackitsolutions.profilebaba.isperp.dto.PermissionDTO;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +40,18 @@ public class Permission {
   @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
   @Exclude
   private Set<User> employees;
+
+  private String featureName;
+  @ManyToOne
+  @JoinColumn(name="parent_id")
+  @JsonBackReference
+  private Permission parent;
+
+  @OneToMany(mappedBy = "parent")
+  private Set<Permission> permissions = new HashSet<>();
+
+  @OneToMany(mappedBy = "permission")
+  Set<IspPlanPermission> ispPlanPermissions = new HashSet<>();
 
   public Permission(PermissionDTO dto) {
     this.name = dto.getName();

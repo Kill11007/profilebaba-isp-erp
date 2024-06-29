@@ -2,15 +2,18 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanQuery;
-import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
+import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlanPermission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.repository.main.IspPlanPermissionRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.IspPlanRepository;
+import com.knackitsolutions.profilebaba.isperp.repository.main.PermissionRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.VendorRepository;
 import com.knackitsolutions.profilebaba.isperp.service.IspPlanService;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ public class IspPlanServiceImpl implements IspPlanService {
 
   private final IspPlanRepository repository;
   private final VendorRepository vendorRepository;
+  private final PermissionRepository permissionRepository;
+  private final IspPlanPermissionRepository ispPlanPermissionRepository;
 
   @Override
   public List<IspPlanDTO> all(IspPlanQuery ispPlanQuery) {
@@ -48,7 +53,13 @@ public class IspPlanServiceImpl implements IspPlanService {
   @Override
   public void create(IspPlanDTO dto) {
     IspPlan ispPlan = new IspPlan(dto);
-    repository.save(ispPlan);
+    IspPlan save = repository.save(ispPlan);
+    dto.getPermissionIds()
+        .stream()
+        .map(permissionRepository::findById)
+        .flatMap(Optional::stream)
+        .map(permission -> new IspPlanPermission(save, permission))
+        .forEach(ispPlanPermissionRepository::save);
   }
 
   @Override

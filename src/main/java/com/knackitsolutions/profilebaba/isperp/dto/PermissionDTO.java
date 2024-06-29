@@ -14,11 +14,16 @@ public class PermissionDTO {
   @NotNull
   private String name;
 
+  private String featureName;
+  private Long parentId;
+
   public PermissionDTO(Permission permission) {
     if (permission == null) {
       return;
     }
     this.id = permission.getId();
     this.name = permission.getName();
+    this.parentId = permission.getParent().getId();
+    this.featureName = permission.getFeatureName();
   }
 }
