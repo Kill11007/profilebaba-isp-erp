@@ -75,7 +75,7 @@ public class VendorService {
         signUpRequest.getPassword());
     User user = userService.save(signUpRequest, tenant);
     Vendor vendor = saveVendor(signUpRequest, user.getId());
-    ispPlanService.activateIspFreePlan(vendor.getId());
+//    ispPlanService.activateIspFreePlan(vendor.getId());
     otpService.sendOTP(user.getPhoneNumber());
 //    vendorUploadHelper.createVendorDirectory(vendor); TODO
     return new GenericResponse(vendor.getId(), "Vendor is saved.");

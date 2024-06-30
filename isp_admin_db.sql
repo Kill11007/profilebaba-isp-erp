@@ -7,8 +7,7 @@ create table if not exists isp_admin_db.isps (
     user_id bigint not null unique,
     phone varchar(20) not null,
     plan_id bigint,
-    foreign key (user_id) references users(id),
-    foreign key (plan_id) references isp_admin_db.plans(id)
+    foreign key (user_id) references users(id)
 );
 
 create table if not exists isp_admin_db.tenants(
@@ -67,6 +66,18 @@ create table if not exists isp_admin_db.plans(
     created_date_time datetime not null,
     updated_time date not null
 );
+
+create table if not exists isp_admin_db.isp_plans(
+	  id bigint primary key auto_increment,
+	  isp_id bigint,
+    plan_id bigint,
+    start_date_time datetime not null,
+    updated_date_time datetime not null,
+    end_date_time datetime,
+    foreign key (isp_id) references isps(id),
+    foreign key (plan_id) references plans(id)
+);
+
 
 create table if not exists isp_admin_db.plan_permissions(
   id bigint primary key auto_increment,

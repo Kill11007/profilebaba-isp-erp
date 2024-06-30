@@ -1,5 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.entity.main;
 
+import java.util.HashSet;
+import java.util.Set;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -19,7 +21,6 @@ public class Vendor {
   private Long userId;
   private String phone;
 
-  @ManyToOne
-  @JoinColumn(name = "plan_id")
-  private IspPlan ispPlan;
+  @OneToMany(mappedBy = "vendor", fetch = FetchType.EAGER)
+  private Set<VendorPlan> vendorPlans = new HashSet<>();
 }

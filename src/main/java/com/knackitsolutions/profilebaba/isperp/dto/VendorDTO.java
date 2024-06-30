@@ -2,6 +2,10 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
+import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
+import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +17,10 @@ public class VendorDTO {
   private String phoneNumber;
   private String businessName;
   private Long userId;
+  private IspPlanDTO plan;
+  private MenuItem menu;
   public VendorDTO(Vendor vendor, User user) {
-    this.phoneNumber = user.getPhoneNumber();
-    this.vendorId = vendor.getId();
-    this.businessName = vendor.getBusinessName();
+    this(vendor);
     this.userId = user.getId();
   }
 
@@ -25,5 +29,11 @@ public class VendorDTO {
     this.vendorId = vendor.getId();
     this.businessName = vendor.getBusinessName();
     this.userId = vendor.getUserId();
+    this.plan = vendor.getVendorPlans()
+        .stream()
+        .findFirst()
+        .map(VendorPlan::getPlan)
+        .map(IspPlanDTO::new).orElseThrow(PlanNotFoundException::new);
+    this.menu = new MenuItem(this.plan.getPermissionDTOS());
   }
 }

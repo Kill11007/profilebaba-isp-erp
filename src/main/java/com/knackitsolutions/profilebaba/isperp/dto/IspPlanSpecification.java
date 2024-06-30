@@ -24,10 +24,10 @@ public class IspPlanSpecification implements Specification<IspPlan> {
       predicates.add(criteriaBuilder.equal(root.get("id"), ispPlanQuery.getPlanId()));
     }
 
-    if (ispPlanQuery.getPlanType() != null && PlanType.of(ispPlanQuery.getPlanType()) != null) {
-      predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("planType")),
-          "%" + ispPlanQuery.getPlanType() + "%"));
-    }
+//    if (ispPlanQuery.getPlanType() != null && PlanType.of(ispPlanQuery.getPlanType()) != null) {
+//      predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("planType")),
+//          "%" + ispPlanQuery.getPlanType() + "%"));
+//    }
 
     if (ispPlanQuery.getName() != null) {
       predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("name")),
