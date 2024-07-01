@@ -42,7 +42,7 @@ public class Subscription {
   @ManyToOne(fetch = FetchType.LAZY)
   @Exclude
   @JoinColumn(name = "plan_id")
-  private Plan plan;
+  private InternetPlan internetPlan;
 
   @Column(name = "fixed_bill_amount")
   private BigDecimal fixedBillAmountPerMonth;

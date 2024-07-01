@@ -9,7 +9,6 @@ import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillItem;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.Transaction;
 import com.knackitsolutions.profilebaba.isperp.enums.BillType;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.BillItemRepository;
@@ -87,7 +86,7 @@ public class BillServiceImpl implements BillService {
     bill.setInvoiceDate(LocalDate.now());
     bill.setUpdatedDate(LocalDate.now());
     bill.setBillNumber(generateBillNo(customer.getId(), bill.getUpdatedDate()));
-    BigDecimal subscriptionRate = subscription.getPlan().getPrice();
+    BigDecimal subscriptionRate = subscription.getInternetPlan().getPrice();
     if (subscription.getFixedBillAmountPerMonth() != null) {
       subscriptionRate = subscription.getFixedBillAmountPerMonth();
     }
@@ -98,7 +97,7 @@ public class BillServiceImpl implements BillService {
     billItem.setItemId(subscription.getId());
     billItem.setCreatedDate(LocalDateTime.now());
     billItem.setQuantity(1);
-    billItem.setName(subscription.getPlan().getName());
+    billItem.setName(subscription.getInternetPlan().getName());
     bill.setTotal(subscriptionRate);
     billItems.add(billItem);
     bill.setBillItems(billItems);

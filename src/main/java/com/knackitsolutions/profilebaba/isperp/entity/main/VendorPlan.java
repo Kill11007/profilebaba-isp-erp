@@ -2,12 +2,15 @@ package com.knackitsolutions.profilebaba.isperp.entity.main;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +35,9 @@ public class VendorPlan {
   @JoinColumn(name = "plan_id")
   @JsonBackReference
   private IspPlan plan;
+  @ManyToOne
+  @JoinColumn(name = "tenant_id")
+  private Tenant tenant;
 
   private LocalDateTime startDateTime;
   private LocalDateTime endDateTime;

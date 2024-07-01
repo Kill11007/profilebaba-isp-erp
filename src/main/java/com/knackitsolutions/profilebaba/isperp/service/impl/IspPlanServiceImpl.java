@@ -6,6 +6,8 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlanPermission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
+import com.knackitsolutions.profilebaba.isperp.event.ISPPlanAssignmentEvent;
+import com.knackitsolutions.profilebaba.isperp.event.ISPPlanDeactivateEvent;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
@@ -21,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,6 +35,8 @@ public class IspPlanServiceImpl implements IspPlanService {
   private final PermissionRepository permissionRepository;
   private final IspPlanPermissionRepository ispPlanPermissionRepository;
   private final VendorPlanRepository vendorPlanRepository;
+
+  private final ApplicationEventPublisher eventPublisher;
 
   @Override
   public List<IspPlanDTO> all(IspPlanQuery ispPlanQuery) {
@@ -79,11 +84,7 @@ public class IspPlanServiceImpl implements IspPlanService {
       throws VendorNotFoundException {
     Vendor vendor = vendorRepository.findById(ispId).orElseThrow(VendorNotFoundException::new);
     IspPlan one = one(planId);
-    if (!vendor.getVendorPlans().isEmpty()){
-      throw new RuntimeException("Plan Already Assigned Plan-Id: " + vendor.getVendorPlans().stream().findFirst().get().getPlan().getId());
-    }
-    VendorPlan vendorPlan = new VendorPlan(vendor, one);
-    vendorPlanRepository.save(vendorPlan);
+    eventPublisher.publishEvent(new ISPPlanAssignmentEvent(this, vendor, one));
   }
 
   @Override
@@ -96,15 +97,8 @@ public class IspPlanServiceImpl implements IspPlanService {
   @Override
   public void deactivateCurrentIspPlan(Long ispId) throws VendorNotFoundException {
     Vendor vendor = vendorRepository.findById(ispId).orElseThrow(VendorNotFoundException::new);
-    Set<VendorPlan> vendorPlans = vendor.getVendorPlans();
-    if (vendorPlans.isEmpty()) {
-      throw new PlanNotFoundException();
-    }
-    VendorPlan vendorPlan = vendorPlans.stream().findFirst()
-        .orElseThrow(PlanNotFoundException::new);
-    vendorPlan.setEndDateTime(LocalDateTime.now());
-    vendorPlan.setUpdatedDateTime(LocalDateTime.now());
-    vendorPlanRepository.save(vendorPlan);
+    eventPublisher.publishEvent(new ISPPlanDeactivateEvent(this, vendor));
+
   }
 
 }

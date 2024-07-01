@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,16 +14,16 @@ import org.springframework.lang.Nullable;
 @AllArgsConstructor
 public class PlanDTO {
 
-  public PlanDTO(Plan plan) {
-    this.setActive(plan.getActive() == null || plan.getActive());
-    this.setDiscount(plan.getDiscount());
-    this.setAdditionalCharge(plan.getAdditionalCharge());
-    this.setGstPercent(plan.getGstPercent());
-    this.setHsnCode(plan.getHsnCode());
-    this.setProductCode(plan.getProductCode());
-    this.setName(plan.getName());
-    this.setPrice(plan.getPrice());
-    this.setId(plan.getId());
+  public PlanDTO(InternetPlan internetPlan) {
+    this.setActive(internetPlan.getActive() == null || internetPlan.getActive());
+    this.setDiscount(internetPlan.getDiscount());
+    this.setAdditionalCharge(internetPlan.getAdditionalCharge());
+    this.setGstPercent(internetPlan.getGstPercent());
+    this.setHsnCode(internetPlan.getHsnCode());
+    this.setProductCode(internetPlan.getProductCode());
+    this.setName(internetPlan.getName());
+    this.setPrice(internetPlan.getPrice());
+    this.setId(internetPlan.getId());
   }
 
   @Nullable

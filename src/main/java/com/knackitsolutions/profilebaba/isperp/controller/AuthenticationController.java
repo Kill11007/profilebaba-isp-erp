@@ -3,6 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.LoginRequest;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SetPasswordRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.JwtResponse;
+import com.knackitsolutions.profilebaba.isperp.dto.LoginResponse;
 import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidLoginCredentialException;
@@ -12,7 +13,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.IAuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
-import com.knackitsolutions.profilebaba.isperp.service.impl.JwtUserDetailsService;
+import com.knackitsolutions.profilebaba.isperp.service.impl.AuthenticationService;
 import com.knackitsolutions.profilebaba.isperp.service.impl.VendorService;
 import com.knackitsolutions.profilebaba.isperp.utility.JwtTokenUtil;
 import io.jsonwebtoken.impl.DefaultClaims;
@@ -26,7 +27,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -47,27 +47,17 @@ public class AuthenticationController {
 
   private final JwtTokenUtil jwtTokenUtil;
 
-  private final JwtUserDetailsService jwtUserDetailsService;
   private final VendorService vendorService;
   private final UserService userService;
   private final IAuthenticationFacade authenticationFacade;
-  private final PasswordEncoder passwordEncoder;
+  private final AuthenticationService authenticationService;
 
   @PostMapping
   public ResponseEntity<?> login(@RequestBody LoginRequest request)
       throws InvalidLoginCredentialException, UserNotFoundException, VendorNotFoundException {
     authenticate(request.getPhoneNumber(), request.getPassword());
-    final User userDetails = jwtUserDetailsService.loadUserByUsername(request.getPhoneNumber());
-    final String token ;
-    //Login For Customer
-    if (request.getVendorId() != null) {
-      VendorDTO vendor = vendorService.findById(request.getVendorId());
-      User user = userService.findById(vendor.getUserId());
-      token = jwtTokenUtil.generateToken(user, user.getTenantId());
-    }else{
-      token = jwtTokenUtil.generateToken(userDetails);
-    }
-    return ResponseEntity.ok(new JwtResponse(token));
+    LoginResponse login = authenticationService.login(request);
+    return ResponseEntity.ok(login);
   }
 
   @PostMapping("/switch-vendor/{vendorId}")

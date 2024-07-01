@@ -18,16 +18,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "plans")
+@Table(name = "internet_plans")
 @Getter
 @Setter
 @ToString
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Plan {
+public class InternetPlan {
 
-  public Plan(PlanDTO dto) {
+  public InternetPlan(PlanDTO dto) {
     this.setId(dto.getId());
     this.setActive(dto.getActive());
     this.setDiscount(dto.getDiscount());
@@ -39,16 +39,16 @@ public class Plan {
     this.setPrice(dto.getPrice());
   }
 
-  public Plan(Plan plan) {
-    this.setId(plan.getId());
-    this.setActive(plan.getActive());
-    this.setDiscount(plan.getDiscount());
-    this.setAdditionalCharge(plan.getAdditionalCharge());
-    this.setGstPercent(plan.getGstPercent());
-    this.setHsnCode(plan.getHsnCode());
-    this.setProductCode(plan.getProductCode());
-    this.setName(plan.getName());
-    this.setPrice(plan.getPrice());
+  public InternetPlan(InternetPlan internetPlan) {
+    this.setId(internetPlan.getId());
+    this.setActive(internetPlan.getActive());
+    this.setDiscount(internetPlan.getDiscount());
+    this.setAdditionalCharge(internetPlan.getAdditionalCharge());
+    this.setGstPercent(internetPlan.getGstPercent());
+    this.setHsnCode(internetPlan.getHsnCode());
+    this.setProductCode(internetPlan.getProductCode());
+    this.setName(internetPlan.getName());
+    this.setPrice(internetPlan.getPrice());
   }
 
   public void updatePlan(PlanDTO plan) {
@@ -82,6 +82,6 @@ public class Plan {
 
   private Boolean active;
 
-  @OneToMany(mappedBy = "plan")
+  @OneToMany(mappedBy = "internetPlan")
   private Set<Subscription> subscriptions;
 }

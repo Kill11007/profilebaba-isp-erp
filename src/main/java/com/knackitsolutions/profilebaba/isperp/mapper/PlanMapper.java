@@ -1,31 +1,32 @@
 package com.knackitsolutions.profilebaba.isperp.mapper;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PlanMapper {
 
   // Not including ID
-  public Plan dtoToEntity(PlanDTO dto) {
-    return Plan.builder().active(dto.getActive())
+  public InternetPlan dtoToEntity(PlanDTO dto) {
+    return InternetPlan.builder().active(dto.getActive())
         .additionalCharge(dto.getAdditionalCharge()).discount(dto.getDiscount())
         .gstPercent(dto.getGstPercent()).hsnCode(dto.getHsnCode()).productCode(dto.getProductCode())
         .name(dto.getName()).price(dto.getPrice()).build();
   }
 
-  public Plan dtoToEntityWithId(PlanDTO dto) {
-    Plan plan = dtoToEntity(dto);
-    plan.setId(dto.getId());
-    return plan;
+  public InternetPlan dtoToEntityWithId(PlanDTO dto) {
+    InternetPlan internetPlan = dtoToEntity(dto);
+    internetPlan.setId(dto.getId());
+    return internetPlan;
   }
 
-  public PlanDTO entityToDTO(Plan plan) {
-    return PlanDTO.builder().active(plan.getActive()).additionalCharge(plan.getAdditionalCharge())
-        .discount(plan.getDiscount()).gstPercent(plan.getGstPercent()).hsnCode(plan.getHsnCode())
-        .productCode(plan.getProductCode()).id(plan.getId()).price(plan.getPrice())
-        .name(plan.getName()).build();
+  public PlanDTO entityToDTO(InternetPlan internetPlan) {
+    return PlanDTO.builder().active(internetPlan.getActive()).additionalCharge(internetPlan.getAdditionalCharge())
+        .discount(internetPlan.getDiscount()).gstPercent(internetPlan.getGstPercent()).hsnCode(
+            internetPlan.getHsnCode())
+        .productCode(internetPlan.getProductCode()).id(internetPlan.getId()).price(internetPlan.getPrice())
+        .name(internetPlan.getName()).build();
   }
 
 }

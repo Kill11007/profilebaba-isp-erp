@@ -1,10 +1,10 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.PlanRepository;
-import com.knackitsolutions.profilebaba.isperp.service.PlanService;
+import com.knackitsolutions.profilebaba.isperp.service.InternetPlanService;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -13,33 +13,33 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PlanServiceImpl implements PlanService {
+public class InternetPlanServiceImpl implements InternetPlanService {
 
   private final PlanRepository planRepository;
 
   @Override
-  public Plan createPlan(PlanDTO request) {
-    Plan plan = new Plan(request);
-    return planRepository.save(plan);
+  public InternetPlan createPlan(PlanDTO request) {
+    InternetPlan internetPlan = new InternetPlan(request);
+    return planRepository.save(internetPlan);
   }
 
   @Override
   public void updatePlan(Long id, PlanDTO request) {
-    Plan plan = getPlanById(id);
-    plan.updatePlan(request);
-    planRepository.save(plan);
+    InternetPlan internetPlan = getPlanById(id);
+    internetPlan.updatePlan(request);
+    planRepository.save(internetPlan);
   }
 
   @Override
   public void deletePlan(Long id) {
-    Plan plan = getPlanById(id);
-    planRepository.delete(plan);
+    InternetPlan internetPlan = getPlanById(id);
+    planRepository.delete(internetPlan);
   }
 
   @Override
   public PlanDTO getPlan(Long id) {
-    Plan plan = getPlanById(id);
-    return new PlanDTO(plan);
+    InternetPlan internetPlan = getPlanById(id);
+    return new PlanDTO(internetPlan);
   }
 
   @Override
@@ -49,13 +49,13 @@ public class PlanServiceImpl implements PlanService {
 
   @Override
   public void updateStatus(Long id) {
-    Plan plan = getPlanById(id);
-    plan.setActive(!plan.getActive());
-    planRepository.save(plan);
+    InternetPlan internetPlan = getPlanById(id);
+    internetPlan.setActive(!internetPlan.getActive());
+    planRepository.save(internetPlan);
   }
 
   @Override
-  public Plan getPlanById(Long id) throws PlanNotFoundException {
+  public InternetPlan getPlanById(Long id) throws PlanNotFoundException {
     return planRepository.findById(id).orElseThrow(() -> planNotFoundWithId.apply(id));
   }
 

@@ -39,7 +39,7 @@ public class Permission {
 
   @ManyToMany(mappedBy = "permissions", fetch = FetchType.LAZY)
   @Exclude
-  private Set<User> employees;
+  private Set<User> users;
 
   private String featureName;
   @ManyToOne
@@ -52,6 +52,9 @@ public class Permission {
 
   @OneToMany(mappedBy = "permission")
   Set<IspPlanPermission> ispPlanPermissions = new HashSet<>();
+
+  @OneToMany(mappedBy = "permission")
+  Set<UserRoleFeature> userRoleFeatures = new HashSet<>();
 
   public Permission(PermissionDTO dto) {
     this.name = dto.getName();

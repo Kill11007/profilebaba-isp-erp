@@ -4,8 +4,6 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +29,7 @@ public class VendorDTO {
     this.userId = vendor.getUserId();
     this.plan = vendor.getVendorPlans()
         .stream()
+        .filter(vendorPlan -> vendorPlan.getEndDateTime() != null)
         .findFirst()
         .map(VendorPlan::getPlan)
         .map(IspPlanDTO::new).orElseThrow(PlanNotFoundException::new);

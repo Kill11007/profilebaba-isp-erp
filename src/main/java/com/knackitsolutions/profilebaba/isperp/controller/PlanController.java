@@ -1,8 +1,8 @@
 package com.knackitsolutions.profilebaba.isperp.controller;
 
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
-import com.knackitsolutions.profilebaba.isperp.service.PlanService;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
+import com.knackitsolutions.profilebaba.isperp.service.InternetPlanService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,43 +25,43 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class PlanController {
 
-  private final PlanService planService;
+  private final InternetPlanService internetPlanService;
 
   @GetMapping()
   public ResponseEntity<List<PlanDTO>> getPlans() {
-    return ResponseEntity.ok(planService.getAllPlans());
+    return ResponseEntity.ok(internetPlanService.getAllPlans());
   }
 
   @GetMapping("/{plan-id}")
   public ResponseEntity<PlanDTO> getPlan(@PathVariable("plan-id") Long planId) {
-    return ResponseEntity.ok(planService.getPlan(planId));
+    return ResponseEntity.ok(internetPlanService.getPlan(planId));
   }
 
   @PostMapping
   public ResponseEntity<?> createPlan(@RequestBody PlanDTO request,
       UriComponentsBuilder uriComponentsBuilder) {
-    Plan plan = planService.createPlan(request);
+    InternetPlan internetPlan = internetPlanService.createPlan(request);
     UriComponents uriComponents = uriComponentsBuilder.path("/plans/{id}")
-        .buildAndExpand(plan.getId());
+        .buildAndExpand(internetPlan.getId());
     return ResponseEntity.created(uriComponents.toUri()).build();
   }
 
   @PutMapping("/{plan-id}")
   public ResponseEntity<?> updatePlan(@PathVariable("plan-id") Long planId,
       @RequestBody PlanDTO request) {
-    planService.updatePlan(planId, request);
+    internetPlanService.updatePlan(planId, request);
     return ResponseEntity.noContent().build();
   }
 
   @DeleteMapping("/{plan-id}")
   public ResponseEntity<?> deletePlan(@PathVariable("plan-id") Long planId) {
-    planService.deletePlan(planId);
+    internetPlanService.deletePlan(planId);
     return ResponseEntity.noContent().build();
   }
 
   @PatchMapping("/{plan-id}")
   public ResponseEntity<?> activatePlan(@PathVariable("plan-id") Long planId) {
-    planService.updateStatus(planId);
+    internetPlanService.updateStatus(planId);
     return ResponseEntity.noContent().build();
   }
 

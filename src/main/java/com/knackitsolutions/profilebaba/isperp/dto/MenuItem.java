@@ -1,8 +1,9 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 import lombok.Data;
 
 @Data
@@ -24,6 +25,22 @@ public class MenuItem {
     }
     this.menuName = "MENU";
     this.menuItems = menus;
+  }
+
+  public static MenuItem createMenu(Set<Permission> permissions) {
+    List<Permission> parents = permissions.stream()
+        .filter(dto -> dto.getParent().getId() == 0)
+        .toList();
+    List<MenuItem> menus = new ArrayList<>();
+    for (Permission parent : parents) {
+      List<MenuItem> items = permissions.stream()
+          .filter(dto -> dto.getParent() != null)
+          .filter(dto -> dto.getParent().getId() == parent.getId()).map(Permission::getFeatureName)
+          .map(MenuItem::new).toList();
+      MenuItem item = new MenuItem(parent.getFeatureName(), items);
+      menus.add(item);
+    }
+    return new MenuItem("MENU", menus);
   }
 
   public MenuItem(String menuName) {

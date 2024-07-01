@@ -43,8 +43,8 @@ public class SubscriptionDTO {
 
   public SubscriptionDTO(Subscription entity) {
     setId(entity.getId());
-    setPlanId(entity.getPlan().getId());
-    setPlanName(entity.getPlan().getName());
+    setPlanId(entity.getInternetPlan().getId());
+    setPlanName(entity.getInternetPlan().getName());
     setFixedBillAmountPerMonth(entity.getFixedBillAmountPerMonth());
     setQuantity(entity.getQuantity());
     setFutureDays(entity.getFutureDays());

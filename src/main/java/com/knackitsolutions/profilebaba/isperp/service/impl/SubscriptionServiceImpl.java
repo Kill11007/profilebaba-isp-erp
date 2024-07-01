@@ -3,7 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.SubscriptionDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.Plan;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Subscription.SubscriptionStatus;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
@@ -11,7 +11,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.SubscriptionRepository;
 import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
-import com.knackitsolutions.profilebaba.isperp.service.PlanService;
+import com.knackitsolutions.profilebaba.isperp.service.InternetPlanService;
 import com.knackitsolutions.profilebaba.isperp.service.SubscriptionService;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +26,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
   private final SubscriptionRepository repository;
   private final CustomerService customerService;
-  private final PlanService planService;
+  private final InternetPlanService internetPlanService;
   @Override
   public List<SubscriptionDTO> getAll() {
     return repository.findAll().stream().map(SubscriptionDTO::new).collect(Collectors.toList());
@@ -50,7 +50,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
   public void updateSubscription(Long subscriptionId, SubscriptionDTO subscriptionDTO)
       throws SubscriptionNotFoundException, PlanNotFoundException {
     Subscription subscription = findSubscription(subscriptionId);
-    subscription.setPlan(planService.getPlanById(subscriptionDTO.getPlanId()));
+    subscription.setInternetPlan(internetPlanService.getPlanById(subscriptionDTO.getPlanId()));
     subscription.update(subscriptionDTO);
     repository.save(subscription);
   }
@@ -83,9 +83,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
       throws CustomerNotFoundException, PlanNotFoundException {
     Customer customerById = customerService.getCustomerById(customerId);
     Set<Subscription> subscriptions = customerById.getSubscriptions();
-    Plan planById = planService.getPlanById(subscriptionDTO.getPlanId());
+    InternetPlan internetPlanById = internetPlanService.getPlanById(subscriptionDTO.getPlanId());
     Subscription subscription = new Subscription(subscriptionDTO, customerById);
-    subscription.setPlan(planService.getPlanById(subscriptionDTO.getPlanId()));
+    subscription.setInternetPlan(internetPlanService.getPlanById(subscriptionDTO.getPlanId()));
     Subscription save = repository.save(subscription);
     if (subscriptions == null) {
       subscriptions = new HashSet<>();

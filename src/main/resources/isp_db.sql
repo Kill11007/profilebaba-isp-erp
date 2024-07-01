@@ -1,4 +1,4 @@
-create table if not exists plans(
+create table if not exists internet_plans(
 	id bigint primary KEY AUTO_INCREMENT,
     name varchar(100) not null,
     product_code varchar(50) null,
@@ -64,7 +64,7 @@ create table if not exists subscriptions(
     period int,
     future_days boolean default true,
     status enum('ACTIVE', 'IN_ACTIVE') not null default 'ACTIVE',
-    foreign key(plan_id) references plans(id),
+    foreign key(plan_id) references internet_plans(id),
     foreign key(customer_id) references customers(id)
 );
 
