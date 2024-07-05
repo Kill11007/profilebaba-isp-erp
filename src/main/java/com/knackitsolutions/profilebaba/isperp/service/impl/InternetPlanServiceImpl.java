@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
-import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.InternetPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.InternetPlanRepository;
@@ -18,18 +18,19 @@ public class InternetPlanServiceImpl implements InternetPlanService {
   private final InternetPlanRepository internetPlanRepository;
 
   @Override
-  public InternetPlan createPlan(PlanDTO request) {
+  public InternetPlan createPlan(InternetPlanDTO request) {
     InternetPlan internetPlan = new InternetPlan(request);
     return internetPlanRepository.save(internetPlan);
   }
 
   @Override
-  public void updatePlan(Long id, PlanDTO request) {
+  public void updatePlan(Long id, InternetPlanDTO request) {
     InternetPlan internetPlan = getPlanById(id);
     internetPlan.updatePlan(request);
     internetPlanRepository.save(internetPlan);
   }
 
+  //Be careful when deleting there could be customers on that plan. So remove those first.
   @Override
   public void deletePlan(Long id) {
     InternetPlan internetPlan = getPlanById(id);
@@ -37,14 +38,15 @@ public class InternetPlanServiceImpl implements InternetPlanService {
   }
 
   @Override
-  public PlanDTO getPlan(Long id) {
+  public InternetPlanDTO getPlan(Long id) {
     InternetPlan internetPlan = getPlanById(id);
-    return new PlanDTO(internetPlan);
+    return new InternetPlanDTO(internetPlan);
   }
 
   @Override
-  public List<PlanDTO> getAllPlans() {
-    return internetPlanRepository.findAll().stream().map(PlanDTO::new).collect(Collectors.toList());
+  public List<InternetPlanDTO> getAllPlans() {
+    return internetPlanRepository.findAll().stream().map(InternetPlanDTO::new)
+        .collect(Collectors.toList());
   }
 
   @Override

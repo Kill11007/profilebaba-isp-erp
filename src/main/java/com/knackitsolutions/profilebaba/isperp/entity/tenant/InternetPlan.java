@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
-import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.InternetPlanDTO;
 import java.math.BigDecimal;
 import java.util.Set;
 import javax.persistence.Column;
@@ -27,7 +27,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class InternetPlan {
 
-  public InternetPlan(PlanDTO dto) {
+  public InternetPlan(InternetPlanDTO dto) {
     this.setId(dto.getId());
     this.setActive(dto.getActive());
     this.setDiscount(dto.getDiscount());
@@ -51,7 +51,7 @@ public class InternetPlan {
     this.setPrice(internetPlan.getPrice());
   }
 
-  public void updatePlan(PlanDTO plan) {
+  public void updatePlan(InternetPlanDTO plan) {
     this.setActive(plan.getActive());
     this.setDiscount(plan.getDiscount());
     this.setAdditionalCharge(plan.getAdditionalCharge());

@@ -12,9 +12,9 @@ import org.springframework.lang.Nullable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PlanDTO {
+public class InternetPlanDTO {
 
-  public PlanDTO(InternetPlan internetPlan) {
+  public InternetPlanDTO(InternetPlan internetPlan) {
     this.setActive(internetPlan.getActive() == null || internetPlan.getActive());
     this.setDiscount(internetPlan.getDiscount());
     this.setAdditionalCharge(internetPlan.getAdditionalCharge());

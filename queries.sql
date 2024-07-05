@@ -4,9 +4,7 @@ show databases;
 -- drop database mayank;
 SELECT User FROM mysql.user;
 show tables;
-use isp_2;
-select * from isps;
-select * from isp_2.plans;
+
 select * from internet_plans;
 select * from employees;
 -- alter table employees add column (role_id int null);
@@ -33,6 +31,7 @@ select * from payments;
 select * from service_areas;
 select * from balance_sheet;
 select * from complaints;
+select * from plans;
 -- alter table mayank.complaints add column (complaint_number varchar(10));
 -- alter table mayank.complaints modify column employee_remark text;
 select * from isp_admin_db.isps;

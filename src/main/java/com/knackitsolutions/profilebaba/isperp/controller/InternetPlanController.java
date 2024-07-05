@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.controller;
 
-import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.InternetPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.service.InternetPlanService;
 import java.util.List;
@@ -20,35 +20,35 @@ import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/plans")
+@RequestMapping("/internet-plans")
 @CrossOrigin
 @RequiredArgsConstructor
-public class PlanController {
+public class InternetPlanController {
 
   private final InternetPlanService internetPlanService;
 
   @GetMapping()
-  public ResponseEntity<List<PlanDTO>> getPlans() {
+  public ResponseEntity<List<InternetPlanDTO>> getPlans() {
     return ResponseEntity.ok(internetPlanService.getAllPlans());
   }
 
   @GetMapping("/{plan-id}")
-  public ResponseEntity<PlanDTO> getPlan(@PathVariable("plan-id") Long planId) {
+  public ResponseEntity<InternetPlanDTO> getPlan(@PathVariable("plan-id") Long planId) {
     return ResponseEntity.ok(internetPlanService.getPlan(planId));
   }
 
   @PostMapping
-  public ResponseEntity<?> createPlan(@RequestBody PlanDTO request,
+  public ResponseEntity<?> createPlan(@RequestBody InternetPlanDTO request,
       UriComponentsBuilder uriComponentsBuilder) {
     InternetPlan internetPlan = internetPlanService.createPlan(request);
-    UriComponents uriComponents = uriComponentsBuilder.path("/plans/{id}")
+    UriComponents uriComponents = uriComponentsBuilder.path("/internet-plans/{id}")
         .buildAndExpand(internetPlan.getId());
     return ResponseEntity.created(uriComponents.toUri()).build();
   }
 
   @PutMapping("/{plan-id}")
   public ResponseEntity<?> updatePlan(@PathVariable("plan-id") Long planId,
-      @RequestBody PlanDTO request) {
+      @RequestBody InternetPlanDTO request) {
     internetPlanService.updatePlan(planId, request);
     return ResponseEntity.noContent().build();
   }

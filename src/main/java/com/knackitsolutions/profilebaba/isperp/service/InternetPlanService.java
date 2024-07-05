@@ -1,21 +1,21 @@
 package com.knackitsolutions.profilebaba.isperp.service;
 
-import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.InternetPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import java.util.List;
 
 public interface InternetPlanService {
 
-  InternetPlan createPlan(PlanDTO request);
+  InternetPlan createPlan(InternetPlanDTO request);
 
-  void updatePlan(Long id, PlanDTO request);
+  void updatePlan(Long id, InternetPlanDTO request);
 
   void deletePlan(Long id);
 
-  PlanDTO getPlan(Long id);
+  InternetPlanDTO getPlan(Long id);
 
-  List<PlanDTO> getAllPlans();
+  List<InternetPlanDTO> getAllPlans();
 
   void updateStatus(Long id);
 
