@@ -1,5 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
@@ -16,7 +18,6 @@ public class VendorDTO {
   private String businessName;
   private Long userId;
   private IspPlanDTO plan;
-  private MenuItem menu;
   public VendorDTO(Vendor vendor, User user) {
     this(vendor);
     this.userId = user.getId();
@@ -33,6 +34,5 @@ public class VendorDTO {
         .findFirst()
         .map(VendorPlan::getPlan)
         .map(IspPlanDTO::new).orElseThrow(PlanNotFoundException::new);
-    this.menu = new MenuItem(this.plan.getPermissionDTOS());
   }
 }

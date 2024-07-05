@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlanRepository extends JpaRepository<InternetPlan, Long> {
+public interface InternetPlanRepository extends JpaRepository<InternetPlan, Long> {
 
 }

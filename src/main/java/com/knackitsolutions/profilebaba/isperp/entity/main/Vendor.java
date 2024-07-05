@@ -1,5 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.entity.main;
 
+import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
-public class Vendor {
+public class Vendor implements UserCommonInfo {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Id
   private Long id;
@@ -23,4 +24,9 @@ public class Vendor {
 
   @OneToMany(mappedBy = "vendor", fetch = FetchType.EAGER)
   private Set<VendorPlan> vendorPlans = new HashSet<>();
+
+  @Override
+  public String getUserName() {
+    return this.businessName;
+  }
 }

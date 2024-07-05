@@ -41,7 +41,6 @@ public class UserPermissionAssignmentListener {
       throws UserNotFoundException {
     Vendor vendor = event.getVendor();
     User user = userService.findById(vendor.getUserId());
-//    String tenantId = user.getTenantId();
     user.setPermissions(null);
     userService.save(user);
   }

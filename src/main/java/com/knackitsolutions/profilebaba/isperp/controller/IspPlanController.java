@@ -35,7 +35,12 @@ public class IspPlanController {
   @GetMapping
   public ResponseEntity<List<IspPlanDTO>> getAll(
       @RequestBody(required = false) IspPlanQuery query) {
-    return ResponseEntity.ok(ispPlanService.all(query));
+    return ResponseEntity.ok(ispPlanService.all());
+  }
+
+  @GetMapping("/{plan-id}")
+  public ResponseEntity<IspPlanDTO> getAll(@PathVariable("plan-id") Long planId) {
+    return ResponseEntity.ok(ispPlanService.oneDTO(planId));
   }
 
   @PutMapping("/{plan-id}")

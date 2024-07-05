@@ -2,8 +2,10 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanQuery;
+import com.knackitsolutions.profilebaba.isperp.dto.IspPlanSpecification;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlanPermission;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanAssignmentEvent;
@@ -39,8 +41,8 @@ public class IspPlanServiceImpl implements IspPlanService {
   private final ApplicationEventPublisher eventPublisher;
 
   @Override
-  public List<IspPlanDTO> all(IspPlanQuery ispPlanQuery) {
-    return repository.findAll(ispPlanQuery.toSpecification()).stream().map(IspPlanDTO::new).collect(
+  public List<IspPlanDTO> all() {
+    return repository.findAll().stream().map(IspPlanDTO::new).collect(
         Collectors.toList());
   }
 
@@ -58,24 +60,33 @@ public class IspPlanServiceImpl implements IspPlanService {
   public void update(Long id, IspPlanDTO dto) throws IspPlanNotFoundException {
     IspPlan one = one(id);
     one.update(dto);
+    one.getIspPlanPermissions().clear();
+    one.setIspPlanPermissions(dto.getPermissionIds().stream().map(permissionRepository::findById)
+        .flatMap(Optional::stream)
+        .map(permission -> new IspPlanPermission(one, permission)).collect(Collectors.toSet()));
     repository.save(one);
   }
 
   @Override
   public void create(IspPlanDTO dto) {
     IspPlan ispPlan = new IspPlan(dto);
-    IspPlan save = repository.save(ispPlan);
-    dto.getPermissionIds()
+    Set<IspPlanPermission> ispPlanPermissions = dto.getPermissionIds()
         .stream()
         .map(permissionRepository::findById)
         .flatMap(Optional::stream)
-        .map(permission -> new IspPlanPermission(save, permission))
-        .forEach(ispPlanPermissionRepository::save);
+        .map(permission -> new IspPlanPermission(ispPlan, permission)).collect(Collectors.toSet());
+    ispPlan.setIspPlanPermissions(ispPlanPermissions);
+    repository.save(ispPlan);
   }
 
+  //Do not delete a plan. Many customer would already be using this plan.
   @Override
   public void delete(Long id) throws IspPlanNotFoundException {
     IspPlan one = one(id);
+    ispPlanPermissionRepository.deleteAll(one.getIspPlanPermissions());
+    one.getVendorPlans().stream()
+        .peek(vp -> eventPublisher.publishEvent(new ISPPlanDeactivateEvent(this, vp.getVendor())))
+        .forEach(vendorPlanRepository::delete);
     repository.delete(one);
   }
 
@@ -98,7 +109,6 @@ public class IspPlanServiceImpl implements IspPlanService {
   public void deactivateCurrentIspPlan(Long ispId) throws VendorNotFoundException {
     Vendor vendor = vendorRepository.findById(ispId).orElseThrow(VendorNotFoundException::new);
     eventPublisher.publishEvent(new ISPPlanDeactivateEvent(this, vendor));
-
   }
 
 }

@@ -4,6 +4,7 @@ import com.knackitsolutions.profilebaba.isperp.controller.VendorController.Login
 import com.knackitsolutions.profilebaba.isperp.dto.JwtResponse;
 import com.knackitsolutions.profilebaba.isperp.dto.LoginResponse;
 import com.knackitsolutions.profilebaba.isperp.dto.MenuItem;
+import com.knackitsolutions.profilebaba.isperp.dto.UserInfo;
 import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
@@ -16,6 +17,7 @@ import com.knackitsolutions.profilebaba.isperp.repository.main.TenantRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.UserRoleFeatureRepository;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import com.knackitsolutions.profilebaba.isperp.utility.JwtTokenUtil;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -59,7 +61,11 @@ public class AuthenticationService {
       permissions = userRoleFeatures.stream().map(UserRoleFeature::getPermission)
           .collect(Collectors.toSet());
     }
-    return new LoginResponse(userDetails.getId(), userDetails.getUserType(),
-        MenuItem.createMenu(permissions), new JwtResponse(token));
+    List<MenuItem> menuItem = MenuItem.createMenu(permissions).stream()
+        .sorted(Comparator.comparing(MenuItem::getMenuName)).toList();
+    return LoginResponse.builder().userType(userDetails.getUserType())
+        .menuItem(menuItem)
+        .token(new JwtResponse(token)).user(new UserInfo(userDetails)).build();
   }
+
 }

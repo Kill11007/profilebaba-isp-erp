@@ -42,6 +42,9 @@ public class Permission {
   private Set<User> users;
 
   private String featureName;
+
+  private String url;
+  private String icons;
   @ManyToOne
   @JoinColumn(name="parent_id")
   @JsonBackReference

@@ -16,6 +16,8 @@ public class PermissionDTO {
 
   private String featureName;
   private Long parentId;
+  private String url;
+  private String icon;
 
   public PermissionDTO(Permission permission) {
     if (permission == null) {
@@ -25,5 +27,7 @@ public class PermissionDTO {
     this.name = permission.getName();
     this.parentId = permission.getParent().getId();
     this.featureName = permission.getFeatureName();
+    this.url = permission.getUrl();
+    this.icon = permission.getIcons();
   }
 }

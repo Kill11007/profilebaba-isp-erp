@@ -181,6 +181,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
   @Override
   public Employee findByUserId(Long userId) throws EmployeeNotFoundException {
-    return repository.findByUserId(userId).orElseThrow(() -> new EmployeeNotFoundException());
+    return repository.findByUserId(userId).orElseThrow(EmployeeNotFoundException::new);
   }
 }

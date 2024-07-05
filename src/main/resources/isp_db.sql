@@ -24,7 +24,9 @@ create table if not exists customers(
     customer_code varchar(50),
     remark varchar(255),
     active boolean not null default true,
-    user_id bigint
+    user_id bigint,
+    role_id int,
+    foreign key(role_id) references customer_roles(id)
 );
 
 create table if not exists hardware_details(
@@ -74,7 +76,9 @@ create table if not exists employees(
     address varchar(255) null,
     email varchar(100),
     phone varchar(20),
-    user_id bigint not null unique
+    user_id bigint not null unique,
+    role_id int,
+    foreign key(role_id) references employee_roles(id)
 );
 create table if not exists payments(
 	id bigint primary key auto_increment,
@@ -160,11 +164,11 @@ create table if not exists employee_service_areas(
 
 create table if not exists customer_follow_up(
 	id bigint primary key auto_increment,
-    reason text,
+  reason text,
 	follow_up_date date,
-    customer_id bigint not null,
-    foreign key (customer_id) references customers(id),
-    updated_date datetime
+  customer_id bigint not null,
+  foreign key (customer_id) references customers(id),
+  updated_date datetime
 );
 
 create table if not exists complaints(
@@ -186,6 +190,30 @@ create table if not exists customer_care_contacts(
   id bigint primary key auto_increment,
   name varchar(50) not null unique,
   contact_number varchar(20) not null unique
+);
+
+create table if not exists customer_roles(
+  id int primary key auto_increment,
+  role_name varchar(50) not null unique,
+  created_date datetime not null,
+  updated_date datetime not null
+);
+
+create table if not exists employee_roles(
+  id int primary key auto_increment,
+  role_name varchar(50) not null unique,
+  created_date datetime not null,
+  updated_date datetime not null
+);
+
+create table if not exists user_type_role_permissions(
+  id bigint primary key auto_increment,
+  user_type varchar(50) not null unique,
+  customer_role_id int,
+  employee_role_id int,
+  permission_id bigint not null,
+  foreign key(customer_role_id) references customer_role(id),
+  foreign key(employee_role_id) references employee_role(id)
 );
 -- drop table complaints;
 -- alter table employees add column phone varchar(20);

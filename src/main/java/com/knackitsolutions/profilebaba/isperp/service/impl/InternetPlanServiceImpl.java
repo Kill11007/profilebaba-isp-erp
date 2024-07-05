@@ -3,7 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 import com.knackitsolutions.profilebaba.isperp.dto.PlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.repository.tenant.PlanRepository;
+import com.knackitsolutions.profilebaba.isperp.repository.tenant.InternetPlanRepository;
 import com.knackitsolutions.profilebaba.isperp.service.InternetPlanService;
 import java.util.List;
 import java.util.function.Function;
@@ -15,25 +15,25 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class InternetPlanServiceImpl implements InternetPlanService {
 
-  private final PlanRepository planRepository;
+  private final InternetPlanRepository internetPlanRepository;
 
   @Override
   public InternetPlan createPlan(PlanDTO request) {
     InternetPlan internetPlan = new InternetPlan(request);
-    return planRepository.save(internetPlan);
+    return internetPlanRepository.save(internetPlan);
   }
 
   @Override
   public void updatePlan(Long id, PlanDTO request) {
     InternetPlan internetPlan = getPlanById(id);
     internetPlan.updatePlan(request);
-    planRepository.save(internetPlan);
+    internetPlanRepository.save(internetPlan);
   }
 
   @Override
   public void deletePlan(Long id) {
     InternetPlan internetPlan = getPlanById(id);
-    planRepository.delete(internetPlan);
+    internetPlanRepository.delete(internetPlan);
   }
 
   @Override
@@ -44,19 +44,19 @@ public class InternetPlanServiceImpl implements InternetPlanService {
 
   @Override
   public List<PlanDTO> getAllPlans() {
-    return planRepository.findAll().stream().map(PlanDTO::new).collect(Collectors.toList());
+    return internetPlanRepository.findAll().stream().map(PlanDTO::new).collect(Collectors.toList());
   }
 
   @Override
   public void updateStatus(Long id) {
     InternetPlan internetPlan = getPlanById(id);
     internetPlan.setActive(!internetPlan.getActive());
-    planRepository.save(internetPlan);
+    internetPlanRepository.save(internetPlan);
   }
 
   @Override
   public InternetPlan getPlanById(Long id) throws PlanNotFoundException {
-    return planRepository.findById(id).orElseThrow(() -> planNotFoundWithId.apply(id));
+    return internetPlanRepository.findById(id).orElseThrow(() -> planNotFoundWithId.apply(id));
   }
 
   private final Function<Long, PlanNotFoundException> planNotFoundWithId = id -> new PlanNotFoundException(

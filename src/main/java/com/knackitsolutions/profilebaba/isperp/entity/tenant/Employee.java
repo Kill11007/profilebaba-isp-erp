@@ -2,16 +2,19 @@ package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.NewEmployeeRequest;
+import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -30,7 +33,7 @@ import lombok.ToString.Exclude;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+public class Employee implements UserCommonInfo {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -55,6 +58,10 @@ public class Employee {
   @Exclude
   private List<Complaint> complaints;
 
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "role_id", referencedColumnName = "id")
+  private EmployeeRole employeeRole;
+
   public Employee(NewEmployeeRequest request) {
     setName(request.getName());
     setAddress(request.getAddress());
@@ -66,5 +73,10 @@ public class Employee {
     setName(dto.getName());
     setAddress(dto.getAddress());
     setEmail(dto.getEmail());
+  }
+
+  @Override
+  public String getUserName() {
+    return this.name;
   }
 }

@@ -106,14 +106,15 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler(value = ConstraintViolationException.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handleConstraintViolation(ConstraintViolationException e) {
     return handleException(e);
   }
 
-  @ExceptionHandler(value = Exception.class)
-  public ErrorResponse handleException(Exception e) {
-    return handleException(e);
-  }
+//  @ExceptionHandler(value = Exception.class)
+//  public ErrorResponse handleGenericException(Exception e) {
+//    return handleException(e);
+//  }
 
   private ErrorResponse handleException(Throwable exception) {
     Throwable cause = exception.getCause();

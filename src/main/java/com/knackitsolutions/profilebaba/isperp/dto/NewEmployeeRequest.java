@@ -18,4 +18,5 @@ public class NewEmployeeRequest {
   private String password;
   private List<Long> areas;
   private List<Long> permissions;
+  private Integer employeeRoleId;
 }

@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.EmployeeRole;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ public class EmployeeDTO {
   private String phone;
   private Set<ServiceAreaDTO> areas;
   private Set<PermissionDTO> permissions;
-
+  private EmployeeRoleDTO employeeRole;
+  private Integer employeeRoleId;
   public EmployeeDTO(Employee entity, User user) {
     setId(entity.getId());
     setName(entity.getName());
@@ -33,6 +35,8 @@ public class EmployeeDTO {
 
     setPermissions(
         user.getPermissions().stream().map(PermissionDTO::new).collect(Collectors.toSet()));
+    setEmployeeRole(new EmployeeRoleDTO(entity.getEmployeeRole()));
+    this.employeeRoleId = employeeRole.getId();
   }
 
   public EmployeeDTO(Employee employee) {
@@ -43,5 +47,7 @@ public class EmployeeDTO {
     this.setAreas(employee.getServiceAreas().stream().map(ServiceAreaDTO::new).collect(
         Collectors.toSet()));
     this.setPhone(employee.getPhone());
+    setEmployeeRole(new EmployeeRoleDTO(employee.getEmployeeRole()));
+    this.employeeRoleId = employeeRole.getId();
   }
 }

@@ -34,6 +34,8 @@ public class CustomerDTO {
   private BillingDetailDTO billingDetail;
   private Set<SubscriptionDTO> subscriptions;
   private Long userId;
+  private Integer customerRoleId;
+  private CustomerRoleDTO customerRole;
   public CustomerDTO(Customer entity) {
     if (entity == null) {
       return;
@@ -58,6 +60,7 @@ public class CustomerDTO {
     setSubscriptions(
         entity.getSubscriptions().stream().map(SubscriptionDTO::new).collect(Collectors.toSet()));
     setUserId(entity.getUserId());
+    this.customerRole = new CustomerRoleDTO(entity.getCustomerRole());
   }
 
 }

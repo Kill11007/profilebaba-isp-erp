@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SignUpRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.GenericResponse;
+import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
 import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;

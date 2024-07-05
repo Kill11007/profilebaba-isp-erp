@@ -1,6 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -8,9 +9,12 @@ import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -32,7 +36,7 @@ import org.apache.commons.collections4.CollectionUtils;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+public class Customer implements UserCommonInfo {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -85,6 +89,10 @@ public class Customer {
 
   private Long userId;
 
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "role_id", referencedColumnName = "id")
+  private CustomerRole customerRole;
+
   public void update(CustomerDTO dto) {
     setName(dto.getName());
     setBillingName(dto.getBillingName());
@@ -120,4 +128,8 @@ public class Customer {
     setUserId(dto.getUserId());
   }
 
+  @Override
+  public String getUserName() {
+    return this.name;
+  }
 }

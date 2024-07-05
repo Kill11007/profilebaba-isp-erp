@@ -2,15 +2,23 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.LoginRequest;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SetPasswordRequest;
+import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.JwtResponse;
 import com.knackitsolutions.profilebaba.isperp.dto.LoginResponse;
+import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
 import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
+import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
+import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidLoginCredentialException;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
 import com.knackitsolutions.profilebaba.isperp.exception.NonRefreshableTokenException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.helper.UserServiceHelper;
 import com.knackitsolutions.profilebaba.isperp.service.IAuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import com.knackitsolutions.profilebaba.isperp.service.impl.AuthenticationService;
@@ -51,6 +59,8 @@ public class AuthenticationController {
   private final UserService userService;
   private final IAuthenticationFacade authenticationFacade;
   private final AuthenticationService authenticationService;
+  private final UserServiceHelper userServiceHelper;
+
 
   @PostMapping
   public ResponseEntity<?> login(@RequestBody LoginRequest request)
@@ -110,6 +120,21 @@ public class AuthenticationController {
     Authentication authentication = authenticationFacade.getAuthentication();
     userService.changePassword(authentication, request);
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/profile")
+  public ResponseEntity<?> profile() throws UserNotFoundException {
+    Authentication authentication = authenticationFacade.getAuthentication();
+    User userDetails = (User) authentication.getPrincipal();
+    UserCommonInfo userInfo = userServiceHelper.getUserInfo(userDetails);
+    if (userDetails.getUserType() == UserType.ISP) {
+      return ResponseEntity.ok(new VendorDTO((Vendor) userInfo));
+    } else if (userDetails.getUserType() == UserType.EMPLOYEE) {
+      return ResponseEntity.ok(new EmployeeDTO((Employee) userInfo));
+    } else if (userDetails.getUserType() == UserType.CUSTOMER) {
+      return ResponseEntity.ok(new CustomerDTO((Customer) userInfo));
+    }
+    throw new UserNotFoundException();
   }
 
   @Data

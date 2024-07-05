@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -42,10 +43,10 @@ public class IspPlan {
   private LocalDateTime createdDateTime;
   @Column(name = "updated_time")
   private LocalDateTime updateDateTime;
-  @OneToMany(mappedBy = "ispPlan", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "ispPlan", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonBackReference
   private Set<IspPlanPermission> ispPlanPermissions = new HashSet<>();
-  @OneToMany(mappedBy = "plan")
+  @OneToMany(mappedBy = "plan", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<VendorPlan> vendorPlans = new HashSet<>();
 
   public IspPlan(IspPlanDTO dto) {

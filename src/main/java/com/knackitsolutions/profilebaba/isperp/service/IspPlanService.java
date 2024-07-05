@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IspPlanService {
 
-  List<IspPlanDTO> all(IspPlanQuery ispPlanQuery);
+  List<IspPlanDTO> all();
 
   IspPlanDTO oneDTO(Long id) throws IspPlanNotFoundException;
 

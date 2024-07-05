@@ -1,5 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.helper;
 
+import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
@@ -48,4 +49,28 @@ public class UserServiceHelper {
     }
     return user.getUsername();
   }
+
+  public UserCommonInfo getUserInfo(User user) {
+    if (user.getUserType() == UserType.ISP) {
+      try {
+        return vendorService.findByUserId(user.getId());
+      } catch (UserNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    } else if (user.getUserType() == UserType.EMPLOYEE) {
+      try {
+        return employeeService.findByUserId(user.getId());
+      } catch (EmployeeNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    } else if (user.getUserType() == UserType.CUSTOMER) {
+      try {
+        return customerService.findByUserId(user.getId());
+      } catch (CustomerNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return null;
+  }
+
 }
