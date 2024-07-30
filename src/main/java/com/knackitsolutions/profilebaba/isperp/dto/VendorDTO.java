@@ -30,7 +30,7 @@ public class VendorDTO {
     this.userId = vendor.getUserId();
     this.plan = vendor.getVendorPlans()
         .stream()
-        .filter(vendorPlan -> vendorPlan.getEndDateTime() != null)
+        .filter(vendorPlan -> vendorPlan.getEndDateTime() == null)
         .findFirst()
         .map(VendorPlan::getPlan)
         .map(IspPlanDTO::new).orElseThrow(PlanNotFoundException::new);

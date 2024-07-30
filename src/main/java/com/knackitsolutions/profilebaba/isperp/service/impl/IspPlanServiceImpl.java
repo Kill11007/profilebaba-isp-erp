@@ -76,7 +76,7 @@ public class IspPlanServiceImpl implements IspPlanService {
         .flatMap(Optional::stream)
         .map(permission -> new IspPlanPermission(ispPlan, permission)).collect(Collectors.toSet());
     ispPlan.setIspPlanPermissions(ispPlanPermissions);
-    repository.save(ispPlan);
+    IspPlan save = repository.save(ispPlan);
   }
 
   //Do not delete a plan. Many customer would already be using this plan.

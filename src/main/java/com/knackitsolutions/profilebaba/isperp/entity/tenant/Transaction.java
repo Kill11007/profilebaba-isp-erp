@@ -2,7 +2,6 @@ package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BalanceSheet.TransactionType;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface Transaction {

@@ -55,24 +55,3 @@ select * from isp_admin_db.isp_plans;
 select * from isp_admin_db.user_role_features;
 
 -- drop table plans;
-
-select
-        customer0_.id as id1_9_,
-        customer0_.active as active2_9_,
-        customer0_.address as address3_9_,
-        customer0_.billing_area as billing_4_9_,
-        customer0_.billing_name as billing_5_9_,
-        customer0_.customer_code as customer6_9_,
-        customer0_.role_id as role_id15_9_,
-        customer0_.email as email7_9_,
-        customer0_.gst_no as gst_no8_9_,
-        customer0_.name as name9_9_,
-        customer0_.primary_mobile_no as primary10_9_,
-        customer0_.remark as remark11_9_,
-        customer0_.secondary_mobile_no as seconda12_9_,
-        customer0_.security_deposit as securit13_9_,
-        customer0_.user_id as user_id14_9_ 
-    from
-        customers customer0_ 
-    where
-        customer0_.user_id=32
