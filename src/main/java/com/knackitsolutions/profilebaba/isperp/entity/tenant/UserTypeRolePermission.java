@@ -31,4 +31,25 @@ public class UserTypeRolePermission {
   @JoinColumn(name = "employee_role_id")
   private EmployeeRole employeeRole;
   private Long permissionId;
+
+  public UserTypeRolePermission(EmployeeRole employeeRole, Long permissionId) {
+    this(UserType.EMPLOYEE, employeeRole, permissionId);
+  }
+
+  public UserTypeRolePermission(CustomerRole customerRole, Long permissionId) {
+    this(UserType.CUSTOMER, customerRole, permissionId);
+
+  }
+
+  public UserTypeRolePermission(UserType userType, EmployeeRole employeeRole, Long permissionId) {
+    this.userType = userType;
+    this.employeeRole = employeeRole;
+    this.permissionId = permissionId;
+  }
+
+  public UserTypeRolePermission(UserType userType, CustomerRole customerRole, Long permissionId) {
+    this.userType = userType;
+    this.customerRole = customerRole;
+    this.permissionId = permissionId;
+  }
 }

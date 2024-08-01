@@ -17,6 +17,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundExcep
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.EmployeeRepository;
+import com.knackitsolutions.profilebaba.isperp.repository.tenant.EmployeeRoleRepository;
 import com.knackitsolutions.profilebaba.isperp.service.AreaService;
 import com.knackitsolutions.profilebaba.isperp.service.EmployeeService;
 import com.knackitsolutions.profilebaba.isperp.service.PermissionService;
@@ -40,6 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   private final AreaService areaService;
   private final PasswordEncoder passwordEncoder;
   private final UserService userService;
+  private final EmployeeRoleRepository employeeRoleRepository;
 
   @Override
   public Employee add(NewEmployeeRequest request)
@@ -52,6 +54,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     Employee employee = new Employee(request);
     employee.setServiceAreas(getServiceAreas(request.getAreas()));
     employee.setUserId(user.getId());
+    employeeRoleRepository.findById(request.getEmployeeRoleId()).ifPresent(employee::setEmployeeRole);  //TODO add permission to user permission table
     Employee save = save(employee);
     return save;
   }
@@ -124,6 +127,7 @@ public class EmployeeServiceImpl implements EmployeeService {
   @Override
   public void delete(Long id) throws EmployeeNotFoundException, UserNotFoundException {
     Employee byId = findById(id);
+    userService.deleteByUserId(byId.getUserId());
     repository.delete(byId);
   }
 

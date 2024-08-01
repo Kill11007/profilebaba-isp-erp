@@ -11,9 +11,6 @@ import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.UserRepository;
-import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
-import com.knackitsolutions.profilebaba.isperp.service.EmployeeService;
-import com.knackitsolutions.profilebaba.isperp.service.IspService;
 import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import java.util.List;
@@ -122,6 +119,7 @@ public class UserServiceImpl implements UserService {
     user.setUserType(UserType.CUSTOMER);
     String tenantId = TenantContext.getTenantId();
     user.setTenantId(tenantId);
+    user.setPassword(passwordEncoder.encode("12345"));  //TODO hard coded the customer password
     return userRepository.save(user);
   }
 

@@ -208,7 +208,7 @@ create table if not exists customer_care_contacts(
 
 create table if not exists user_type_role_permissions(
   id bigint primary key auto_increment,
-  user_type varchar(50) not null unique,
+  user_type varchar(50) not null,
   customer_role_id int,
   employee_role_id int,
   permission_id bigint not null,
@@ -216,4 +216,4 @@ create table if not exists user_type_role_permissions(
   foreign key(employee_role_id) references employee_roles(id)
 );
 -- drop table complaints;
--- alter table employees add column phone varchar(20);
+-- alter table user_type_role_permissions modify column user_type varchar(50) not null;

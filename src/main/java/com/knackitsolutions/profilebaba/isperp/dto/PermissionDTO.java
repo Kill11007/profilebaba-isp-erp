@@ -20,12 +20,12 @@ public class PermissionDTO {
   private String icon;
 
   public PermissionDTO(Permission permission) {
-    if (permission == null) {
+    if (permission == null || permission.getId() <= 0) {
       return;
     }
     this.id = permission.getId();
     this.name = permission.getName();
-    this.parentId = permission.getParent().getId();
+    this.parentId = permission.getParent() != null ? permission.getParent().getId() : null;
     this.featureName = permission.getFeatureName();
     this.url = permission.getUrl();
     this.icon = permission.getIcon();

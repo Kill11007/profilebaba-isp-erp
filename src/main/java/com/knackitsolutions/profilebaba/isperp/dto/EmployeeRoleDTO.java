@@ -1,5 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.EmployeeRole;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -20,6 +21,8 @@ public class EmployeeRoleDTO {
   private LocalDateTime createdDate;
   private LocalDateTime updatedDate;
   private List<Long> permissionsId;
+  private List<PermissionDTO> permissions;
+  @JsonIgnore
   private Set<UserTypeRolePermissionDTO> userTypeRolePermissions = new HashSet<>();
 
   public EmployeeRoleDTO(EmployeeRole employeeRole) {

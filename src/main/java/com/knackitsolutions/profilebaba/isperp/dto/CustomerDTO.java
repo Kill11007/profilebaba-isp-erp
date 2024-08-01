@@ -15,7 +15,7 @@ import org.apache.commons.collections4.CollectionUtils;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CustomerDTO {
+public class CustomerDTO implements ProfileName {
 
   private Long id;
   private String name;
@@ -63,4 +63,8 @@ public class CustomerDTO {
     this.customerRole = new CustomerRoleDTO(entity.getCustomerRole());
   }
 
+  @Override
+  public String getPhoneNumber() {
+    return this.primaryMobileNo;
+  }
 }

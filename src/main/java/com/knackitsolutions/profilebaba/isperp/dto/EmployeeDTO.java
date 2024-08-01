@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
-import com.knackitsolutions.profilebaba.isperp.entity.tenant.EmployeeRole;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EmployeeDTO {
+public class EmployeeDTO implements ProfileName{
   private Long id;
   private String name;
   private String address;
@@ -49,5 +49,10 @@ public class EmployeeDTO {
     this.setPhone(employee.getPhone());
     setEmployeeRole(new EmployeeRoleDTO(employee.getEmployeeRole()));
     this.employeeRoleId = employeeRole.getId();
+  }
+
+  @Override
+  public String getPhoneNumber() {
+    return this.phone;
   }
 }

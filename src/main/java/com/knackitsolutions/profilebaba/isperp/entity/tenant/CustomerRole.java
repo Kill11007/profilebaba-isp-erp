@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.knackitsolutions.profilebaba.isperp.dto.CustomerRoleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,4 +38,9 @@ public class CustomerRole {
 
   @OneToMany(mappedBy = "customerRole")
   private Set<Customer> customers = new HashSet<>();
+  public CustomerRole(CustomerRoleDTO dto) {
+    this.setRoleName(dto.getRoleName());
+    this.setCreatedDate(LocalDateTime.now());
+    this.setUpdatedDate(LocalDateTime.now());
+  }
 }

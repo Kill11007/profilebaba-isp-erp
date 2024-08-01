@@ -35,8 +35,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class EmployeeController {
 
-  private Supplier<ResponseEntity<Void>> noContent = () -> ResponseEntity.noContent().build();
-  private BiFunction<UriComponentsBuilder, Long, ResponseEntity<Void>> created =
+  private final Supplier<ResponseEntity<Void>> noContent = () -> ResponseEntity.noContent().build();
+  private final BiFunction<UriComponentsBuilder, Long, ResponseEntity<Void>> created =
       (uriComponentsBuilder, id) -> ResponseEntity.created(
           uriComponentsBuilder.path("/employees/{id}").buildAndExpand(id).toUri()).build();
   private final EmployeeService employeeService;

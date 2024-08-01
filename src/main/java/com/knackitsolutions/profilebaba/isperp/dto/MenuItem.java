@@ -31,19 +31,39 @@ public class MenuItem {
   }
 
   public static List<MenuItem> createMenu(Set<Permission> permissions) {
-    List<Permission> parents = permissions.stream()
-        .filter(dto -> dto.getParent().getId() == 0)
-        .toList();
+    List<Permission> parents = new ArrayList<>(permissions.stream()
+            .filter(entity -> entity.getParent().getId() == 0)
+            .toList());
+    if (parents.isEmpty()) {
+      for (Permission permission : permissions) {
+        parents.add(getParentPermission(permission));
+      }
+    }
     List<MenuItem> menus = new ArrayList<>();
     for (Permission parent : parents) {
       List<MenuItem> items = permissions.stream()
-          .filter(dto -> dto.getParent() != null)
-          .filter(dto -> Objects.equals(dto.getParent().getId(), parent.getId()))
-          .map(MenuItem::new).toList();
+              .filter(dto -> dto.getParent() != null)
+              .filter(dto -> Objects.equals(dto.getParent().getId(), parent.getId()))
+              .map(MenuItem::new).toList();
+      if (items.isEmpty()) {
+        items = getMenuItems(parent);
+      }
       MenuItem item = new MenuItem(parent, items);
       menus.add(item);
     }
     return menus;
+  }
+
+  private static List<MenuItem> getMenuItems(Permission parent) {
+    Set<Permission> permissions = parent.getPermissions();
+    return permissions.stream().map(MenuItem::new).toList();
+  }
+
+  private static Permission getParentPermission(Permission permission) {
+    if (permission.getParent().getId() == 0) {
+      return permission;
+    }
+    return getParentPermission(permission.getParent());
   }
 
   public MenuItem(Permission permission) {

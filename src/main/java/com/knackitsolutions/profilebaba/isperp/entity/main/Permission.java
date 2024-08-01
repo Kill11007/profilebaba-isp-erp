@@ -50,7 +50,7 @@ public class Permission {
   @JsonBackReference
   private Permission parent;
 
-  @OneToMany(mappedBy = "parent")
+  @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
   private Set<Permission> permissions = new HashSet<>();
 
   @OneToMany(mappedBy = "permission")

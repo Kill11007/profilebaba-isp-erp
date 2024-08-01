@@ -19,8 +19,9 @@ import java.util.Optional;
 import java.util.Set;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -49,6 +50,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class CustomerController {
 
   private final CustomerService customerService;
+  private final UserService userService;
   private final IAuthenticationFacade authenticationFacade;
   private SubscriptionService subscriptionService;
 
@@ -71,7 +73,9 @@ public class CustomerController {
 
   @DeleteMapping("/{customer-id}")
   public ResponseEntity<?> deleteCustomer(@PathVariable("customer-id") Long customerId)
-      throws CustomerNotFoundException {
+          throws CustomerNotFoundException {
+    Customer customerById = customerService.getCustomerById(customerId);
+    userService.deleteByUserId(customerById.getUserId());
     customerService.deleteCustomer(customerId);
     return ResponseEntity.noContent().build();
   }

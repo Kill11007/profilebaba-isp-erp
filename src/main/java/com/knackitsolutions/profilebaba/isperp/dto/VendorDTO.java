@@ -1,7 +1,5 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
@@ -11,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class VendorDTO {
+public class VendorDTO implements ProfileName{
 
   private Long vendorId;
   private String phoneNumber;
@@ -34,5 +32,10 @@ public class VendorDTO {
         .findFirst()
         .map(VendorPlan::getPlan)
         .map(IspPlanDTO::new).orElseThrow(PlanNotFoundException::new);
+  }
+
+  @Override
+  public String getName() {
+    return this.businessName;
   }
 }

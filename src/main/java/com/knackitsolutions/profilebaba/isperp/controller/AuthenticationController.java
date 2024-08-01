@@ -2,22 +2,13 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.LoginRequest;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SetPasswordRequest;
-import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
-import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;
-import com.knackitsolutions.profilebaba.isperp.dto.JwtResponse;
-import com.knackitsolutions.profilebaba.isperp.dto.LoginResponse;
-import com.knackitsolutions.profilebaba.isperp.dto.UserCommonInfo;
-import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
+import com.knackitsolutions.profilebaba.isperp.dto.*;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
 import com.knackitsolutions.profilebaba.isperp.enums.UserType;
-import com.knackitsolutions.profilebaba.isperp.exception.InvalidLoginCredentialException;
-import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
-import com.knackitsolutions.profilebaba.isperp.exception.NonRefreshableTokenException;
-import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.exception.*;
 import com.knackitsolutions.profilebaba.isperp.helper.UserServiceHelper;
 import com.knackitsolutions.profilebaba.isperp.service.IAuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
@@ -137,10 +128,34 @@ public class AuthenticationController {
     throw new UserNotFoundException();
   }
 
+  @PostMapping("/send-otp")
+  public ResponseEntity<GenericResponse> sendOTP(@RequestBody SendOTPRequest request)
+          throws OTPNotSentException {
+    return ResponseEntity.ok().body(authenticationService.sendOTP(request.getPhoneNumber()));
+  }
+
+  @PostMapping("/validate-otp")
+  public ResponseEntity<GenericResponse> validateOTP(@RequestBody ValidateOTPRequest request)
+          throws InvalidOTPException, UserNotFoundException {
+    return ResponseEntity.ok()
+            .body(authenticationService.validateOTP(request.getPhoneNumber(), request.getOtp()));
+  }
+
   @Data
   public static class ChangePassword {
     private String phoneNumber;
     private String oldPassword;
     private String newPassword;
   }
+
+  @Data
+  public static class SendOTPRequest{
+    private String phoneNumber;
+  }
+  @Data
+  public static class ValidateOTPRequest {
+    private String phoneNumber;
+    private String otp;
+  }
+
 }
