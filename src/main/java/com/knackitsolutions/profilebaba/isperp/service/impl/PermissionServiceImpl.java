@@ -6,6 +6,8 @@ import com.knackitsolutions.profilebaba.isperp.exception.PermissionAlreadyExists
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.PermissionRepository;
 import com.knackitsolutions.profilebaba.isperp.service.PermissionService;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class PermissionServiceImpl implements PermissionService {
-
   private final PermissionRepository repository;
 
   @Override
@@ -22,7 +23,19 @@ public class PermissionServiceImpl implements PermissionService {
     if (repository.existsByName(dto.getName())) {
       throw new PermissionAlreadyExistsException();
     }
-    return save(new Permission(dto));
+    Permission permission = new Permission(dto);
+    repository.findById(dto.getId()).ifPresent(permission::setParent);
+    return save(permission);
+  }
+
+  @Override
+  public List<Permission> add(List<PermissionDTO> dtos) throws PermissionAlreadyExistsException {
+      List<Permission> list = new ArrayList<>();
+      for (PermissionDTO dto : dtos) {
+          Permission add = add(dto);
+          list.add(add);
+      }
+      return list;
   }
 
   @Override

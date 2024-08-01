@@ -1,6 +1,5 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
-import com.knackitsolutions.profilebaba.isperp.config.TenantContext;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
 import com.knackitsolutions.profilebaba.isperp.exception.TenantCreationException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.TenantRepository;
@@ -12,9 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -23,7 +20,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.jdbc.datasource.init.ScriptException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -61,10 +57,10 @@ public class TenantManagementServiceImpl implements TenantManagementService {
   @Override
   public Tenant createTenant(String tenantId, String db, String password) {
     tenantId = TENANT_ID_PREFIX + tenantId;
-    if (!db.matches(VALID_DATABASE_NAME_REGEXP)) {
-      throw new TenantCreationException("Invalid db name: " + db);
-    }
-
+    /*if (!db.matches(VALID_DATABASE_NAME_REGEXP)) {
+      throw new TenantCreationException("Invalid db name: " + createMySQLDbName(db));
+    }*/
+    db = createMySQLDbName(db);
     String url = urlPrefix+db;
     String encryptedPassword = encryptionService.encrypt(password, secret, salt);
     try {
@@ -88,11 +84,29 @@ public class TenantManagementServiceImpl implements TenantManagementService {
     return tenantRepository.save(tenant);
   }
 
+  private String createMySQLDbName(String db) {
+    String dbName = db.toLowerCase();
+    // Replace invalid characters with underscores
+    dbName = dbName.replaceAll("[^a-z0-9]+", "_");
+    // Remove leading underscores
+    dbName = dbName.replaceAll("^_+", "");
+    // Trim to 64 characters
+    if (dbName.length() > 64) {
+      dbName = dbName.substring(0, 64);
+    }
+    // Ensure it starts with a letter
+    if (dbName.isEmpty() || !Character.isLetter(dbName.charAt(0))) {
+      dbName = "db_" + dbName;
+    }
+
+    return dbName;
+  }
+
   private void createDatabase(String db, String password) {
     jdbcTemplate.execute((StatementCallback<Boolean>) stmt ->
-        stmt.execute("CREATE DATABASE " + db));
+        stmt.execute("CREATE DATABASE IF NOT EXISTS " + db));
     jdbcTemplate.execute((StatementCallback<Boolean>) stmt ->
-        stmt.execute("CREATE USER " + db + "@'localhost' IDENTIFIED BY '" + password + "'"));
+        stmt.execute("CREATE USER IF NOT EXISTS " + db + "@'localhost' IDENTIFIED BY '" + password + "'"));
     jdbcTemplate.execute((StatementCallback<Boolean>) stmt ->
         stmt.execute("GRANT ALL PRIVILEGES ON " + db + ".* TO " + db + "@'localhost'"));
   }

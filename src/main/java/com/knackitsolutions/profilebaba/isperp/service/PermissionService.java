@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface PermissionService {
   Permission add(PermissionDTO dto) throws PermissionAlreadyExistsException;
+  List<Permission> add(List<PermissionDTO> dtos) throws PermissionAlreadyExistsException;
   Permission save(Permission permission);
   PermissionDTO findById(Long id) throws PermissionNotFoundException;
   Permission get(Long id) throws PermissionNotFoundException;

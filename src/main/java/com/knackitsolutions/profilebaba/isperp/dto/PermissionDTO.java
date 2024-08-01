@@ -28,6 +28,6 @@ public class PermissionDTO {
     this.parentId = permission.getParent().getId();
     this.featureName = permission.getFeatureName();
     this.url = permission.getUrl();
-    this.icon = permission.getIcons();
+    this.icon = permission.getIcon();
   }
 }

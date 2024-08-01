@@ -10,6 +10,20 @@ create table if not exists internet_plans(
     active boolean not null default false
 );
 
+create table if not exists customer_roles(
+  id int primary key auto_increment,
+  role_name varchar(50) not null unique,
+  created_date datetime not null,
+  updated_date datetime not null
+);
+
+create table if not exists employee_roles(
+  id int primary key auto_increment,
+  role_name varchar(50) not null unique,
+  created_date datetime not null,
+  updated_date datetime not null
+);
+
 create table if not exists customers(
 	id bigint primary key auto_increment,
     name varchar(100) not null,
@@ -181,7 +195,7 @@ create table if not exists complaints(
     updated_date datetime,
     created_by_user_id bigint,
     employee_remark text,
-    complaint_number varchar(10)
+    complaint_number varchar(10),
     foreign key(customer_id) references customers(id),
     foreign key(employee_id) references employees(id)
 );
@@ -192,28 +206,14 @@ create table if not exists customer_care_contacts(
   contact_number varchar(20) not null unique
 );
 
-create table if not exists customer_roles(
-  id int primary key auto_increment,
-  role_name varchar(50) not null unique,
-  created_date datetime not null,
-  updated_date datetime not null
-);
-
-create table if not exists employee_roles(
-  id int primary key auto_increment,
-  role_name varchar(50) not null unique,
-  created_date datetime not null,
-  updated_date datetime not null
-);
-
 create table if not exists user_type_role_permissions(
   id bigint primary key auto_increment,
   user_type varchar(50) not null unique,
   customer_role_id int,
   employee_role_id int,
   permission_id bigint not null,
-  foreign key(customer_role_id) references customer_role(id),
-  foreign key(employee_role_id) references employee_role(id)
+  foreign key(customer_role_id) references customer_roles(id),
+  foreign key(employee_role_id) references employee_roles(id)
 );
 -- drop table complaints;
 -- alter table employees add column phone varchar(20);

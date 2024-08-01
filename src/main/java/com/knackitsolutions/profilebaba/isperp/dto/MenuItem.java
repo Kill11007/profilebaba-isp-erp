@@ -3,6 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import lombok.Data;
 
@@ -20,7 +21,7 @@ public class MenuItem {
     List<MenuItem> menus = new ArrayList<>();
     for (PermissionDTO parent : parents) {
       List<MenuItem> items = permissionDTOS.stream()
-          .filter(dto -> dto.getParentId() == parent.getId())
+          .filter(dto -> Objects.equals(dto.getParentId(), parent.getId()))
           .map(MenuItem::new).toList();
       MenuItem item = new MenuItem(parent, items);
       menus.add(item);
@@ -37,7 +38,7 @@ public class MenuItem {
     for (Permission parent : parents) {
       List<MenuItem> items = permissions.stream()
           .filter(dto -> dto.getParent() != null)
-          .filter(dto -> dto.getParent().getId() == parent.getId())
+          .filter(dto -> Objects.equals(dto.getParent().getId(), parent.getId()))
           .map(MenuItem::new).toList();
       MenuItem item = new MenuItem(parent, items);
       menus.add(item);
@@ -45,14 +46,10 @@ public class MenuItem {
     return menus;
   }
 
-  public MenuItem(String menuName) {
-    this.menuName = menuName;
-  }
-
   public MenuItem(Permission permission) {
     this.menuName = permission.getFeatureName();
     this.url = permission.getUrl();
-    this.icon = permission.getIcons();
+    this.icon = permission.getIcon();
   }
   public MenuItem(PermissionDTO permission) {
     this.menuName = permission.getFeatureName();

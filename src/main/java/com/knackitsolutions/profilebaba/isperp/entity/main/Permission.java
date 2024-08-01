@@ -44,7 +44,7 @@ public class Permission {
   private String featureName;
 
   private String url;
-  private String icons;
+  private String icon;
   @ManyToOne
   @JoinColumn(name="parent_id")
   @JsonBackReference
@@ -61,6 +61,9 @@ public class Permission {
 
   public Permission(PermissionDTO dto) {
     this.name = dto.getName();
+    this.url = dto.getUrl();
+    this.icon = dto.getIcon();
+    this.featureName = dto.getFeatureName();
   }
 
   public void update(PermissionDTO dto) {

@@ -54,6 +54,12 @@ public class PermissionController {
         .build();
   }
 
+  @PostMapping("/list")
+  public ResponseEntity<Void> add(@Valid @RequestBody List<PermissionDTO> dtos) throws PermissionAlreadyExistsException{
+    permissionService.add(dtos);
+    return ResponseEntity.noContent().build();
+  }
+
   @PutMapping("/{id}")
   public ResponseEntity<Void> update(@PathVariable Long id, @Valid @RequestBody @NotNull PermissionDTO dto)
       throws PermissionNotFoundException {
