@@ -10,6 +10,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Employee;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.ServiceArea;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.UserTypeRolePermission;
 import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
@@ -54,8 +55,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     Employee employee = new Employee(request);
     employee.setServiceAreas(getServiceAreas(request.getAreas()));
     employee.setUserId(user.getId());
-    employeeRoleRepository.findById(request.getEmployeeRoleId()).ifPresent(employee::setEmployeeRole);  //TODO add permission to user permission table
+    employeeRoleRepository.findById(request.getEmployeeRoleId()).ifPresent(employee::setEmployeeRole);
     Employee save = save(employee);
+    userService.setUserPermissions(save.getUserId(), save.getEmployeeRole().getUserTypeRolePermissions().stream().map(UserTypeRolePermission::getPermissionId).collect(Collectors.toList()));
     return save;
   }
 

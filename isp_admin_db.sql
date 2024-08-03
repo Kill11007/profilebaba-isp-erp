@@ -80,10 +80,11 @@ create table if not exists isp_admin_db.plans(
     rate decimal,
     plan_type varchar(25),
     plan_description text,
+    is_default boolean,
     created_date_time datetime not null,
     updated_time date not null
 );
-
+-- alter table isp_admin_db.plans add column is_default boolean null;
 create table if not exists isp_admin_db.isp_plans(
 	id bigint primary key auto_increment,
 	isp_id bigint,

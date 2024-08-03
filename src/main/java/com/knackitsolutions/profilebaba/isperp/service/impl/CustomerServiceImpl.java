@@ -9,6 +9,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillingDetail;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.HardwareDetail;
+import com.knackitsolutions.profilebaba.isperp.entity.tenant.UserTypeRolePermission;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.HardwareNotFoundException;
@@ -24,6 +25,7 @@ import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -73,9 +75,10 @@ public class CustomerServiceImpl implements CustomerService {
         billingDetail.setCustomer(customer);
         customer.getHardwareDetail()
                 .forEach(hardwareDetail -> hardwareDetail.setCustomer(customer));
-        customerRoleRepository.findById(dto.getCustomerRoleId()).ifPresent(customer::setCustomerRole);  // TODO add permission to user permission table
+        customerRoleRepository.findById(dto.getCustomerRoleId()).ifPresent(customer::setCustomerRole);
         Customer save = customerRepository.save(customer);
         billingDetailsRepository.save(billingDetail);
+        userService.setUserPermissions(save.getUserId(), save.getCustomerRole().getUserTypeRolePermissions().stream().map(UserTypeRolePermission::getPermissionId).collect(Collectors.toList()));
         return save;
     }
 

@@ -9,8 +9,10 @@ import com.knackitsolutions.profilebaba.isperp.event.ISPPlanAssignmentEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanDeactivateEvent;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.repository.main.UserRepository;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ import org.springframework.stereotype.Component;
 public class UserPermissionAssignmentListener {
 
   private final UserService userService;
-
+  private final UserRepository userRepository;
   @EventListener
   public void handleISPPlanAssignmentEvent(ISPPlanAssignmentEvent event)
       throws UserNotFoundException {
@@ -41,8 +43,8 @@ public class UserPermissionAssignmentListener {
       throws UserNotFoundException {
     Vendor vendor = event.getVendor();
     User user = userService.findById(vendor.getUserId());
-    user.setPermissions(null);
-    userService.save(user);
+    List<User> users = userRepository.findAllByTenantId(user.getTenantId());
+    users.stream().peek(u -> u.setPermissions(null)).forEach(userService::save);
   }
 
 }

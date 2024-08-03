@@ -28,4 +28,9 @@ public class UserRoleFeature {
   @JoinColumn(name = "permission_id")
   @ManyToOne(fetch = FetchType.EAGER)
   private Permission permission;
+
+  public UserRoleFeature(UserType userType, Permission permission) {
+    this.userType = userType;
+    this.permission = permission;
+  }
 }

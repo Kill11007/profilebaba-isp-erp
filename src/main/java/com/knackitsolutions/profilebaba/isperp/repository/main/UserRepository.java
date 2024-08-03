@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("update User i set i.isPhoneNumberVerified = :status where i.id = :id")
   @Transactional
   void validateUser(Boolean status, Long id);
+
+  List<User> findAllByTenantId(String tenantId);
 }

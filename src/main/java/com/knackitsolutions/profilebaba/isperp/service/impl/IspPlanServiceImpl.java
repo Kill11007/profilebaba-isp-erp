@@ -1,17 +1,12 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanDTO;
-import com.knackitsolutions.profilebaba.isperp.dto.IspPlanQuery;
-import com.knackitsolutions.profilebaba.isperp.dto.IspPlanSpecification;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlanPermission;
-import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
-import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
+import com.knackitsolutions.profilebaba.isperp.event.DefaultPlanChangeEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanAssignmentEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanDeactivateEvent;
-import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.IspPlanPermissionRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.IspPlanRepository;
@@ -25,6 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +35,10 @@ public class IspPlanServiceImpl implements IspPlanService {
   private final VendorPlanRepository vendorPlanRepository;
 
   private final ApplicationEventPublisher eventPublisher;
+
+  @Value("#{new Boolean('${default-plan.assign:true}')}")
+  private Boolean defaultPlanAssign;
+
 
   @Override
   public List<IspPlanDTO> all() {
@@ -93,16 +93,27 @@ public class IspPlanServiceImpl implements IspPlanService {
   @Override
   public void activateIspPlan(Long ispId, Long planId)
       throws VendorNotFoundException {
-    Vendor vendor = vendorRepository.findById(ispId).orElseThrow(VendorNotFoundException::new);
     IspPlan one = one(planId);
-    eventPublisher.publishEvent(new ISPPlanAssignmentEvent(this, vendor, one));
+    activateIspPlan(ispId, one);
   }
 
+  private void activateIspPlan(Long ispId, IspPlan plan)
+      throws VendorNotFoundException {
+    Vendor vendor = vendorRepository.findById(ispId).orElseThrow(VendorNotFoundException::new);
+    eventPublisher.publishEvent(new ISPPlanAssignmentEvent(this, vendor, plan));
+  }
+
+
   @Override
-  public void activateIspFreePlan(Long ispId) throws VendorNotFoundException, UserNotFoundException {
+  public void activateIspDefaultPlan(Long ispId) throws VendorNotFoundException {
 //    IspPlanQuery free = new IspPlanQuery(null, null, null, "FREE");
-    // TODO GET FREE PLAN ID
-    activateIspPlan(ispId, 1L);
+    if(defaultPlanAssign){
+      List<IspPlan> byPlanTypeAndName = repository.findByIsDefaultTrue();
+      Optional<IspPlan> ispPlan = byPlanTypeAndName.stream().findFirst();
+      if (ispPlan.isPresent()) {
+        activateIspPlan(ispId, ispPlan.get());
+      }
+    }
   }
 
   @Override
@@ -111,4 +122,22 @@ public class IspPlanServiceImpl implements IspPlanService {
     eventPublisher.publishEvent(new ISPPlanDeactivateEvent(this, vendor));
   }
 
+  @Override
+  public void makePlanAsDefault(Long planId) {
+    List<IspPlan> byIsDefaultTrue = repository.findByIsDefaultTrue();
+    IspPlan oldDefaultPlan = null;
+    if (!byIsDefaultTrue.isEmpty()) {
+      oldDefaultPlan = byIsDefaultTrue.get(0);
+      byIsDefaultTrue.forEach(plan -> {
+        plan.setIsDefault(false);
+        plan.setUpdateDateTime(LocalDateTime.now());
+        repository.save(plan);
+      });
+    }
+    IspPlan one = one(planId);
+    one.setIsDefault(true);
+    one.setUpdateDateTime(LocalDateTime.now());
+    IspPlan save = repository.save(one);
+    eventPublisher.publishEvent(new DefaultPlanChangeEvent(this, save, oldDefaultPlan));
+  }
 }

@@ -63,6 +63,12 @@ public class IspPlanController {
     return ResponseEntity.ok().build();
   }
 
+  @PutMapping("/{plan-id}/default")
+  public ResponseEntity<Void> activateIspPlan(@PathVariable("plan-id") Long planId) {
+    ispPlanService.makePlanAsDefault(planId);
+    return ResponseEntity.ok().build();
+  }
+
   @PutMapping("/isp/{isp-id}")
   public ResponseEntity<Void> deactivateCurrentIspPlan(@PathVariable("isp-id") Long ispId)
       throws VendorNotFoundException {

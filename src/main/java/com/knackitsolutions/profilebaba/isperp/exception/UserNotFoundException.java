@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.exception;
 
-public class UserNotFoundException extends Exception{
+public class UserNotFoundException extends RuntimeException{
 
   public UserNotFoundException() {
     super("User not found with the provide id");

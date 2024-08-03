@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import java.util.function.Supplier;
 
-public class PermissionNotFoundException extends Exception{
+public class PermissionNotFoundException extends RuntimeException{
   private static final String cause = "Resource not found in db";
   private static final String defaultMessage = "Permission not present in database. Please provide valid Permission ID.";
 

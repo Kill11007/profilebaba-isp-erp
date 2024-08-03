@@ -17,3 +17,12 @@ file:
 bill-generator:
   cron:
     expression: 0 * 1 * * *
+
+default-plan:
+  assign: true
+
+customer:
+  permissions: 5
+
+employee:
+  permissions: 1, 4, 10

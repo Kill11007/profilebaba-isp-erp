@@ -9,6 +9,8 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import java.util.List;
+import java.util.Set;
+
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
@@ -52,5 +54,6 @@ public interface UserService {
 
   void changePassword(Authentication authentication, ChangePassword request)
       throws UserNotFoundException;
-
+  void setUserPermissions(Long userId, List<Long> permissions);
+  void setUserPermissions(User user, Set<Permission> permissions);
 }

@@ -1,7 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanDTO;
-import com.knackitsolutions.profilebaba.isperp.dto.IspPlanQuery;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
@@ -24,7 +23,9 @@ public interface IspPlanService {
   void activateIspPlan(Long ispId, Long planId)
       throws VendorNotFoundException, UserNotFoundException;
 
-  void activateIspFreePlan(Long ispId) throws VendorNotFoundException, UserNotFoundException;
+  void activateIspDefaultPlan(Long ispId) throws VendorNotFoundException, UserNotFoundException;
+
+  void makePlanAsDefault(Long planId);
 
   void deactivateCurrentIspPlan(Long ispId) throws VendorNotFoundException;
 

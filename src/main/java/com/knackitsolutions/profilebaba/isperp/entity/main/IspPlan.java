@@ -7,7 +7,6 @@ import com.knackitsolutions.profilebaba.isperp.enums.PlanType;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,7 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -48,6 +47,16 @@ public class IspPlan {
   private Set<IspPlanPermission> ispPlanPermissions = new HashSet<>();
   @OneToMany(mappedBy = "plan", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<VendorPlan> vendorPlans = new HashSet<>();
+  private Boolean isDefault;
+
+  public IspPlan(String name, String planDescription, PlanType planType, BigDecimal rate) {
+    this.name = name;
+    this.planDescription = planDescription;
+    this.planType = planType;
+    this.rate = rate;
+    this.createdDateTime = LocalDateTime.now();
+    this.updateDateTime = LocalDateTime.now();
+  }
 
   public IspPlan(IspPlanDTO dto) {
     setName(dto.getName());

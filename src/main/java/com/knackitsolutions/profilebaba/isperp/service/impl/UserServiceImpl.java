@@ -12,9 +12,11 @@ import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.UserRepository;
 import com.knackitsolutions.profilebaba.isperp.service.OTPService;
+import com.knackitsolutions.profilebaba.isperp.service.PermissionService;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,7 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final OTPService otpService;
+  private final PermissionService permissionService;
 
 
   @Override
@@ -159,6 +162,19 @@ public class UserServiceImpl implements UserService {
   private void updatePassword(User user, String password) {
     user.setPassword(passwordEncoder.encode(password));
     this.save(user);
+  }
+
+  public void setUserPermissions(Long userId, List<Long> permissions) {
+    User user = findById(userId);
+    Set<Permission> permissionSet = permissions.stream().map(permissionService::get).collect(Collectors.toSet());
+    setUserPermissions(user, permissionSet);
+  }
+
+  public void setUserPermissions(User user, Set<Permission> permissions) {
+    user.setPermissions(null);
+    userRepository.save(user);
+    user.setPermissions(permissions);
+    userRepository.save(user);
   }
 
 
