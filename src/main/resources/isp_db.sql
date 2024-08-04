@@ -140,7 +140,7 @@ create table if not exists bill_items(
     foreign key(bill_id) references bills(id)
 );
 
-create table adjusted_balance(
+create table if not exists adjusted_balance(
 	id bigint primary key auto_increment,
 	dated date not null,
     customer_id bigint not null,
@@ -164,7 +164,7 @@ create table if not exists balance_sheet(
 
 -- alter table isp_2.balance_sheet add column customer_id bigint not null;
 -- alter table isp_2.balance_sheet add foreign key (customer_id) references isp_2.customers(id);
-create table service_areas(
+create table if not exists  service_areas(
 	id bigint primary key auto_increment,
     name varchar(255) not null
 );
