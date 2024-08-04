@@ -41,6 +41,13 @@ public class VendorController {
     return ResponseEntity.ok(vendorService.findById(vendorId));
   }
 
+  @DeleteMapping("/{vendor-id}")
+  public ResponseEntity<?> delete(@PathVariable("vendor-id") Long vendorId)
+      throws VendorNotFoundException, UserNotFoundException {
+    vendorService.deleteVendor(vendorId);
+    return ResponseEntity.noContent().build();
+  }
+
   @GetMapping("/profile")
   public ResponseEntity<VendorDTO> profile() throws UserNotFoundException {
     return ResponseEntity.ok(vendorService.profile(authenticationFacade.getAuthentication()));

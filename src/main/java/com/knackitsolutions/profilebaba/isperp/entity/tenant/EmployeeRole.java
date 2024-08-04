@@ -42,4 +42,9 @@ public class EmployeeRole {
     this.setCreatedDate(LocalDateTime.now());
     this.setUpdatedDate(LocalDateTime.now());
   }
+
+  public void update(EmployeeRoleDTO dto) {
+    this.setRoleName(dto.getRoleName());
+    this.setUpdatedDate(LocalDateTime.now());
+  }
 }

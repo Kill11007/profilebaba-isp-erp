@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.listener;
 
 import com.knackitsolutions.profilebaba.isperp.entity.main.*;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.*;
+import com.knackitsolutions.profilebaba.isperp.event.DeleteISPEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanAssignmentEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanDeactivateEvent;
 import com.knackitsolutions.profilebaba.isperp.event.IspPlanChangeEvent;
@@ -10,6 +11,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.TenantRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.UserRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.VendorPlanRepository;
+import com.knackitsolutions.profilebaba.isperp.repository.main.VendorRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.CustomerRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.EmployeeRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.UserTypeRolePermissionRepository;
@@ -21,6 +23,8 @@ import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -33,6 +37,27 @@ public class VendorPlanCreationListener {
   private final EmployeeRepository employeeRepository;
   private final CustomerRepository customerRepository;
   private final UserTypeRolePermissionRepository userTypeRolePermissionRepository;
+  private final VendorRepository vendorRepository;
+  private final JdbcTemplate jdbcTemplate;
+
+  @EventListener
+  public void handleISPDeleteEvent(DeleteISPEvent event) {
+    Vendor vendor = event.getVendor();
+    User user = userService.findById(vendor.getUserId());
+    tenantRepository.findByTenantId(user.getTenantId()).ifPresent(this::deleteAllTenantUser);
+    vendorRepository.delete(vendor);
+  }
+
+  private void deleteAllTenantUser(Tenant tenant) {
+    List<User> users = userRepository.findAllByTenantId(tenant.getTenantId());
+    users.forEach(userRepository::delete);
+    jdbcTemplate.execute((StatementCallback<Boolean>) stmt ->
+            stmt.execute("DROP DATABASE IF EXISTS " + tenant.getDb()));
+    jdbcTemplate.execute((StatementCallback<Boolean>) stmt ->
+            stmt.execute("DROP USER IF EXISTS '" + tenant.getDb() + "'@'localhost'"));
+  }
+
+
   @EventListener
   public void handleISPPlanAssignmentEvent(ISPPlanAssignmentEvent event)
       throws UserNotFoundException {

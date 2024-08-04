@@ -3,13 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.entity.tenant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerRoleDTO;
 import lombok.AllArgsConstructor;
@@ -33,7 +27,7 @@ public class CustomerRole {
   private LocalDateTime createdDate;
   private LocalDateTime updatedDate;
 
-  @OneToMany(mappedBy = "customerRole", fetch = FetchType.EAGER)
+  @OneToMany(mappedBy = "customerRole", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   private Set<UserTypeRolePermission> userTypeRolePermissions = new HashSet<>();
 
   @OneToMany(mappedBy = "customerRole")
@@ -41,6 +35,11 @@ public class CustomerRole {
   public CustomerRole(CustomerRoleDTO dto) {
     this.setRoleName(dto.getRoleName());
     this.setCreatedDate(LocalDateTime.now());
+    this.setUpdatedDate(LocalDateTime.now());
+  }
+
+  public void update(CustomerRoleDTO dto) {
+    this.roleName = dto.getRoleName();
     this.setUpdatedDate(LocalDateTime.now());
   }
 }

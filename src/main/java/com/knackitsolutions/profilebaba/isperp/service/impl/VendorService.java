@@ -6,6 +6,7 @@ import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
+import com.knackitsolutions.profilebaba.isperp.event.DeleteISPEvent;
 import com.knackitsolutions.profilebaba.isperp.exception.BusinessNameNotUniqueException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
@@ -19,6 +20,7 @@ import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -34,6 +36,12 @@ public class VendorService {
   private final UserService userService;
   private final TenantManagementService tenantManagementService;
   private final IspPlanService ispPlanService;
+  private final ApplicationEventPublisher eventPublisher;
+
+  public void deleteVendor(Long vendorId) {
+    vendorRepository.findById(vendorId)
+            .ifPresent(vendor -> eventPublisher.publishEvent(new DeleteISPEvent(this, vendor)));
+  }
 
   @Transactional
   public GenericResponse signUp(SignUpRequest signUpRequest)

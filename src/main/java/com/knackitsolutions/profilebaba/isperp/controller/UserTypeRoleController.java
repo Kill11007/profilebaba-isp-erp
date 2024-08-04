@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 public class UserTypeRoleController {
     private final UserTypeRoleService userTypeRoleService;
+
     @GetMapping("/employees")
     public List<EmployeeRoleDTO> getAllEmpRoles() {
         return userTypeRoleService.getEmployeeRoles();
@@ -35,6 +36,38 @@ public class UserTypeRoleController {
     @GetMapping("/customers")
     public List<CustomerRoleDTO> getAllCustomerRole() {
         return userTypeRoleService.getCustomerRoles();
+    }
+
+    @DeleteMapping("/customers/{role-id}")
+    public ResponseEntity<?> deleteCustomerRole(@PathVariable("role-id") Integer roleId) {
+        userTypeRoleService.deleteCustomerRole(roleId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/customers/{role-id}")
+    public CustomerRoleDTO getCustomerRole(@PathVariable("role-id") Integer roleId) {
+        return userTypeRoleService.getCustomerRole(roleId);
+    }
+
+    @PutMapping("/customers/{role-id}")
+    public CustomerRoleDTO updateCustomerRole(@PathVariable("role-id") Integer roleId, @RequestBody CustomerRoleDTO dto) {
+        return userTypeRoleService.updateCustomerRole(roleId, dto);
+    }
+
+    @DeleteMapping("/employees/{role-id}")
+    public ResponseEntity<?> deleteEmployeeRole(@PathVariable("role-id") Integer roleId) {
+        userTypeRoleService.deleteEmployeeRole(roleId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/employees/{role-id}")
+    public EmployeeRoleDTO getEmployeeRole(@PathVariable("role-id") Integer roleId) {
+        return userTypeRoleService.getEmployeeRole(roleId);
+    }
+
+    @PutMapping("/employees/{role-id}")
+    public EmployeeRoleDTO updateEmployeeRole(@PathVariable("role-id") Integer roleId, @RequestBody EmployeeRoleDTO dto) {
+        return userTypeRoleService.updateEmployeeRole(roleId, dto);
     }
 
 

@@ -9,7 +9,7 @@ import com.knackitsolutions.profilebaba.isperp.service.PermissionService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +55,17 @@ public class PermissionServiceImpl implements PermissionService {
 
   @Override
   public List<PermissionDTO> findAll() {
-    return repository.findAll().stream().map(PermissionDTO::new).collect(Collectors.toList());
+    List<Permission> all = repository.findAll();
+    return getPermissionDTOs(all);
+  }
+
+  private List<PermissionDTO> getPermissionDTOs(List<Permission> all) {
+    List<Permission> parentPermission = all.stream()
+            .filter(permission -> permission.getId() != 0)
+            .filter(permission -> permission.getParent() != null)
+            .filter(permission -> permission.getParent().getId() == 0)
+            .toList();
+    return parentPermission.stream().map(PermissionDTO::new).toList();
   }
 
   @Override
