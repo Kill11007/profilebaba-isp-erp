@@ -3,6 +3,8 @@ package com.knackitsolutions.profilebaba.isperp.repository.main;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import java.util.List;
 import java.util.Optional;
+
+import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   void validateUser(Boolean status, Long id);
 
   List<User> findAllByTenantId(String tenantId);
+  List<User> findAllByTenantIdAndUserType(String tenantId, UserType userType);
+
 }

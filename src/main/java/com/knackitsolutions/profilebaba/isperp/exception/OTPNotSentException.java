@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.exception;
 
-public class OTPNotSentException extends Exception {
+public class OTPNotSentException extends RuntimeException {
 
   public OTPNotSentException() {
     super("OTP is not sent.");

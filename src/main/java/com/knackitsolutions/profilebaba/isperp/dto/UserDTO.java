@@ -1,5 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import java.util.Set;
@@ -21,11 +22,14 @@ public class UserDTO {
   public UserDTO(User user) {
     this.setId(user.getId());
     this.setTenantId(user.getTenantId());
-    this.setPassword(user.getPassword());
+//    this.setPassword(user.getPassword());
     this.setEnabled(user.isEnabled());
     this.setUserType(user.getUserType());
-    this.setPermissions(
-        user.getPermissions().stream().map(PermissionDTO::new).collect(Collectors.toSet()));
+    Set<Permission> userPermissions = user.getPermissions();
+    if (userPermissions != null) {
+      this.setPermissions(
+              userPermissions.stream().map(PermissionDTO::new).collect(Collectors.toSet()));
+    }
     this.setRememberMe(user.getRememberMe());
     this.setIsPhoneNumberVerified(user.getIsPhoneNumberVerified());
   }

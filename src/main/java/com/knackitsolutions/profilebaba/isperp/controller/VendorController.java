@@ -7,6 +7,7 @@ import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
+import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import com.knackitsolutions.profilebaba.isperp.service.impl.AuthenticationFacade;
 import com.knackitsolutions.profilebaba.isperp.service.impl.VendorService;
 import javax.validation.constraints.NotNull;
@@ -15,8 +16,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/vendors")
@@ -27,12 +33,20 @@ public class VendorController {
 
   private final VendorService vendorService;
   private final AuthenticationFacade authenticationFacade;
+  private final OTPService otpService;
+  @Value("${spring.profiles.active}")
+  private List<String> profiles;
 
   @PostMapping("/signup")
   public ResponseEntity<GenericResponse> signUp(@RequestBody SignUpRequest signUpRequest)
       throws BusinessNameNotUniqueException, OTPNotSentException,
       PhoneNumberAlreadyExistsException, UserNotFoundException, VendorNotFoundException {
-    return ResponseEntity.ok(vendorService.signUp(signUpRequest));
+    GenericResponse genericResponse = vendorService.signUp(signUpRequest);
+    HttpHeaders httpHeaders = new HttpHeaders();
+    if (profiles.stream().anyMatch(s -> s.equals("local"))) {
+      httpHeaders.set("otp", otpService.sendOTP(signUpRequest.getPhoneNumber()));
+    }
+    return new ResponseEntity<>(genericResponse, httpHeaders, HttpStatus.OK);
   }
 
   @GetMapping("/{vendor-id}")

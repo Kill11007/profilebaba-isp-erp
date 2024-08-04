@@ -1,6 +1,7 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.config.TenantContext;
+import com.knackitsolutions.profilebaba.isperp.controller.AdminController;
 import com.knackitsolutions.profilebaba.isperp.controller.AuthenticationController.ChangePassword;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SignUpRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public List<User> findByPhoneNumber(String phoneNumber) throws UserNotFoundException {
     List<Optional<User>> users = userRepository.findByPhoneNumber(phoneNumber);
-    if (users.size() == 0) {
+    if (users.isEmpty()) {
       throw new UserNotFoundException("User not found with phone number: " + phoneNumber);
     }
     return users.stream().filter(Optional::isPresent).map(Optional::get)

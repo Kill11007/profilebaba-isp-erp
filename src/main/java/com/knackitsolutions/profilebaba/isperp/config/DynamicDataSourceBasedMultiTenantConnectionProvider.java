@@ -47,11 +47,6 @@ public class DynamicDataSourceBasedMultiTenantConnectionProvider extends
   @Value("${multitenancy.datasource-cache.expireAfterAccess:10}")
   private Integer expireAfterAccess;
 
-  @Value("${encryption.secret}")
-  private String secret;
-
-  @Value("${encryption.salt}")
-  private String salt;
   private LoadingCache<String, DataSource> tenantDataSources;
 
   @Override
@@ -85,7 +80,7 @@ public class DynamicDataSourceBasedMultiTenantConnectionProvider extends
         });
   }
   private DataSource createAndConfigureDataSource(Tenant tenant) {
-    String decryptedPassword = encryptionService.decrypt(tenant.getPassword(), secret, salt);
+    String decryptedPassword = encryptionService.decrypt(tenant.getPassword());
     HikariDataSource ds = dataSourceProperties.initializeDataSourceBuilder()
         .type(HikariDataSource.class).build();
     ds.setUsername(tenant.getDb());

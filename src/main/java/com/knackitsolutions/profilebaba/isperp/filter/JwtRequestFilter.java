@@ -4,6 +4,7 @@ import com.knackitsolutions.profilebaba.isperp.config.TenantInterceptor;
 import com.knackitsolutions.profilebaba.isperp.utility.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.io.IOException;
+import java.util.Objects;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +56,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
           // After setting the Authentication in the context, we specify
           // that the current user is authenticated. So it passes the
           // Spring Security Configurations successfully.
-          final String xTenantId = jwtTokenUtil.getXTenantIdFromToken(jwtToken);
+          final String xTenantId = getxTenantIdFromToken(request, jwtToken);
           requestWrapper = new HttpServletRequestWrapper(request){
             @Override
             public String getHeader(String name) {
@@ -85,6 +86,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
       log.info("JWT Token has expired");
     }
     filterChain.doFilter(requestWrapper, response);
+  }
+
+  private String getxTenantIdFromToken(HttpServletRequest request, String jwtToken) {
+    String tenantId = request.getHeader(TenantInterceptor.X_TENANT_ID);
+    return StringUtils.hasText(tenantId) ? tenantId : jwtTokenUtil.getXTenantIdFromToken(jwtToken);
   }
 
   private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request) {

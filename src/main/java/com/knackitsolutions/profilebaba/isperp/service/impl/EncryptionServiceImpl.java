@@ -9,7 +9,10 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,9 +24,12 @@ public class EncryptionServiceImpl implements EncryptionService {
   public static final String KEY_ALGORITHM = "AES";
   public static final int ITERATION_COUNT = 65536;
   public static final int KEY_LENGTH = 256;
-
+  @Value("${encryption.secret}")
+  private String secret;
+  @Value("${encryption.salt}")
+  private String salt;
   @Override
-  public String encrypt(String strToEncrypt, String secret, String salt) {
+  public String encrypt(String strToEncrypt) {
     try {
       byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       IvParameterSpec ivspec = new IvParameterSpec(iv);
@@ -44,7 +50,7 @@ public class EncryptionServiceImpl implements EncryptionService {
   }
 
   @Override
-  public String decrypt(String strToDecrypt, String secret, String salt) {
+  public String decrypt(String strToDecrypt) {
     try {
       byte[] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
       IvParameterSpec ivspec = new IvParameterSpec(iv);

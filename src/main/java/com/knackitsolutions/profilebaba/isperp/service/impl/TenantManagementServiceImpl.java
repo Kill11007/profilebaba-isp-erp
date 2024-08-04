@@ -32,22 +32,16 @@ public class TenantManagementServiceImpl implements TenantManagementService {
     private final JdbcTemplate jdbcTemplate;
     private final TenantRepository tenantRepository;
     private final String urlPrefix;
-    private final String secret;
-    private final String salt;
 
 
     @Autowired
-    public TenantManagementServiceImpl(EncryptionService encryptionService, DataSource dataSource,
-                                       JdbcTemplate jdbcTemplate,
-                                       ResourceLoader resourceLoader, TenantRepository tenantRepository,
-                                       @Value("${multitenancy.tenant.datasource.url-prefix}") String urlPrefix,
-                                       @Value("${encryption.secret}") String secret, @Value("${encryption.salt}") String salt) {
+    public TenantManagementServiceImpl(EncryptionService encryptionService, JdbcTemplate jdbcTemplate,
+                                       TenantRepository tenantRepository,
+                                       @Value("${multitenancy.tenant.datasource.url-prefix}") String urlPrefix) {
         this.encryptionService = encryptionService;
         this.jdbcTemplate = jdbcTemplate;
         this.tenantRepository = tenantRepository;
         this.urlPrefix = urlPrefix;
-        this.secret = secret;
-        this.salt = salt;
     }
 
     @Override
@@ -55,7 +49,7 @@ public class TenantManagementServiceImpl implements TenantManagementService {
         tenantId = TENANT_ID_PREFIX + tenantId;
         db = createMySQLDbName(db);
         String url = urlPrefix + db;
-        String encryptedPassword = encryptionService.encrypt(password, secret, salt);
+        String encryptedPassword = encryptionService.encrypt(password);
         try {
             createDatabase(db, password);
         } catch (DataAccessException e) {

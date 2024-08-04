@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface IspService {
 
+  List<IspDTO> getISPs() throws UserNotFoundException;
+
   List<IspDTO> getISPs(IspQuery ispQuery) throws UserNotFoundException;
 
   List<EmployeeDTO> getEmployees(Long vendorId, EmployeeQuery employeeQuery)

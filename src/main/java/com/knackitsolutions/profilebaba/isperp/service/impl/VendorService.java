@@ -32,7 +32,6 @@ import org.springframework.stereotype.Service;
 public class VendorService {
 
   private final VendorRepository vendorRepository;
-  private final OTPService otpService;
   private final UserService userService;
   private final TenantManagementService tenantManagementService;
   private final IspPlanService ispPlanService;
@@ -58,7 +57,6 @@ public class VendorService {
     User user = userService.save(signUpRequest, tenant);
     Vendor vendor = saveVendor(signUpRequest, user.getId());
     ispPlanService.activateIspDefaultPlan(vendor.getId());
-    otpService.sendOTP(user.getPhoneNumber());
 //    vendorUploadHelper.createVendorDirectory(vendor); TODO
     return new GenericResponse(vendor.getId(), "Vendor is saved.");
   }

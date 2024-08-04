@@ -37,9 +37,9 @@ public class IspController {
   private final CustomerService customerService;
 
   @GetMapping
-  public ResponseEntity<List<IspDTO>> getAll(@RequestBody IspQuery ispQuery)
+  public ResponseEntity<List<IspDTO>> getAll()
       throws UserNotFoundException {
-    return ResponseEntity.ok(ispService.getISPs(ispQuery));
+    return ResponseEntity.ok(ispService.getISPs());
   }
 
   @GetMapping("/{vendor-id}/employees")
