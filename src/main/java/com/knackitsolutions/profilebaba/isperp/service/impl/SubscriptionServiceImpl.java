@@ -85,7 +85,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     Set<Subscription> subscriptions = customerById.getSubscriptions();
     InternetPlan internetPlanById = internetPlanService.getPlanById(subscriptionDTO.getPlanId());
     Subscription subscription = new Subscription(subscriptionDTO, customerById);
-    subscription.setInternetPlan(internetPlanService.getPlanById(subscriptionDTO.getPlanId()));
+    subscription.setInternetPlan(internetPlanById);
     Subscription save = repository.save(subscription);
     if (subscriptions == null) {
       subscriptions = new HashSet<>();

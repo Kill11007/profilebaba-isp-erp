@@ -1,6 +1,5 @@
 package com.knackitsolutions.profilebaba.isperp.service.impl;
 
-import com.knackitsolutions.profilebaba.isperp.config.TenantContext;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerQuery;
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;

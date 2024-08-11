@@ -83,7 +83,6 @@ public class SubscriptionController {
       throws CustomerNotFoundException {
     subscriptionService.renewSubscription(customerId, subscriptionDTO);
     return ResponseEntity.noContent().build();
-
   }
 
 }

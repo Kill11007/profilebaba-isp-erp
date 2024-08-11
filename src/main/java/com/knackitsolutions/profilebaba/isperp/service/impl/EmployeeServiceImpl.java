@@ -53,9 +53,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
     User user = createUser(request);
     Employee employee = new Employee(request);
-    employee.setServiceAreas(getServiceAreas(request.getAreas()));
+    if (!request.getAreas().isEmpty()) {
+      employee.setServiceAreas(getServiceAreas(request.getAreas()));
+    }
     employee.setUserId(user.getId());
-    employeeRoleRepository.findById(request.getEmployeeRoleId()).ifPresent(employee::setEmployeeRole);
+    if(request.getEmployeeRoleId() != null) {
+      employeeRoleRepository.findById(request.getEmployeeRoleId())
+              .ifPresent(employee::setEmployeeRole);
+    }
     Employee save = save(employee);
     userService.setUserPermissions(save.getUserId(), save.getEmployeeRole().getUserTypeRolePermissions().stream().map(UserTypeRolePermission::getPermissionId).collect(Collectors.toList()));
     return save;
@@ -106,7 +111,14 @@ public class EmployeeServiceImpl implements EmployeeService {
       throws EmployeeNotFoundException, UserNotFoundException {
     Employee employee = findById(id);
     employee.update(dto);
-    save(employee);
+    employee.setServiceAreas(getServiceAreas(dto.getServiceAreas()));
+    if(dto.getEmployeeRoleId() != null) {
+      employeeRoleRepository.findById(dto.getEmployeeRoleId())
+              .ifPresent(employee::setEmployeeRole);
+    }
+    Employee save = save(employee);
+    userService.setUserPermissions(save.getUserId(), save.getEmployeeRole().getUserTypeRolePermissions().stream().map(UserTypeRolePermission::getPermissionId).collect(Collectors.toList()));
+
   }
 
   @Override

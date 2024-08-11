@@ -26,10 +26,6 @@ public class AdjustBalanceServiceImpl implements AdjustBalanceService {
 
   private BalanceSheetService balanceSheetService;
 
-  public BalanceSheetService getBalanceSheetService() {
-    return balanceSheetService;
-  }
-
   @Autowired
   public void setBalanceSheetService(
       @Lazy BalanceSheetService balanceSheetService) {

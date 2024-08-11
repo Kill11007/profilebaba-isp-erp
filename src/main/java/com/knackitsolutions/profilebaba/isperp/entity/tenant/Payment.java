@@ -56,11 +56,11 @@ public class Payment implements Transaction{
   private String comment;
   private LocalDateTime paymentDateTime;
 
+  @Getter
   public enum PaymentMode{
     ONLINE("ONLINE"),
     CASH("CASH");
 
-    @Getter
     @JsonValue
     private final String paymentMode;
 
@@ -80,7 +80,7 @@ public class Payment implements Transaction{
     setDiscount(dto.getDiscount());
     setPaidAmount(dto.getPaidAmount());
     setPaymentMode(dto.getPaymentMode());
-    setPaymentDateTime(dto.getPaymentDateTime());
+    this.paymentDateTime = dto.getPaymentDateTime() == null ? LocalDateTime.now() : getPaymentDateTime();
   }
 
   public static class PaymentModeNotFoundException extends RuntimeException{

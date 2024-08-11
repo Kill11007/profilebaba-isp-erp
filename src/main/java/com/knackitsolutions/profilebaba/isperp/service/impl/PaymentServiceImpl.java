@@ -16,13 +16,15 @@ import com.knackitsolutions.profilebaba.isperp.service.BillService.BillNotFoundE
 import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
 import com.knackitsolutions.profilebaba.isperp.service.EmployeeService;
 import com.knackitsolutions.profilebaba.isperp.service.PaymentService;
-import java.util.List;
-import java.util.UUID;
+
+import java.math.BigDecimal;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,25 +50,31 @@ public class PaymentServiceImpl implements PaymentService {
 
   @Override
   public PaymentDTO getDTO(Long id) throws PaymentNotFoundException {
-    return null;
+    Payment payment = get(id);
+    return new PaymentDTO(payment);
   }
 
   @Override
   public Payment receive(Payment payment, Employee employee, Customer customer) {
     BalanceSheet lastBalanceSheet = balanceSheetService.getLastBalanceSheet(customer.getId());
+    BigDecimal finalPayment = BigDecimal.ZERO;
+    if (lastBalanceSheet != null) {
+      finalPayment = lastBalanceSheet.getFinalAmount();
+    }
     payment.setNetAmount(payment.getPaidAmount().subtract(payment.getDiscount()));
-    payment.setRemainingAmount(payment.getFinalAmount(lastBalanceSheet.getFinalAmount()));
+    payment.setRemainingAmount(payment.getFinalAmount(finalPayment));
     payment.setCollectedBy(employee.getName());
     payment.setCustomer(customer);
     payment.setEmployee(employee);
-    payment.setPreviousBalance(lastBalanceSheet.getFinalAmount());
-    payment.setReceiptNumber(createReceiptNumber(lastBalanceSheet.getId()));
+    payment.setPreviousBalance(finalPayment);
+    payment.setReceiptNumber(createReceiptNumber(lastBalanceSheet));
     return repository.save(payment);
   }
 
   @Override
   public Payment receive(PaymentDTO dto, Long customerId)
       throws EmployeeNotFoundException, CustomerNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException, UserNotFoundException {
+    //get employeeID, customerId, paidAmount, discount, paymentMode, comment 
     Employee employee = employeeService.findById(dto.getEmployeeId());
     Customer customer = customerService.getCustomerById(customerId);
     Payment payment = new Payment(dto);
@@ -94,7 +102,11 @@ public class PaymentServiceImpl implements PaymentService {
 
   }
 
-  private String createReceiptNumber(Long lastBalanceSheetId) {
+  private String createReceiptNumber(BalanceSheet lastBalanceSheet) {
+    Long lastBalanceSheetId = 0L;
+    if (lastBalanceSheet != null) {
+      lastBalanceSheetId = lastBalanceSheet.getId() + 1;
+    }
     return String.valueOf(lastBalanceSheetId + 1);
   }
 }
