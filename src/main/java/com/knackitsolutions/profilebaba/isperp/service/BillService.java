@@ -4,6 +4,7 @@ import com.knackitsolutions.profilebaba.isperp.dto.BillDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.BillItemDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Bill;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.BillItem;
+import com.knackitsolutions.profilebaba.isperp.exception.CustomException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.AdjustBalanceService.AdjustedBalanceNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.PaymentService.PaymentNotFoundException;
@@ -42,7 +43,7 @@ public interface BillService {
   void addItemOnBill(Long customerId, BillItemDTO dto)
       throws AdjustedBalanceNotFoundException, PaymentNotFoundException, BillNotFoundException;
 
-  class BillNotFoundException extends Exception {
+  class BillNotFoundException extends CustomException {
 
     private static final String defaultMessage = "Bill not found with the provide id";
     private static final String cause = "Resource not found in db";

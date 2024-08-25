@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.dto.ComplaintDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Complaint;
+import com.knackitsolutions.profilebaba.isperp.exception.CustomException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
@@ -34,9 +35,9 @@ public interface ComplaintService {
 
   void delete(Long id);
 
-  class ComplaintNotFoundException extends RuntimeException{
-    @Getter
-    private Long complaintId;
+  @Getter
+  class ComplaintNotFoundException extends CustomException {
+    private final Long complaintId;
 
     public ComplaintNotFoundException(Long complaintId) {
       super("Complain with id: " + complaintId + " not found");

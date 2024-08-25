@@ -5,15 +5,15 @@ import java.util.Arrays;
 import java.util.Optional;
 import lombok.Getter;
 
+@Getter
 public enum ComplaintStatus {
   OPEN("O"),
   WORKING("W"),
   RESOLVED("R"),
   NA("");
 
-  @Getter
   @JsonValue
-  private String status;
+  private final String status;
 
   ComplaintStatus(final String status) {
     this.status = status;

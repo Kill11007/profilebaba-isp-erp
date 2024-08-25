@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import java.util.function.Supplier;
 
-public class ServiceAreaAlreadyExistsException extends Exception{
+public class ServiceAreaAlreadyExistsException extends CustomException{
   private static final String cause = "Resource already exists in db";
   private static final String defaultMessage = "ServiceArea already present in database. Please provide new ServiceArea.";
 

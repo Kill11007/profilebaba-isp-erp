@@ -2,13 +2,13 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import lombok.Getter;
 
-public class InvalidLoginCredentialException extends Exception{
+@Getter
+public class InvalidLoginCredentialException extends CustomException{
 
-  @Getter
   private String message = "Please enter correct username/password.";
 
   public InvalidLoginCredentialException() {
-    super(new Throwable("Entered username/password is not correct"));
+    super();
   }
 
   public InvalidLoginCredentialException(String message) {

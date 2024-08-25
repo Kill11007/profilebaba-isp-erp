@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import java.util.function.Supplier;
 
-public class EmployeeAlreadyExistsException extends Exception {
+public class EmployeeAlreadyExistsException extends CustomException {
   private static final String cause = "Resource already exists in db";
   private static final String defaultMessage = "Employee already present in database. Please provide new Employee.";
 

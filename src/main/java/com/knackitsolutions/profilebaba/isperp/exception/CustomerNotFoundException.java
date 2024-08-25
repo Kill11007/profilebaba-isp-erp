@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import java.util.function.Supplier;
 
-public class CustomerNotFoundException extends Exception{
+public class CustomerNotFoundException extends CustomException{
 
   private static final String cause = "Resource not found in db";
   private static final String defaultMessage = "Customer not present in database. Please provide valid customer.";

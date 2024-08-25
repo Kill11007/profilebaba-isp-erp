@@ -1,6 +1,6 @@
 package com.knackitsolutions.profilebaba.isperp.exception;
 
-public class PhoneNumberAlreadyExistsException extends Exception{
+public class PhoneNumberAlreadyExistsException extends CustomException{
 
   public PhoneNumberAlreadyExistsException() {
     super("Phone number already exists.", new Throwable("Phone number already exists."));

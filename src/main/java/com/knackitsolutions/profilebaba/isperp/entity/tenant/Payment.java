@@ -6,6 +6,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.tenant.BalanceSheet.Transa
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.function.Supplier;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -84,7 +85,22 @@ public class Payment implements Transaction{
   }
 
   public static class PaymentModeNotFoundException extends RuntimeException{
+    private static final String cause = "Unknown Payment Mode";
+    private static final String defaultMessage = "Unknown Payment Mode Found";
 
+    private static final Supplier<Throwable> defaultCause = () -> new Throwable(cause);
+
+    public PaymentModeNotFoundException() {
+      super(defaultMessage, defaultCause.get());
+    }
+
+    public PaymentModeNotFoundException(String message) {
+      super(message, defaultCause.get());
+    }
+
+    public PaymentModeNotFoundException(String message, Throwable cause) {
+      super(message, cause);
+    }
   }
 
   @Override

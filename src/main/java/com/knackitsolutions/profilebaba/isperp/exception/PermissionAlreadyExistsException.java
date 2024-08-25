@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import java.util.function.Supplier;
 
-public class PermissionAlreadyExistsException extends Exception{
+public class PermissionAlreadyExistsException extends CustomException{
   private static final String cause = "Resource already exists in db";
   private static final String defaultMessage = "Permission already present in database. Please provide new permission.";
 

@@ -45,7 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
 
   @Override
   public Payment get(Long id) throws PaymentNotFoundException {
-    return repository.findById(id).orElseThrow(PaymentModeNotFoundException::new);
+    return repository.findById(id).orElseThrow(PaymentNotFoundException::new);
   }
 
   @Override

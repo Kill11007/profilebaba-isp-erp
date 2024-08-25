@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.dto.AdjustedBalanceDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.AdjustedBalance;
+import com.knackitsolutions.profilebaba.isperp.exception.CustomException;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.BillService.BillNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.PaymentService.PaymentNotFoundException;
@@ -17,7 +18,7 @@ public interface AdjustBalanceService {
 
   void delete(Long id) throws AdjustedBalanceNotFoundException;
 
-  class AdjustedBalanceNotFoundException extends Exception {
+  class AdjustedBalanceNotFoundException extends CustomException {
 
   }
 

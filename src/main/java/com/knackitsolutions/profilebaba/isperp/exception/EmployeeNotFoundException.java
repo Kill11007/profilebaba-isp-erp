@@ -2,7 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.exception;
 
 import java.util.function.Supplier;
 
-public class EmployeeNotFoundException extends Exception{
+public class EmployeeNotFoundException extends CustomException{
   private static final String cause = "Resource not found in db";
   private static final String defaultMessage = "Employee not present in database. Please provide valid Employee ID.";
 
