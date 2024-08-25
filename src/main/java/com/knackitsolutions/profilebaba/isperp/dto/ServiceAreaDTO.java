@@ -22,4 +22,8 @@ public class ServiceAreaDTO {
     this.id = entity.getId();
     this.name = entity.getName();
   }
+
+  public ServiceAreaDTO(Long id) {
+    this.id = id;
+  }
 }

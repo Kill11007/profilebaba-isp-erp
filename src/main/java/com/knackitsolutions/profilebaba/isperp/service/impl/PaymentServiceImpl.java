@@ -103,7 +103,7 @@ public class PaymentServiceImpl implements PaymentService {
   }
 
   private String createReceiptNumber(BalanceSheet lastBalanceSheet) {
-    Long lastBalanceSheetId = 0L;
+    long lastBalanceSheetId = 0L;
     if (lastBalanceSheet != null) {
       lastBalanceSheetId = lastBalanceSheet.getId() + 1;
     }

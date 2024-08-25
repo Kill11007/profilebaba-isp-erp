@@ -36,4 +36,8 @@ public class PermissionDTO {
     Set<Permission> permissionSet = permission.getPermissions();
     this.permissions = permissionSet.stream().map(PermissionDTO::new).collect(Collectors.toList());
   }
+
+  public PermissionDTO(Long id) {
+    this.id = id;
+  }
 }

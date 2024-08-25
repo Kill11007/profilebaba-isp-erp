@@ -117,7 +117,8 @@ public class EmployeeServiceImpl implements EmployeeService {
               .ifPresent(employee::setEmployeeRole);
     }
     Employee save = save(employee);
-    userService.setUserPermissions(save.getUserId(), save.getEmployeeRole().getUserTypeRolePermissions().stream().map(UserTypeRolePermission::getPermissionId).collect(Collectors.toList()));
+    List<Long> permissions = save.getEmployeeRole().getUserTypeRolePermissions().stream().map(UserTypeRolePermission::getPermissionId).collect(Collectors.toList());
+    userService.setUserPermissions(save.getUserId(), permissions);
 
   }
 
@@ -125,7 +126,8 @@ public class EmployeeServiceImpl implements EmployeeService {
   public EmployeeDTO one(Long id) throws EmployeeNotFoundException, UserNotFoundException {
     Employee employee = findById(id);
     User user = userService.findById(employee.getUserId());
-    return new EmployeeDTO(findById(id), user);
+    EmployeeDTO employeeDTO = new EmployeeDTO(findById(id), user);
+    return employeeDTO;
   }
 
   @Override

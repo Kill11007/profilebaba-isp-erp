@@ -26,6 +26,7 @@ public class EmployeeDTO implements ProfileName{
   private Set<PermissionDTO> permissions;
   private EmployeeRoleDTO employeeRole;
   private Integer employeeRoleId;
+
   public EmployeeDTO(Employee entity, User user) {
     setId(entity.getId());
     setName(entity.getName());

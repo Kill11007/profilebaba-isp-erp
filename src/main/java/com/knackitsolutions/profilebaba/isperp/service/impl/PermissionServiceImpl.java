@@ -68,6 +68,14 @@ public class PermissionServiceImpl implements PermissionService {
     return parentPermission.stream().map(PermissionDTO::new).toList();
   }
 
+  /*public Set<Permission> getParentToChildPermissionDTOSet(List<Permission> permissions){
+    for (Permission permission : permissions) {
+      if (permission.getParent() != null) {
+
+      }
+    }
+  }*/
+
   @Override
   public void delete(Long id) throws PermissionNotFoundException {
     Permission permission = get(id);

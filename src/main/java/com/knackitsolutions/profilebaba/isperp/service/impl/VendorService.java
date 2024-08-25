@@ -14,7 +14,6 @@ import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
 import com.knackitsolutions.profilebaba.isperp.exception.PhoneNumberAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.VendorRepository;
 import com.knackitsolutions.profilebaba.isperp.service.IspPlanService;
-import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import com.knackitsolutions.profilebaba.isperp.service.TenantManagementService;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import javax.transaction.Transactional;
