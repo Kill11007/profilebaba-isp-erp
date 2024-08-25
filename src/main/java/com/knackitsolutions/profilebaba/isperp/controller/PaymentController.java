@@ -42,4 +42,11 @@ public class PaymentController {
       throws PaymentNotFoundException {
     return ResponseEntity.ok(paymentService.getDTO(paymentId));
   }
+
+  /*@DeleteMapping("/payments/{payment-id}")
+  public ResponseEntity<PaymentDTO> delete(@PathVariable("payment-id") Long paymentId)
+      throws PaymentNotFoundException {
+    paymentService.delete(paymentId);
+    return ResponseEntity.noContent().build();
+  }*/
 }
