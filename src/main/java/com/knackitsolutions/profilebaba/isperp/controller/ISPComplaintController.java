@@ -5,7 +5,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.ISPComplaint;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.service.ISPComplaintService;
+import com.knackitsolutions.profilebaba.isperp.service.impl.ISPComplaintService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

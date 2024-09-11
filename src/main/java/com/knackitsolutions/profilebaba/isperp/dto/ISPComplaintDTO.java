@@ -1,18 +1,24 @@
 package com.knackitsolutions.profilebaba.isperp.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.knackitsolutions.profilebaba.isperp.entity.main.ISPComplaint;
 import com.knackitsolutions.profilebaba.isperp.enums.ComplaintStatus;
+import com.knackitsolutions.profilebaba.isperp.enums.DateTimeFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 @Data
+@NoArgsConstructor
 public class ISPComplaintDTO {
 
     private Long id;
     private String complaintNumber;
     private String message;
     private ComplaintStatus status;
+    @JsonFormat(pattern = DateTimeFormat.DATE_TIME, shape = JsonFormat.Shape.STRING)
     private LocalDateTime startDate;
+    @JsonFormat(pattern = DateTimeFormat.DATE_TIME, shape = JsonFormat.Shape.STRING)
     private LocalDateTime updatedDate;
     private Long createdByUserId;
     private Long ispId;

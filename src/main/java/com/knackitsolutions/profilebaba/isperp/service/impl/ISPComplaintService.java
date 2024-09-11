@@ -1,4 +1,4 @@
-package com.knackitsolutions.profilebaba.isperp.service;
+package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.dto.ISPComplaintDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.ISPComplaint;
@@ -9,6 +9,8 @@ import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundExcepti
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.helper.UserServiceHelper;
 import com.knackitsolutions.profilebaba.isperp.repository.main.ISPComplaintRepository;
+import com.knackitsolutions.profilebaba.isperp.service.ComplaintService;
+import com.knackitsolutions.profilebaba.isperp.service.IAuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

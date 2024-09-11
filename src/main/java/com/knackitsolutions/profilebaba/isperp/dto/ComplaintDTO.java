@@ -16,6 +16,7 @@ public class ComplaintDTO {
   private String message;
   @JsonFormat(pattern = DateTimeFormat.DATE_TIME, shape = Shape.STRING)
   private LocalDateTime startDate;
+  @JsonFormat(pattern = DateTimeFormat.DATE_TIME, shape = Shape.STRING)
   private LocalDateTime updatedDate;
   private ComplaintStatus status;
   private CustomerDTO customer;
