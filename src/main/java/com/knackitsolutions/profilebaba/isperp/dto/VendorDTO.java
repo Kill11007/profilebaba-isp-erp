@@ -3,9 +3,10 @@ package com.knackitsolutions.profilebaba.isperp.dto;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
-import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
@@ -26,12 +27,11 @@ public class VendorDTO implements ProfileName{
     this.vendorId = vendor.getId();
     this.businessName = vendor.getBusinessName();
     this.userId = vendor.getUserId();
-    this.plan = vendor.getVendorPlans()
-        .stream()
-        .filter(vendorPlan -> vendorPlan.getEndDateTime() == null)
-        .findFirst()
-        .map(VendorPlan::getPlan)
-        .map(IspPlanDTO::new).orElseThrow(PlanNotFoundException::new);
+    Optional<VendorPlan> activeVendorPlan = vendor.getVendorPlans()
+            .stream()
+            .filter(vendorPlan -> vendorPlan.getEndDateTime() == null)
+            .findFirst();
+    activeVendorPlan.ifPresent(vendorPlan -> setPlan(new IspPlanDTO(vendorPlan.getPlan())));
   }
 
   @Override

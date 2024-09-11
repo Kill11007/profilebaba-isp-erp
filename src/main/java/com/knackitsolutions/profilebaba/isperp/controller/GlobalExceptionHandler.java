@@ -9,12 +9,14 @@ import java.util.List;
 import javax.validation.ConstraintViolationException;
 
 import com.knackitsolutions.profilebaba.isperp.service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(value = InvalidLoginCredentialException.class)
@@ -111,12 +113,14 @@ public class GlobalExceptionHandler {
     return handleException(exception);
   }
   @ExceptionHandler(value = Exception.class)
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handleGenericException(Exception e) {
     return handleException(e);
   }
 
   private ErrorResponse handleException(Throwable exception) {
     Throwable cause = exception.getCause();
+    log.error("Exception Occurred: ", cause);
     return new ErrorResponse(List.of(
         new ErrorDTO(findCode(), cause == null ? "" : cause.getMessage(),
             exception.getMessage())));

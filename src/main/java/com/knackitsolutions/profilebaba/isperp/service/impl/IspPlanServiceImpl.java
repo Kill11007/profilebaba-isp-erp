@@ -7,6 +7,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.event.DefaultPlanChangeEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanAssignmentEvent;
 import com.knackitsolutions.profilebaba.isperp.event.ISPPlanDeactivateEvent;
+import com.knackitsolutions.profilebaba.isperp.exception.IspPlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.IspPlanPermissionRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.IspPlanRepository;
@@ -76,7 +77,7 @@ public class IspPlanServiceImpl implements IspPlanService {
         .flatMap(Optional::stream)
         .map(permission -> new IspPlanPermission(ispPlan, permission)).collect(Collectors.toSet());
     ispPlan.setIspPlanPermissions(ispPlanPermissions);
-    IspPlan save = repository.save(ispPlan);
+    repository.save(ispPlan);
   }
 
   //Do not delete a plan. Many customer would already be using this plan.
@@ -110,9 +111,7 @@ public class IspPlanServiceImpl implements IspPlanService {
     if(defaultPlanAssign){
       List<IspPlan> byPlanTypeAndName = repository.findByIsDefaultTrue();
       Optional<IspPlan> ispPlan = byPlanTypeAndName.stream().findFirst();
-      if (ispPlan.isPresent()) {
-        activateIspPlan(ispId, ispPlan.get());
-      }
+        ispPlan.ifPresent(plan -> activateIspPlan(ispId, plan));
     }
   }
 

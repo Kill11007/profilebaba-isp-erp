@@ -7,9 +7,7 @@ import com.knackitsolutions.profilebaba.isperp.dto.EmployeeQuery;
 import com.knackitsolutions.profilebaba.isperp.dto.IspDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.IspQuery;
 import com.knackitsolutions.profilebaba.isperp.dto.IspSpecification;
-import com.knackitsolutions.profilebaba.isperp.dto.TenantDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.UserDTO;
-import com.knackitsolutions.profilebaba.isperp.dto.VendorDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.VendorSpecification;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
@@ -53,7 +51,7 @@ public class IspServiceImpl implements IspService {
               UserNotFoundException::new);
       Tenant tenant = tenantRepository.findByTenantId(user.getTenantId())
               .orElseThrow(() -> new RuntimeException("Tenant not found exception"));
-      IspDTO ispDTO = new IspDTO(new UserDTO(user), new TenantDTO(tenant), new VendorDTO(vendor));
+      IspDTO ispDTO = new IspDTO(new UserDTO(user), tenant, vendor);
       isps.add(ispDTO);
     }
     return isps;
@@ -71,7 +69,7 @@ public class IspServiceImpl implements IspService {
             UserNotFoundException::new);
         Tenant tenant = tenantRepository.findByTenantId(user.getTenantId())
             .orElseThrow(() -> new RuntimeException("Tenant not found exception"));
-        IspDTO ispDTO = new IspDTO(new UserDTO(user), new TenantDTO(tenant), new VendorDTO(vendor));
+        IspDTO ispDTO = new IspDTO(new UserDTO(user), tenant, vendor);
         isps.add(ispDTO);
       }
     }

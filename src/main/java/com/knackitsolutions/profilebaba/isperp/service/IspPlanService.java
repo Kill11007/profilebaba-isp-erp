@@ -2,6 +2,7 @@ package com.knackitsolutions.profilebaba.isperp.service;
 
 import com.knackitsolutions.profilebaba.isperp.dto.IspPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
+import com.knackitsolutions.profilebaba.isperp.exception.IspPlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import java.util.List;
@@ -29,7 +30,4 @@ public interface IspPlanService {
 
   void deactivateCurrentIspPlan(Long ispId) throws VendorNotFoundException;
 
-  class IspPlanNotFoundException extends RuntimeException{
-
-  }
 }
