@@ -18,8 +18,10 @@ create table if not exists isp_admin_db.admin_users (
     user_id bigint not null unique,
     phone varchar(20) not null,
     address varchar(255) null,
+    approved boolean not null default false,
     foreign key (user_id) references users(id)
 );
+
 create table if not exists isp_admin_db.isps (
 	id bigint primary KEY AUTO_INCREMENT,
     business_name varchar(50) unique,
@@ -28,7 +30,19 @@ create table if not exists isp_admin_db.isps (
     plan_id bigint,
     foreign key (user_id) references users(id)
 );
-
+create table if not exists isp_admin_db.isp_complaints(
+	id bigint primary key auto_increment,
+    message text,
+    status varchar(20),
+    start_date datetime,
+    updated_date datetime,
+    created_by_user_id bigint,
+    comments text,
+    complaint_number varchar(10),
+    isp_id bigint,
+    foreign key(created_by_user_id) references users(id),
+    foreign key(isp_id) references isps(id)
+);
 create table if not exists isp_admin_db.tenants(
 	id int primary key auto_increment,
     tenant_id varchar(50) unique,

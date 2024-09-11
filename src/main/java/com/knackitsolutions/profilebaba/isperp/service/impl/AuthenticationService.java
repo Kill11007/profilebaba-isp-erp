@@ -2,15 +2,10 @@ package com.knackitsolutions.profilebaba.isperp.service.impl;
 
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.LoginRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.*;
-import com.knackitsolutions.profilebaba.isperp.entity.main.Permission;
-import com.knackitsolutions.profilebaba.isperp.entity.main.Tenant;
-import com.knackitsolutions.profilebaba.isperp.entity.main.User;
-import com.knackitsolutions.profilebaba.isperp.entity.main.UserRoleFeature;
-import com.knackitsolutions.profilebaba.isperp.entity.main.VendorPlan;
-import com.knackitsolutions.profilebaba.isperp.exception.InvalidOTPException;
-import com.knackitsolutions.profilebaba.isperp.exception.OTPNotSentException;
-import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
-import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.entity.main.*;
+import com.knackitsolutions.profilebaba.isperp.enums.UserType;
+import com.knackitsolutions.profilebaba.isperp.exception.*;
+import com.knackitsolutions.profilebaba.isperp.repository.main.AdminUserRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.TenantRepository;
 import com.knackitsolutions.profilebaba.isperp.repository.main.UserRoleFeatureRepository;
 import com.knackitsolutions.profilebaba.isperp.service.OTPService;
@@ -32,6 +27,7 @@ public class AuthenticationService {
   private final JwtTokenUtil jwtTokenUtil;
 
   private final JwtUserDetailsService jwtUserDetailsService;
+  private final AdminUserRepository adminUserRepository;
   private final VendorService vendorService;
   private final UserService userService;
   private final UserRoleFeatureRepository userRoleFeatureRepository;
@@ -41,6 +37,12 @@ public class AuthenticationService {
   public LoginResponse login(LoginRequest request)
       throws UserNotFoundException, VendorNotFoundException {
     final User userDetails = jwtUserDetailsService.loadUserByUsername(request.getPhoneNumber());
+    if (userDetails.getUserType() == UserType.ADMIN) {
+      AdminUser adminUser = adminUserRepository.findByUserId(userDetails.getId()).orElseThrow(UserType.UserTypeNotFoundException::new);
+      if (!adminUser.getApproved()) {
+        throw new AdminUserNotApproved();
+      }
+    }
     final String token ;
     //Login For Customer
     if (request.getVendorId() != null) {

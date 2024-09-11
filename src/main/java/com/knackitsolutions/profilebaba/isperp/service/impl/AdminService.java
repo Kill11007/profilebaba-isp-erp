@@ -6,6 +6,7 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.AdminUser;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.UserAlreadyExistsException;
+import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.repository.main.AdminUserRepository;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,11 @@ public class AdminService {
         User saved = userService.save(user);
         AdminUser adminUser = repository.save(new AdminUser(signUp, saved));
         return new AdminUserDTO(adminUser);
+    }
+
+    public void approveAdminUserRequest(Long adminId) {
+        AdminUser adminUser = repository.findById(adminId).orElseThrow(() -> UserNotFoundException.withId(adminId));
+        adminUser.setApproved(true);
+        repository.save(adminUser);
     }
 }

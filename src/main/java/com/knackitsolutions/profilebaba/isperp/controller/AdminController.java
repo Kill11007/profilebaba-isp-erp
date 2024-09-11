@@ -36,6 +36,12 @@ public class AdminController {
         return new ResponseEntity<>(signup, httpHeaders, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/approve")
+    public ResponseEntity<?> approveAdminUserRequest(@PathVariable("id") Long adminId) {
+        adminService.approveAdminUserRequest(adminId);
+        return ResponseEntity.noContent().build();
+    }
+
     @NoArgsConstructor
     @Data
     @AllArgsConstructor

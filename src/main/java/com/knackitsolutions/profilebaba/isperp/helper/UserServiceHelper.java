@@ -6,9 +6,11 @@ import com.knackitsolutions.profilebaba.isperp.enums.UserType;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
+import com.knackitsolutions.profilebaba.isperp.repository.main.AdminUserRepository;
 import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
 import com.knackitsolutions.profilebaba.isperp.service.EmployeeService;
 import com.knackitsolutions.profilebaba.isperp.service.UserService;
+import com.knackitsolutions.profilebaba.isperp.service.impl.AdminService;
 import com.knackitsolutions.profilebaba.isperp.service.impl.VendorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ public class UserServiceHelper {
   private final CustomerService customerService;
   private final EmployeeService employeeService;
   private final VendorService vendorService;
+  private final AdminUserRepository adminUserRepository;
   public String getUserName(Long userId) {
     User user = null;
     try {
@@ -66,6 +69,12 @@ public class UserServiceHelper {
     } else if (user.getUserType() == UserType.CUSTOMER) {
       try {
         return customerService.findByUserId(user.getId());
+      } catch (CustomerNotFoundException e) {
+        throw new RuntimeException(e);
+      }
+    } else if(user.getUserType() == UserType.ADMIN){
+      try {
+        return adminUserRepository.findByUserId(user.getId()).orElseThrow(() -> new UserNotFoundException());
       } catch (CustomerNotFoundException e) {
         throw new RuntimeException(e);
       }

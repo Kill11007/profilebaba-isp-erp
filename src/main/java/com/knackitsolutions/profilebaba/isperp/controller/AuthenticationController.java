@@ -3,6 +3,7 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.LoginRequest;
 import com.knackitsolutions.profilebaba.isperp.controller.VendorController.SetPasswordRequest;
 import com.knackitsolutions.profilebaba.isperp.dto.*;
+import com.knackitsolutions.profilebaba.isperp.entity.main.AdminUser;
 import com.knackitsolutions.profilebaba.isperp.entity.main.User;
 import com.knackitsolutions.profilebaba.isperp.entity.main.Vendor;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.Customer;
@@ -77,12 +78,12 @@ public class AuthenticationController {
     if (claims == null) {
       throw new NonRefreshableTokenException("Token is not expired.");
     }
-    Map<String, Object> expectedMap = getMapFromIoJsonwebtokenClaims(claims);
+    Map<String, Object> expectedMap = getMapFromIoJsonWebTokenClaims(claims);
     String token = jwtTokenUtil.doGenerateRefreshToken(expectedMap, expectedMap.get("sub").toString());
     return ResponseEntity.ok(new JwtResponse(token));
   }
 
-  public Map<String, Object> getMapFromIoJsonwebtokenClaims(DefaultClaims claims) {
+  public Map<String, Object> getMapFromIoJsonWebTokenClaims(DefaultClaims claims) {
     return new HashMap<>(claims);
   }
 
@@ -124,6 +125,8 @@ public class AuthenticationController {
       return ResponseEntity.ok(new EmployeeDTO((Employee) userInfo));
     } else if (userDetails.getUserType() == UserType.CUSTOMER) {
       return ResponseEntity.ok(new CustomerDTO((Customer) userInfo));
+    } else if (userDetails.getUserType() == UserType.ADMIN){
+      return ResponseEntity.ok(new AdminUserDTO((AdminUser) userInfo));
     }
     throw new UserNotFoundException();
   }
