@@ -51,7 +51,7 @@ public class IspServiceImpl implements IspService {
               UserNotFoundException::new);
       Tenant tenant = tenantRepository.findByTenantId(user.getTenantId())
               .orElseThrow(() -> new RuntimeException("Tenant not found exception"));
-      IspDTO ispDTO = new IspDTO(new UserDTO(user), tenant, vendor);
+      IspDTO ispDTO = new IspDTO(tenant, vendor);
       isps.add(ispDTO);
     }
     return isps;
@@ -69,7 +69,7 @@ public class IspServiceImpl implements IspService {
             UserNotFoundException::new);
         Tenant tenant = tenantRepository.findByTenantId(user.getTenantId())
             .orElseThrow(() -> new RuntimeException("Tenant not found exception"));
-        IspDTO ispDTO = new IspDTO(new UserDTO(user), tenant, vendor);
+        IspDTO ispDTO = new IspDTO(tenant, vendor);
         isps.add(ispDTO);
       }
     }
