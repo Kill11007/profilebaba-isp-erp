@@ -26,22 +26,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class PaymentController {
 
-  private final PaymentService paymentService;
+    private final PaymentService paymentService;
 
-  @PostMapping("/customers/{customer-id}/payments")
-  public ResponseEntity<Void> pay(@RequestBody PaymentDTO paymentDTO,
-      @PathVariable("customer-id") Long customerId, UriComponentsBuilder uriBuilder)
-      throws EmployeeNotFoundException, AdjustedBalanceNotFoundException, PaymentNotFoundException, CustomerNotFoundException, BillNotFoundException, UserNotFoundException {
-    Payment receive = paymentService.receive(paymentDTO, customerId);
-    return ResponseEntity.created(
-        uriBuilder.path("/payments/{id}").buildAndExpand(receive.getId()).toUri()).build();
-  }
+    @PostMapping("/customers/{customer-id}/payments")
+    public ResponseEntity<Void> pay(@RequestBody PaymentDTO paymentDTO, @PathVariable("customer-id") Long customerId
+            , UriComponentsBuilder uriBuilder) throws EmployeeNotFoundException, AdjustedBalanceNotFoundException,
+            PaymentNotFoundException, CustomerNotFoundException, BillNotFoundException, UserNotFoundException {
+        Payment receive = paymentService.receive(paymentDTO, customerId);
+        return ResponseEntity.created(uriBuilder.path("/payments/{id}").buildAndExpand(receive.getId()).toUri()).build();
+    }
 
-  @GetMapping("/payments/{payment-id}")
-  public ResponseEntity<PaymentDTO> get(@PathVariable("payment-id") Long paymentId)
-      throws PaymentNotFoundException {
-    return ResponseEntity.ok(paymentService.getDTO(paymentId));
-  }
+    @GetMapping("/payments/{payment-id}")
+    public ResponseEntity<PaymentDTO> get(@PathVariable("payment-id") Long paymentId) throws PaymentNotFoundException {
+        return ResponseEntity.ok(paymentService.getDTO(paymentId));
+    }
 
   /*@DeleteMapping("/payments/{payment-id}")
   public ResponseEntity<PaymentDTO> delete(@PathVariable("payment-id") Long paymentId)

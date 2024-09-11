@@ -12,7 +12,14 @@ create table if not exists isp_admin_db.users(
     is_phone_number_verified boolean not null default false,
     user_type enum ('ISP', 'EMPLOYEE', 'ADMIN', 'CUSTOMER') not null
 );
-
+create table if not exists isp_admin_db.admin_users (
+	id bigint primary KEY AUTO_INCREMENT,
+    name varchar(50) unique,
+    user_id bigint not null unique,
+    phone varchar(20) not null,
+    address varchar(255) null,
+    foreign key (user_id) references users(id)
+);
 create table if not exists isp_admin_db.isps (
 	id bigint primary KEY AUTO_INCREMENT,
     business_name varchar(50) unique,

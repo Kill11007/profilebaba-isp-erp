@@ -1,9 +1,12 @@
 package com.knackitsolutions.profilebaba.isperp.controller;
 
+import com.knackitsolutions.profilebaba.isperp.dto.AdminUserDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.UserDTO;
 import com.knackitsolutions.profilebaba.isperp.service.OTPService;
 import com.knackitsolutions.profilebaba.isperp.service.impl.AdminService;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -24,8 +27,8 @@ public class AdminController {
     private List<String> profiles;
 
     @PostMapping("/signup")
-    public ResponseEntity<UserDTO> newAdmin(@RequestBody AdminSignUp signUp) {
-        UserDTO signup = adminService.signup(signUp);
+    public ResponseEntity<AdminUserDTO> newAdmin(@RequestBody AdminSignUp signUp) {
+        AdminUserDTO signup = adminService.signup(signUp);
         HttpHeaders httpHeaders = new HttpHeaders();
         if (profiles.stream().anyMatch(s -> s.equals("local"))) {
             httpHeaders.set("otp", otpService.sendOTP(signup.getPhoneNumber()));
@@ -33,10 +36,13 @@ public class AdminController {
         return new ResponseEntity<>(signup, httpHeaders, HttpStatus.OK);
     }
 
-    @RequiredArgsConstructor
+    @NoArgsConstructor
     @Data
+    @AllArgsConstructor
     public static class AdminSignUp{
-        private final String phoneNumber;
-        private final String password;
+        private String name;
+        private String phoneNumber;
+        private String password;
+        private String address;
     }
 }

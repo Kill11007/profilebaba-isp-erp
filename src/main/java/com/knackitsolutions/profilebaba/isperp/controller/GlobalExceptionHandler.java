@@ -30,10 +30,10 @@ public class GlobalExceptionHandler {
     return handleException(businessNameNotUniqueException);
   }
 
-  @ExceptionHandler(value = VendorNotFoundException.class)
+  @ExceptionHandler(value = {VendorNotFoundException.class, UserAlreadyExistsException.class, UserNotFoundException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ErrorResponse handleVendorNotFound(
-      VendorNotFoundException vendorNotFoundException) {
+      Exception vendorNotFoundException) {
     return handleException(vendorNotFoundException);
   }
 
@@ -110,10 +110,10 @@ public class GlobalExceptionHandler {
   public ErrorResponse handlePaymentException(Exception exception){
     return handleException(exception);
   }
-//  @ExceptionHandler(value = Exception.class)
-//  public ErrorResponse handleGenericException(Exception e) {
-//    return handleException(e);
-//  }
+  @ExceptionHandler(value = Exception.class)
+  public ErrorResponse handleGenericException(Exception e) {
+    return handleException(e);
+  }
 
   private ErrorResponse handleException(Throwable exception) {
     Throwable cause = exception.getCause();
