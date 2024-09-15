@@ -21,6 +21,7 @@ public class UserInfo {
     this.setUserId(user.getId());
     this.setTenantId(user.getTenantId());
     this.setEnabled(user.isEnabled());
+    this.setPhoneNumber(user.getPhoneNumber());
     this.setUserType(user.getUserType());
     this.setPermissions(
         user.getPermissions().stream().map(PermissionDTO::new).collect(Collectors.toSet()));

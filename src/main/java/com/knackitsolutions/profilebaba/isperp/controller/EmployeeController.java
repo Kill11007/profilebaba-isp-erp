@@ -95,9 +95,9 @@ public class EmployeeController {
 
     @PostMapping("/{employee-id}/service-areas")
     public ResponseEntity<Void> addServiceAreas(@PathVariable("employee-id") Long employeeId
-            , @RequestBody Map<String, List<Long>> serviceAreaDTOS, UriComponentsBuilder uriComponentsBuilder)
+            , @RequestBody List<Long> serviceAreaDTOS, UriComponentsBuilder uriComponentsBuilder)
             throws ServiceAreaNotFoundException, EmployeeNotFoundException, UserNotFoundException {
-        employeeService.addServiceAreas(employeeId, serviceAreaDTOS.get("id").stream().map(ServiceAreaDTO::new).toList());
+        employeeService.addServiceAreas(employeeId, serviceAreaDTOS.stream().map(ServiceAreaDTO::new).toList());
         return created.apply(uriComponentsBuilder, employeeId);
     }
 

@@ -25,9 +25,9 @@ public class JwtUserDetailsService implements UserDetailsService {
     //TODO improve performance using cache
     User user;
     try {
-      user = userRepository.findByPhoneNumber(username).get(0)
-          .orElseThrow(() -> UserNotFoundException.withPhoneNumber(username));
-    } catch (UserNotFoundException e) {
+      user = userRepository.findByPhoneNumber(username).stream().flatMap(Optional::stream)
+              .findFirst().orElseThrow(() -> UserNotFoundException.withPhoneNumber(username));
+    } catch (Exception e) {
       throw new UsernameNotFoundException("No user found with phone: " + username, e);
     }
     return user;

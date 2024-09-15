@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public class InvalidLoginCredentialException extends CustomException{
 
-  private String message = "Please enter correct username/password.";
+  private static String defaultMessage = "Please enter correct username/password.";
 
   public InvalidLoginCredentialException() {
     super();
@@ -13,15 +13,13 @@ public class InvalidLoginCredentialException extends CustomException{
 
   public InvalidLoginCredentialException(String message) {
     super(message);
-    this.message = message;
   }
 
   public InvalidLoginCredentialException(String message, Throwable cause) {
     super(message, cause);
-    this.message = message;
   }
 
   public InvalidLoginCredentialException(Throwable cause) {
-    super(cause);
+    super(defaultMessage, cause);
   }
 }
