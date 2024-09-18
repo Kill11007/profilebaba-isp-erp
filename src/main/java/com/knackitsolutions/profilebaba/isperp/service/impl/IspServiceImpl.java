@@ -31,6 +31,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,7 +46,7 @@ public class IspServiceImpl implements IspService {
   private final CustomerRepository customerRepository;
 
   @Override
-  public List<IspDTO> getISPs() throws UserNotFoundException {
+  public Page<IspDTO> getISPs() throws UserNotFoundException {
     List<IspDTO> isps = new ArrayList<>();
     for (Vendor vendor : vendorRepository.findAll()) {
       User user = userRepository.findById(vendor.getUserId()).orElseThrow(
@@ -54,11 +56,11 @@ public class IspServiceImpl implements IspService {
       IspDTO ispDTO = new IspDTO(tenant, vendor);
       isps.add(ispDTO);
     }
-    return isps;
+    return new PageImpl<>(isps);
   }
 
   @Override
-  public List<IspDTO> getISPs(IspQuery ispQuery) throws UserNotFoundException {
+  public Page<IspDTO> getISPs(IspQuery ispQuery) throws UserNotFoundException {
     IspSpecification ispSpecification = ispQuery.toSpecification();
     VendorSpecification vendorSpecification = ispSpecification.getVendorSpecification();
     List<IspDTO> isps = new ArrayList<>();
@@ -73,11 +75,11 @@ public class IspServiceImpl implements IspService {
         isps.add(ispDTO);
       }
     }
-    return isps;
+    return new PageImpl<>(isps);
   }
 
   @Override
-  public List<EmployeeDTO> getEmployees(Long vendorId, EmployeeQuery employeeQuery)
+  public Page<EmployeeDTO> getEmployees(Long vendorId, EmployeeQuery employeeQuery)
       throws VendorNotFoundException, UserNotFoundException {
     Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(VendorNotFoundException::new);
     User user = userRepository.findById(vendor.getUserId()).orElseThrow(UserNotFoundException::new);
@@ -99,11 +101,11 @@ public class IspServiceImpl implements IspService {
       EmployeeDTO employeeDTO = new EmployeeDTO(employee, userMap.get(employee.getUserId()));
       employees.add(employeeDTO);
     }
-    return employees;
+    return new PageImpl<>(employees);
   }
 
   @Override
-  public List<CustomerDTO> getCustomers(Long vendorId, CustomerQuery customerQuery)
+  public Page<CustomerDTO> getCustomers(Long vendorId, CustomerQuery customerQuery)
       throws VendorNotFoundException, UserNotFoundException {
     Vendor vendor = vendorRepository.findById(vendorId).orElseThrow(VendorNotFoundException::new);
     User user = userRepository.findById(vendor.getUserId()).orElseThrow(UserNotFoundException::new);
@@ -118,8 +120,8 @@ public class IspServiceImpl implements IspService {
     }else{
       all = customerRepository.findAll();
     }
-    return all.stream()
-        .map(CustomerDTO::new).collect(Collectors.toList());
+    return new PageImpl<>(all.stream()
+            .map(CustomerDTO::new).collect(Collectors.toList()));
   }
 
 }

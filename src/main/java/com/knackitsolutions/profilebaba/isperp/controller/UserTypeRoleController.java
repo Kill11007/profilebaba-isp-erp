@@ -4,10 +4,10 @@ import com.knackitsolutions.profilebaba.isperp.dto.CustomerRoleDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeRoleDTO;
 import com.knackitsolutions.profilebaba.isperp.service.impl.UserTypeRoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/user-type/roles")
 @RequiredArgsConstructor
@@ -17,8 +17,8 @@ public class UserTypeRoleController {
     private final UserTypeRoleService userTypeRoleService;
 
     @GetMapping("/employees")
-    public List<EmployeeRoleDTO> getAllEmpRoles() {
-        return userTypeRoleService.getEmployeeRoles();
+    public Page<EmployeeRoleDTO> getAllEmpRoles() {
+        return new PageImpl<>(userTypeRoleService.getEmployeeRoles());
     }
 
     @PostMapping("/employees")
@@ -34,8 +34,8 @@ public class UserTypeRoleController {
     }
 
     @GetMapping("/customers")
-    public List<CustomerRoleDTO> getAllCustomerRole() {
-        return userTypeRoleService.getCustomerRoles();
+    public Page<CustomerRoleDTO> getAllCustomerRole() {
+        return new PageImpl<>(userTypeRoleService.getCustomerRoles());
     }
 
     @DeleteMapping("/customers/{role-id}")

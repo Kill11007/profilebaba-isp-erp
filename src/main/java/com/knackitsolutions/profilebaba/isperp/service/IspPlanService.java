@@ -5,11 +5,13 @@ import com.knackitsolutions.profilebaba.isperp.entity.main.IspPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.IspPlanNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface IspPlanService {
 
-  List<IspPlanDTO> all();
+  Page<IspPlanDTO> all(Integer page, Integer size);
 
   IspPlanDTO oneDTO(Long id) throws IspPlanNotFoundException;
 

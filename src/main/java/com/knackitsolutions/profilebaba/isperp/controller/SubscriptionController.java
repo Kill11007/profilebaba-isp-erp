@@ -9,16 +9,9 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
@@ -31,12 +24,13 @@ public class SubscriptionController {
   private final SubscriptionService subscriptionService;
 
   @GetMapping("/subscriptions")
-  public ResponseEntity<List<SubscriptionDTO>> all() {
-    return ResponseEntity.ok(subscriptionService.getAll());
+  public ResponseEntity<Page<SubscriptionDTO>> all(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                                   @RequestParam(required = false, defaultValue = "1000") Integer size) {
+    return ResponseEntity.ok(subscriptionService.getAll(page, size));
   }
 
   @GetMapping("/customers/{customer-id}/subscriptions")
-  public ResponseEntity<List<SubscriptionDTO>> allUserSubscription(
+  public ResponseEntity<Page<SubscriptionDTO>> allUserSubscription(
       @PathVariable("customer-id") Long customerId)
       throws CustomerNotFoundException {
     return ResponseEntity.ok(

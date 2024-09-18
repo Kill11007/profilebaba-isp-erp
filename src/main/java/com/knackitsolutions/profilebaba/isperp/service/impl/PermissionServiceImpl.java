@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -54,12 +57,12 @@ public class PermissionServiceImpl implements PermissionService {
   }
 
   @Override
-  public List<PermissionDTO> findAll() {
-    List<Permission> all = repository.findAll();
-    return getPermissionDTOs(all);
+  public Page<PermissionDTO> findAll(Integer page, Integer size) {
+    Page<Permission> all = repository.findAll(PageRequest.of(page, size));
+    return new PageImpl<>(getPermissionDTOs(all));
   }
 
-  private List<PermissionDTO> getPermissionDTOs(List<Permission> all) {
+  private List<PermissionDTO> getPermissionDTOs(Page<Permission> all) {
     List<Permission> parentPermission = all.stream()
             .filter(permission -> permission.getId() != 0)
             .filter(permission -> permission.getParent() != null)

@@ -3,15 +3,17 @@ package com.knackitsolutions.profilebaba.isperp.service;
 import com.knackitsolutions.profilebaba.isperp.dto.SubscriptionDTO;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.SubscriptionNotFoundException;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface SubscriptionService {
 
-  List<SubscriptionDTO> getAll();
+  Page<SubscriptionDTO> getAll(Integer page, Integer size);
 
   SubscriptionDTO getOne(Long subscriptionId) throws SubscriptionNotFoundException;
 
-  List<SubscriptionDTO> getCustomerSubscription(Long customerId) throws CustomerNotFoundException;
+  Page<SubscriptionDTO> getCustomerSubscription(Long customerId) throws CustomerNotFoundException;
 
   void updateSubscription(Long subscriptionId, SubscriptionDTO subscriptionDTO)
       throws SubscriptionNotFoundException;

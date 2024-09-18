@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,8 +31,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
   private final CustomerService customerService;
   private final InternetPlanService internetPlanService;
   @Override
-  public List<SubscriptionDTO> getAll() {
-    return repository.findAll().stream().map(SubscriptionDTO::new).collect(Collectors.toList());
+  public Page<SubscriptionDTO> getAll(Integer page, Integer size) {
+    return repository.findAll(PageRequest.of(page, size)).map(SubscriptionDTO::new);
   }
 
   @Override
@@ -39,11 +42,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
   }
 
   @Override
-  public List<SubscriptionDTO> getCustomerSubscription(Long customerId)
+  public Page<SubscriptionDTO> getCustomerSubscription(Long customerId)
       throws CustomerNotFoundException {
     CustomerDTO customer = customerService.getCustomer(customerId);
     List<Subscription> allByCustomerId = repository.findAllByCustomerId(customer.getId());
-    return allByCustomerId.stream().map(SubscriptionDTO::new).collect(Collectors.toList());
+    return new PageImpl<>(allByCustomerId.stream().map(SubscriptionDTO::new).collect(Collectors.toList()));
   }
 
   @Override

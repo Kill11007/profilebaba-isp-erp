@@ -5,18 +5,10 @@ import com.knackitsolutions.profilebaba.isperp.dto.IspPlanQuery;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.IspPlanService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/isp-plans")
@@ -33,9 +25,10 @@ public class IspPlanController {
   }
 
   @GetMapping
-  public ResponseEntity<List<IspPlanDTO>> getAll(
-      @RequestBody(required = false) IspPlanQuery query) {
-    return ResponseEntity.ok(ispPlanService.all());
+  public ResponseEntity<Page<IspPlanDTO>> getAll(
+      @RequestBody(required = false) IspPlanQuery query, @RequestParam(required = false, defaultValue = "0") Integer page,
+      @RequestParam(required = false, defaultValue = "1000") Integer size) {
+    return ResponseEntity.ok(ispPlanService.all(page, size));
   }
 
   @GetMapping("/{plan-id}")

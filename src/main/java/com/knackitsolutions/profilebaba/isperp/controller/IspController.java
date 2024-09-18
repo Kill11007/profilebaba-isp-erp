@@ -5,15 +5,14 @@ import com.knackitsolutions.profilebaba.isperp.dto.CustomerQuery;
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.EmployeeQuery;
 import com.knackitsolutions.profilebaba.isperp.dto.IspDTO;
-import com.knackitsolutions.profilebaba.isperp.dto.IspQuery;
 import com.knackitsolutions.profilebaba.isperp.exception.CustomerAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.service.CustomerService;
 import com.knackitsolutions.profilebaba.isperp.service.IspService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,20 +36,20 @@ public class IspController {
   private final CustomerService customerService;
 
   @GetMapping
-  public ResponseEntity<List<IspDTO>> getAll()
+  public ResponseEntity<Page<IspDTO>> getAll()
       throws UserNotFoundException {
     return ResponseEntity.ok(ispService.getISPs());
   }
 
   @GetMapping("/{vendor-id}/employees")
-  public ResponseEntity<List<EmployeeDTO>> getEmployees(@PathVariable("vendor-id") Long ispId, @RequestBody(required = false)
+  public ResponseEntity<Page<EmployeeDTO>> getEmployees(@PathVariable("vendor-id") Long ispId, @RequestBody(required = false)
       EmployeeQuery employeeQuery)
       throws VendorNotFoundException, UserNotFoundException {
     return ResponseEntity.ok(ispService.getEmployees(ispId, employeeQuery));
   }
 
   @GetMapping("/{vendor-id}/customers")
-  public ResponseEntity<List<CustomerDTO>> getCustomers(@PathVariable("vendor-id") Long ispId,
+  public ResponseEntity<Page<CustomerDTO>> getCustomers(@PathVariable("vendor-id") Long ispId,
       @RequestBody(required = false) CustomerQuery customerQuery)
       throws VendorNotFoundException, UserNotFoundException {
     return ResponseEntity.ok(ispService.getCustomers(ispId, customerQuery));

@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -131,13 +133,9 @@ public class EmployeeServiceImpl implements EmployeeService {
   }
 
   @Override
-  public List<EmployeeDTO> all() throws UserNotFoundException {
-    List<EmployeeDTO> employeeDTOS = new ArrayList<>();
-    for (Employee employee : repository.findAll()) {
-      User user = userService.findById(employee.getUserId());
-      employeeDTOS.add(new EmployeeDTO(employee, user));
-    }
-    return employeeDTOS;
+  public Page<EmployeeDTO> all(Integer page, Integer size) throws UserNotFoundException {
+    return repository.findAll(PageRequest.of(page, size))
+            .map(employee -> new EmployeeDTO(employee, userService.findById(employee.getUserId())));
   }
 
   @Override

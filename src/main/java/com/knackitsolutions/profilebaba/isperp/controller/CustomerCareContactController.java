@@ -3,18 +3,12 @@ package com.knackitsolutions.profilebaba.isperp.controller;
 import com.knackitsolutions.profilebaba.isperp.dto.CustomerCareContactDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.CustomerCareContact;
 import com.knackitsolutions.profilebaba.isperp.repository.tenant.CustomerCareContactRepository;
-import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -36,9 +30,9 @@ public class CustomerCareContactController {
   }
 
   @GetMapping
-  public ResponseEntity<List<CustomerCareContactDTO>> all(){
-    return ResponseEntity.ok(repository.findAll().stream().map(CustomerCareContactDTO::new)
-        .collect(Collectors.toList()));
+  public ResponseEntity<Page<CustomerCareContactDTO>> all(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                                          @RequestParam(required = false, defaultValue = "1000") Integer size){
+    return ResponseEntity.ok(repository.findAll(PageRequest.of(page, size)).map(CustomerCareContactDTO::new));
   }
 
   @GetMapping("/{id}")

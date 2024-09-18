@@ -4,6 +4,8 @@ import com.knackitsolutions.profilebaba.isperp.dto.ServiceAreaDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.ServiceArea;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaAlreadyExistsException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface AreaService {
@@ -15,7 +17,7 @@ public interface AreaService {
   ServiceAreaDTO findById(Long id) throws ServiceAreaNotFoundException;
   ServiceArea get(Long id) throws ServiceAreaNotFoundException;
 
-  List<ServiceAreaDTO> findAll();
+  Page<ServiceAreaDTO> findAll(Integer page, Integer size);
 
   void delete(Long id) throws ServiceAreaNotFoundException;
 

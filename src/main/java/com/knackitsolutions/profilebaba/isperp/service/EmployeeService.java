@@ -11,6 +11,8 @@ import com.knackitsolutions.profilebaba.isperp.exception.EmployeeNotFoundExcepti
 import com.knackitsolutions.profilebaba.isperp.exception.PermissionNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.ServiceAreaNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface EmployeeService {
@@ -22,7 +24,7 @@ public interface EmployeeService {
 
   EmployeeDTO one(Long id) throws EmployeeNotFoundException, UserNotFoundException;
 
-  List<EmployeeDTO> all() throws UserNotFoundException;
+  Page<EmployeeDTO> all(Integer page, Integer size) throws UserNotFoundException;
 
   void delete(Long id) throws EmployeeNotFoundException, UserNotFoundException;
 

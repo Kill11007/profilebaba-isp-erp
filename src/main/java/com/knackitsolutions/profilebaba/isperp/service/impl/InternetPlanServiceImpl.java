@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -44,9 +46,8 @@ public class InternetPlanServiceImpl implements InternetPlanService {
   }
 
   @Override
-  public List<InternetPlanDTO> getAllPlans() {
-    return internetPlanRepository.findAll().stream().map(InternetPlanDTO::new)
-        .collect(Collectors.toList());
+  public Page<InternetPlanDTO> getAllPlans(Integer page, Integer size) {
+    return internetPlanRepository.findAll(PageRequest.of(page, size)).map(InternetPlanDTO::new);
   }
 
   @Override

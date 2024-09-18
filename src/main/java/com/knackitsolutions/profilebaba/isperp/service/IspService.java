@@ -8,18 +8,20 @@ import com.knackitsolutions.profilebaba.isperp.dto.IspDTO;
 import com.knackitsolutions.profilebaba.isperp.dto.IspQuery;
 import com.knackitsolutions.profilebaba.isperp.exception.UserNotFoundException;
 import com.knackitsolutions.profilebaba.isperp.exception.VendorNotFoundException;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface IspService {
 
-  List<IspDTO> getISPs() throws UserNotFoundException;
+  Page<IspDTO> getISPs() throws UserNotFoundException;
 
-  List<IspDTO> getISPs(IspQuery ispQuery) throws UserNotFoundException;
+  Page<IspDTO> getISPs(IspQuery ispQuery) throws UserNotFoundException;
 
-  List<EmployeeDTO> getEmployees(Long vendorId, EmployeeQuery employeeQuery)
+  Page<EmployeeDTO> getEmployees(Long vendorId, EmployeeQuery employeeQuery)
       throws VendorNotFoundException, UserNotFoundException;
 
-  List<CustomerDTO> getCustomers(Long vendorId, CustomerQuery customerQuery)
+  Page<CustomerDTO> getCustomers(Long vendorId, CustomerQuery customerQuery)
       throws VendorNotFoundException, UserNotFoundException;
 
 }

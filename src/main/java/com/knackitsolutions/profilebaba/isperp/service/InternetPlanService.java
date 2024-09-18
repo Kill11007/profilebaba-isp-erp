@@ -3,6 +3,8 @@ package com.knackitsolutions.profilebaba.isperp.service;
 import com.knackitsolutions.profilebaba.isperp.dto.InternetPlanDTO;
 import com.knackitsolutions.profilebaba.isperp.entity.tenant.InternetPlan;
 import com.knackitsolutions.profilebaba.isperp.exception.PlanNotFoundException;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 
 public interface InternetPlanService {
@@ -15,7 +17,7 @@ public interface InternetPlanService {
 
   InternetPlanDTO getPlan(Long id);
 
-  List<InternetPlanDTO> getAllPlans();
+  Page<InternetPlanDTO> getAllPlans(Integer page, Integer size);
 
   void updateStatus(Long id);
 

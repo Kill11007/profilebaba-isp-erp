@@ -9,6 +9,8 @@ import com.knackitsolutions.profilebaba.isperp.service.AreaService;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,8 +43,8 @@ public class AreaServiceImpl implements AreaService {
   }
 
   @Override
-  public List<ServiceAreaDTO> findAll() {
-    return repository.findAll().stream().map(ServiceAreaDTO::new).collect(Collectors.toList());
+  public Page<ServiceAreaDTO> findAll(Integer page, Integer size) {
+    return repository.findAll(PageRequest.of(page, size)).map(ServiceAreaDTO::new);
   }
 
   @Override

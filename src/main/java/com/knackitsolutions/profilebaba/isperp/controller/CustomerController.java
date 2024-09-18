@@ -162,7 +162,7 @@ public class CustomerController {
   }
 
   @GetMapping("/subscriptions")
-  public ResponseEntity<List<SubscriptionDTO>> getSubscriptions() throws CustomerNotFoundException {
+  public ResponseEntity<Page<SubscriptionDTO>> getSubscriptions() throws CustomerNotFoundException {
     Customer customer = (Customer) authenticationFacade.getAuthentication().getPrincipal();
     return ResponseEntity.ok(subscriptionService.getCustomerSubscription(customer.getId()));
   }

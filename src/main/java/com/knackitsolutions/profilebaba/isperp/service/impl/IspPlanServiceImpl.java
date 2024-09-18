@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,9 +44,8 @@ public class IspPlanServiceImpl implements IspPlanService {
 
 
   @Override
-  public List<IspPlanDTO> all() {
-    return repository.findAll().stream().map(IspPlanDTO::new).collect(
-        Collectors.toList());
+  public Page<IspPlanDTO> all(Integer page, Integer size) {
+    return repository.findAll(PageRequest.of(page, size)).map(IspPlanDTO::new);
   }
 
   @Override
